@@ -10,13 +10,18 @@ import {
 import { Input } from '~/components/ui/input';
 import { cn } from '~/lib/utils';
 import { motion } from 'motion/react';
-import { Link, NavLink } from 'react-router';
+import { Link } from 'react-router';
+import { FaArrowRightToBracket, FaEye, FaEyeSlash } from 'react-icons/fa6';
+import { useState } from 'react';
 
 type LoginFormProps = {
   setShowLogin: React.Dispatch<React.SetStateAction<boolean>>;
 } & React.ComponentPropsWithoutRef<'div'>;
 
 export function LoginForm({ className, ...props }: LoginFormProps) {
+  //states
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -33,7 +38,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
         {...props}
       >
         <Card
-          className='w-96 sm:w-7/12 md:w-6/12 z-20'
+          className='w-96 sm:w-7/12 md:w-6/12 lg:w-4/12 z-20'
           onClick={(e) => e.stopPropagation()}
         >
           <CardHeader>
@@ -61,25 +66,37 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                     ¿Olvidaste tu contraseña?
                   </a>
                 </div>
-                <Input
-                  id='password'
-                  placeholder='********'
-                  type='password'
-                  required
-                />
+
+                <div className='flex w-full items-center'>
+                  <Input
+                    id='password'
+                    placeholder='********'
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                  />
+                  <Button
+                    variant='link'
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </Button>
+                </div>
               </div>
-              <Button type='submit' className='w-full'>
-                Iniciar Sesión
-              </Button>
-              <Button variant='outline' className='w-full'>
-                Login with Google
+              <Button
+                type='submit'
+                className='w-full bg-green-800 hover:bg-green-900'
+              >
+                <div className='flex gap-2 items-center'>
+                  <FaArrowRightToBracket />
+                  Iniciar Sesión
+                </div>
               </Button>
             </div>
-            <div className='mt-4 text-center text-sm'>
-              Don&apos;t have an account?{' '}
-              <Link to='/register'>Registrarse</Link>
-              {/* <a href='/register' className='underline underline-offset-4'>
-              </a> */}
+            <div className='mt-4 text-sm flex gap-1 items-center justify-center'>
+              <p>¿No tienes una cuenta?</p>
+              <Link to='/register' className='underline underline-offset-4'>
+                Registrarse
+              </Link>
             </div>
           </CardContent>
         </Card>

@@ -4,6 +4,7 @@ import { FaUserPlus, FaArrowRightToBracket } from 'react-icons/fa6';
 import { useState } from 'react';
 import { LoginForm } from './_components/loginForm';
 import { AnimatePresence } from 'motion/react';
+import { useNavigate } from 'react-router';
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -13,6 +14,9 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Index() {
+  //navigation
+  const navigate = useNavigate();
+
   //states
   const [showLogin, setShowLogin] = useState<boolean>(false);
 
@@ -42,24 +46,12 @@ export default function Index() {
         impacto puede transformar sociedades enteras. 🌱🌍
       </p>
 
-      {/* Images  */}
-      <article className='flex justify-center items-center gap-2 sm:gap-6 my-5'>
-        <img
-          className='w-7/12  sm:w-56 lg:w-96 lg:h-72 grow border-2 h-56 rounded-lg object-cover hover:scale-105 delay-75 transition-all'
-          src='https://www.anahuac.mx/mexico/sites/default/files/noticias/FRS_Educacion_ambiental.jpg'
-          alt='planeta saludable'
-        />
-
-        <img
-          className='w-7/12 sm:w-56 lg:w-96 lg:h-72 grow border-2 h-56 rounded-lg object-cover hover:scale-105 delay-75 transition-all'
-          src='https://todoingenierias.com/wp-content/uploads/educacion-ambiental-y-sostenibilidad.jpg'
-          alt='educación'
-        />
-      </article>
-
       {/* Buttons */}
       <article className='z-1 w-full flex gap-4 md:gap-10 mt-10 justify-center'>
-        <Button className='px-8 h-12 md:px-16 lg:px-22 bg-green-800 hover:bg-green-900 hover:scale-105 delay-75 transition-all'>
+        <Button
+          className='px-8 h-12 md:px-16 lg:px-22 bg-green-800 hover:bg-green-900 hover:scale-105 delay-75 transition-all'
+          onClick={() => navigate('/register')}
+        >
           <div className='w-22 flex gap-2 items-center justify-center'>
             <FaUserPlus />
             Registrarse
@@ -77,7 +69,22 @@ export default function Index() {
         </Button>
       </article>
 
-      <footer className='flex p-8 w-full  bg-slate-50'>
+      {/* Images  */}
+      <article className='flex justify-center items-center gap-2 sm:gap-6 my-10'>
+        <img
+          className='w-7/12  sm:w-56 lg:w-96 lg:h-72 grow border-2 h-56 rounded-lg object-cover hover:scale-105 delay-75 transition-all'
+          src='https://www.anahuac.mx/mexico/sites/default/files/noticias/FRS_Educacion_ambiental.jpg'
+          alt='planeta saludable'
+        />
+
+        <img
+          className='w-7/12 sm:w-56 lg:w-96 lg:h-72 grow border-2 h-56 rounded-lg object-cover hover:scale-105 delay-75 transition-all'
+          src='https://todoingenierias.com/wp-content/uploads/educacion-ambiental-y-sostenibilidad.jpg'
+          alt='educación'
+        />
+      </article>
+
+      <footer className='flex p-8 mt-10 w-full bg-slate-50'>
         <p className='font-semibold'>
           © 2025 Educación Sustentable. Todos los derechos reservados.
         </p>
