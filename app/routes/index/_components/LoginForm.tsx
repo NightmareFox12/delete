@@ -18,7 +18,7 @@ import {
   FaSpinner,
 } from 'react-icons/fa6';
 import { useState } from 'react';
-import { API_URL, LOG_IN_KEY } from '~/utils/constants';
+import { API_URL, USER_ID_KEY } from '~/utils/constants';
 import { toast, Toaster } from 'sonner';
 
 type LoginFormProps = {
@@ -57,7 +57,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
 
       if (res.message !== undefined) toast.error(res.message);
       else {
-        localStorage.setItem(LOG_IN_KEY, props.email);
+        localStorage.setItem(USER_ID_KEY, props.email);
         navigate('/home');
       }
     } catch (err) {

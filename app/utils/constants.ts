@@ -1,2 +1,2 @@
 export const API_URL = 'http://localhost:3000';
-export const LOG_IN_KEY = "log_in"
+export const USER_ID_KEY = "userID"

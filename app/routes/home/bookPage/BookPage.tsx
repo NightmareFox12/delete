@@ -37,7 +37,7 @@ const BookPage = ({ books, setBooks }: BookPageProps) => {
   }, []);
 
   return (
-    <section className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 m-2 lg:mx-5'>
+    <section className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 m-2 lg:mx-5 mt-16'>
       {isLoadingBook ? (
         <div className='w-screen h-screen flex justify-center items-center'>
           <div className='flex flex-col items-center gap-4'>

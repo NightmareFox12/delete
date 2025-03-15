@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router';
 import { LoginForm } from './_components/LoginForm';
-import { LOG_IN_KEY } from '~/utils/constants';
+import { USER_ID_KEY } from '~/utils/constants';
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -26,7 +26,7 @@ export default function Index() {
 
   //effects
   useEffect(() => {
-    if (localStorage.getItem(LOG_IN_KEY) !== null) navigate('/home');
+    if (localStorage.getItem(USER_ID_KEY) !== null) navigate('/home');
   }, []);
 
   

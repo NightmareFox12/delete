@@ -5,12 +5,7 @@ import { useEffect, useState } from 'react';
 import { Label } from '@radix-ui/react-label';
 import { Link, useNavigate } from 'react-router';
 import { Button } from '~/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '~/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
 import { AnimatePresence, motion } from 'motion/react';
 import {
@@ -20,7 +15,7 @@ import {
   passwordSchema,
 } from '~/utils/schemas';
 import type { Route } from '../index/+types';
-import { API_URL, LOG_IN_KEY } from '~/utils/constants';
+import { API_URL, USER_ID_KEY } from '~/utils/constants';
 
 export function meta({}: Route.MetaArgs) {
   return [{ title: 'Registro' }];
@@ -65,8 +60,8 @@ const Register = () => {
       if (res.message !== undefined)
         toast.error(res.message, { richColors: true });
 
-      if (res.success !== undefined) {
-        localStorage.setItem(LOG_IN_KEY, email);
+      if (res.userID !== undefined) {
+        localStorage.setItem(USER_ID_KEY, res.userID.toString());
         navigate('/home');
       }
     } catch (err) {

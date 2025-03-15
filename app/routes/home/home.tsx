@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import BookPage from './bookPage/BookPage';
 import type { Book } from '~/types/book.entity';
-import { LOG_IN_KEY } from '~/utils/constants';
+import { USER_ID_KEY } from '~/utils/constants';
 import NewsPage from './newsPage/NewsPage';
 import type { News } from '~/types/news.entity';
 
@@ -23,7 +23,7 @@ const Home = () => {
 
   return (
     <main>
-      <header className='w-full h-14 bg-green-400'>
+      <header className='w-full h-14 bg-green-400 fixed top-0 z-10'>
         <nav className='h-full px-4 flex justify-between items-center list-none'>
           <div className='flex gap-3'>
             <Button
@@ -53,7 +53,7 @@ const Home = () => {
             <div
               className='flex gap-2 items-center'
               onClick={() => {
-                localStorage.removeItem(LOG_IN_KEY);
+                localStorage.removeItem(USER_ID_KEY);
                 navigate('/');
               }}
             >
