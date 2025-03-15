@@ -1,18 +1,12 @@
-import {
-  FaArrowRightFromBracket,
-  FaBook,
-  FaHouse,
-  FaNewspaper,
-  FaSpinner,
-} from 'react-icons/fa6';
+import { FaArrowRightFromBracket, FaBook, FaNewspaper } from 'react-icons/fa6';
 import type { Route } from '../index/+types';
 import { Button } from '~/components/ui/button';
 import { useNavigate } from 'react-router';
-import { useEffect, useState } from 'react';
-import { API_URL } from '~/utils/constants';
+import { useState } from 'react';
 import BookPage from './bookPage/BookPage';
 import { Newspaper } from 'lucide-react';
 import type { Book } from '~/types/book.entity';
+import { LOG_IN_KEY } from '~/utils/constants';
 
 export function meta({}: Route.MetaArgs) {
   return [{ title: 'Inicio' }];
@@ -32,7 +26,7 @@ const Home = () => {
           <div className='flex gap-3'>
             <Button
               variant='secondary'
-              className=''
+              className={`${currentPage === 0 && 'bg-accent/80'}`}
               onClick={() => setCurrentPage(0)}
             >
               <div className='flex gap-2 items-center'>
@@ -43,7 +37,7 @@ const Home = () => {
 
             <Button
               variant='secondary'
-              className=''
+              className={`${currentPage === 1 && 'bg-accent/80'}`}
               onClick={() => setCurrentPage(1)}
             >
               <div className='flex gap-2 items-center'>
@@ -56,7 +50,10 @@ const Home = () => {
           <Button variant='outline'>
             <div
               className='flex gap-2 items-center'
-              onClick={() => navigate('/')}
+              onClick={() => {
+                localStorage.removeItem(LOG_IN_KEY);
+                navigate('/');
+              }}
             >
               <FaArrowRightFromBracket />
               Cerrar sesion

@@ -1,10 +1,11 @@
 import type { Route } from './+types/index';
 import { Button } from '~/components/ui/button';
 import { FaUserPlus, FaArrowRightToBracket } from 'react-icons/fa6';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router';
-import { LoginForm } from './_components/loginForm';
+import { LoginForm } from './_components/LoginForm';
+import { LOG_IN_KEY } from '~/utils/constants';
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -20,12 +21,29 @@ export default function Index() {
   //states
   const [showLogin, setShowLogin] = useState<boolean>(false);
 
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+
+  //effects
+  useEffect(() => {
+    if (localStorage.getItem(LOG_IN_KEY) !== null) navigate('/home');
+  }, []);
+
+  
   return (
     <main
       className={`${showLogin && 'overflow-hidden'} flex flex-col items-center`}
     >
       <AnimatePresence>
-        {showLogin && <LoginForm setShowLogin={setShowLogin} />}
+        {showLogin && (
+          <LoginForm
+            setShowLogin={setShowLogin}
+            email={email}
+            password={password}
+            setEmail={setEmail}
+            setPassword={setPassword}
+          />
+        )}
       </AnimatePresence>
       <img
         className='h-96 object-cover w-full'
