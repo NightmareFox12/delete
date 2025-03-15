@@ -16,7 +16,7 @@ const BookPage = ({ books, setBooks }: BookPageProps) => {
   const getBooks = async () => {
     try {
       setIsLoadingBook(true);
-      const req = await fetch(`${API_URL}/book`, {
+      const req = await fetch(`${API_URL}/books`, {
         method: 'GET',
         headers: { 'content-type': 'application/json' },
       });

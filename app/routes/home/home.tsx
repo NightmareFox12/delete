@@ -4,9 +4,10 @@ import { Button } from '~/components/ui/button';
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import BookPage from './bookPage/BookPage';
-import { Newspaper } from 'lucide-react';
 import type { Book } from '~/types/book.entity';
 import { LOG_IN_KEY } from '~/utils/constants';
+import NewsPage from './newsPage/NewsPage';
+import type { News } from '~/types/news.entity';
 
 export function meta({}: Route.MetaArgs) {
   return [{ title: 'Inicio' }];
@@ -16,6 +17,7 @@ const Home = () => {
 
   //states
   const [books, setBooks] = useState<Array<Book>>(Array());
+  const [news, setNews] = useState<Array<News>>(Array());
 
   const [currentPage, setCurrentPage] = useState<number>(0);
 
@@ -63,7 +65,7 @@ const Home = () => {
       </header>
 
       {currentPage === 0 && <BookPage books={books} setBooks={setBooks} />}
-      {currentPage === 1 && <Newspaper />}
+      {currentPage === 1 && <NewsPage news={news} setNews={setNews} />}
     </main>
   );
 };

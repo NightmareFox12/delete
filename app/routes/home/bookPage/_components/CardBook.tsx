@@ -1,6 +1,7 @@
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -22,7 +23,17 @@ const CardBook = ({ x }: CardBookProps) => {
             className='w-full h-50 object-contain'
           />
           <CardTitle>{x.title}</CardTitle>
-          {/* <CardDescription>Juan description</CardDescription> */}
+          <CardDescription>
+            <span className='font-semibold text-black'>{x.author.split(',').length > 1 ? 'Autores' : 'Autor'}: {' '}</span>
+            {(() => {
+              const autores = x.author
+                .split(',')
+                .map((nombre) => nombre.trim());
+              return `${autores.slice(0, -1).join(', ')}${
+                autores.length > 1 ? ' y ' : ''
+              }${autores[autores.length - 1]}`;
+            })()}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <p>
@@ -30,9 +41,9 @@ const CardBook = ({ x }: CardBookProps) => {
             <span className='font-medium'>{x.firstPublishYear}</span>
           </p>
         </CardContent>
-        <CardFooter>
+        {/* <CardFooter>
           <p>Card Footer</p>
-        </CardFooter>
+        </CardFooter> */}
       </Card>
     </>
   );

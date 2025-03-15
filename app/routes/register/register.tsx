@@ -8,7 +8,6 @@ import { Button } from '~/components/ui/button';
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from '~/components/ui/card';
@@ -21,7 +20,7 @@ import {
   passwordSchema,
 } from '~/utils/schemas';
 import type { Route } from '../index/+types';
-import { API_URL } from '~/utils/constants';
+import { API_URL, LOG_IN_KEY } from '~/utils/constants';
 
 export function meta({}: Route.MetaArgs) {
   return [{ title: 'Registro' }];
@@ -67,7 +66,7 @@ const Register = () => {
         toast.error(res.message, { richColors: true });
 
       if (res.success !== undefined) {
-        localStorage.setItem('login', 'true');
+        localStorage.setItem(LOG_IN_KEY, email);
         navigate('/home');
       }
     } catch (err) {
