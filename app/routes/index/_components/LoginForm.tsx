@@ -57,7 +57,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
 
       if (res.message !== undefined) toast.error(res.message);
       else {
-        localStorage.setItem(USER_ID_KEY, props.email);
+        localStorage.setItem(USER_ID_KEY, res.userID.toString());
         navigate('/home');
       }
     } catch (err) {

@@ -1,5 +1,7 @@
-import { useEffect } from 'react';
-import { FaBookOpen, FaEye, FaHeart } from 'react-icons/fa6';
+import { useEffect, useState } from 'react';
+import { FaBookOpen, FaHeart, FaRegPaperPlane, FaRegThumbsUp } from 'react-icons/fa6';
+import { AnimatePresence, motion } from 'motion/react';
+
 import { Button } from '~/components/ui/button';
 import {
   Card,
@@ -10,28 +12,66 @@ import {
   CardTitle,
 } from '~/components/ui/card';
 import type { Book } from '~/types/book.entity';
-import { API_URL } from '~/utils/constants';
+import { API_URL, USER_ID_KEY } from '~/utils/constants';
 
 type CardBookProps = {
   x: Book;
 };
 
 const CardBook = ({ x }: CardBookProps) => {
+  //states
+  const [userLiked, setUserLiked] = useState<boolean>(false);
+  const [totalLikes, setTotalLikes] = useState<number>(0);
+
   //functions
   const getBookLikes = async () => {
     try {
-      const req = await fetch(`${API_URL}/book-like?book_key=${x.key}`);
+      const userID = localStorage.getItem(USER_ID_KEY);
+
+      const req = await fetch(
+        `${API_URL}/book-like?book_key=${x.key}&userID=${userID}`
+      );
 
       const res = await req.json();
 
-      console.log(res)
+      if (res.message === undefined) {
+        setUserLiked(res.userLiked);
+        setTotalLikes(res.likes);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleLike = async () => {
+    try {
+      const userID = localStorage.getItem(USER_ID_KEY);
+
+      const req = await fetch(`${API_URL}/book-like`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          book_key: x.key,
+          userID,
+        }),
+      });
+
+      const res = await req.json();
+      if (res.success !== undefined) {
+        setTotalLikes(userLiked ? totalLikes - 1 : totalLikes + 1);
+        setUserLiked(!userLiked);
+      }
     } catch (err) {
       console.log(err);
     }
   };
 
   //effects
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getBookLikes();
+  }, []);
 
   return (
     <>
@@ -65,8 +105,28 @@ const CardBook = ({ x }: CardBookProps) => {
           </p>
         </CardContent>
         <CardFooter className='flex gap-2 justify-center items-center'>
-          <Button className={`bg-pink-50 rounded-full hover:bg-red-200`}>
-            <FaHeart className='text-red-500' />
+          <AnimatePresence>
+            {totalLikes > 0 && (
+              <motion.span
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0 }}
+                className='text-[12px] font-semibold'
+              >
+                {totalLikes}
+              </motion.span>
+            )}
+          </AnimatePresence>
+
+          <Button
+            onClick={handleLike}
+            className={`${
+              userLiked
+                ? 'bg-red-400 hover:bg-red-300'
+                : 'bg-pink-50 hover:bg-red-100'
+            } rounded-full hover:scale-105 delay-75 transition-all`}
+          >
+            <FaHeart className={`${userLiked ? 'text-white' : 'text-black'}`} />
           </Button>
           {x.bookUrl !== undefined && (
             <a href={x.bookUrl} target='_blank' rel='noopener noreferrer'>
@@ -78,7 +138,12 @@ const CardBook = ({ x }: CardBookProps) => {
               </Button>
             </a>
           )}
-          <Button>Recomendar</Button>
+          <Button variant={'outline'} className='bg-green-100 hover:bg-green-200'>
+            <div className='flex items-center gap-2'>
+              <FaRegPaperPlane />
+              Recomendar
+            </div>
+          </Button>
         </CardFooter>
       </Card>
     </>
