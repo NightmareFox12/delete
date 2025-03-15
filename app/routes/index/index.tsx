@@ -2,9 +2,9 @@ import type { Route } from './+types/index';
 import { Button } from '~/components/ui/button';
 import { FaUserPlus, FaArrowRightToBracket } from 'react-icons/fa6';
 import { useState } from 'react';
-import { LoginForm } from './_components/loginForm';
 import { AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router';
+import { LoginForm } from './_components/loginForm';
 
 export function meta({}: Route.MetaArgs) {
   return [

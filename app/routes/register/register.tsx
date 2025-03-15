@@ -1,11 +1,9 @@
-import { z } from 'zod';
 import { Toaster, toast } from 'sonner';
 
-import type { Route } from './+types';
-import { FaArrowLeft, FaEye, FaEyeSlash } from 'react-icons/fa6';
+import { FaArrowLeft, FaEye, FaEyeSlash, FaSpinner } from 'react-icons/fa6';
 import { useEffect, useState } from 'react';
 import { Label } from '@radix-ui/react-label';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { Button } from '~/components/ui/button';
 import {
   Card,
@@ -22,12 +20,16 @@ import {
   nameSchema,
   passwordSchema,
 } from '~/utils/schemas';
+import type { Route } from '../index/+types';
+import { API_URL } from '~/utils/constants';
 
 export function meta({}: Route.MetaArgs) {
   return [{ title: 'Registro' }];
 }
 
 const Register = () => {
+  const navigate = useNavigate();
+
   //states
   const [name, setName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
@@ -40,12 +42,13 @@ const Register = () => {
   const [passwordError, setPasswordError] = useState<string>('');
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [registerLoader, setRegisterLoader] = useState<boolean>(false);
 
   //functions
   const handleCreateUser = async () => {
     try {
-      // nameSchema
-      const req = await fetch('http://localhost:3000/create-user', {
+      setRegisterLoader(true);
+      const req = await fetch(`${API_URL}/create-user`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -62,8 +65,15 @@ const Register = () => {
 
       if (res.message !== undefined)
         toast.error(res.message, { richColors: true });
+
+      if (res.success !== undefined) {
+        localStorage.setItem('login', 'true');
+        navigate('/home');
+      }
     } catch (err) {
       console.log(err);
+    } finally {
+      setRegisterLoader(false);
     }
   };
 
@@ -168,7 +178,6 @@ const Register = () => {
                     required
                     autoComplete='off'
                     autoCapitalize='words'
-
                   />
                   <AnimatePresence>
                     {lastName.length > 0 && lastNameError !== '' && (
@@ -262,10 +271,14 @@ const Register = () => {
                   nameError !== '' ||
                   lastNameError !== '' ||
                   emailError !== '' ||
-                  passwordError !== ''
+                  passwordError !== '' ||
+                  registerLoader
                 }
               >
-                Registrarse
+                <div className='flex gap-2 items-center'>
+                  {registerLoader && <FaSpinner className='animate-spin' />}
+                  Registrarse
+                </div>
               </Button>
             </div>
           </CardContent>
