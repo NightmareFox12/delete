@@ -13,30 +13,6 @@ const NewsPage = ({ news, setNews }: NewsPageProps) => {
   //states
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  //functions
-  const getNews = async () => {
-    try {
-      setIsLoading(true);
-      const req = await fetch(`${API_URL}/news`);
-
-      const res: { data?: News[]; err?: any } = await req.json();
-
-      if (res.err !== undefined) console.log(res.err);
-      else setNews(res.data!!);
-
-      //TODO: FALTA PONER EL LOADER
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  //effects
-  useEffect(() => {
-    getNews();
-  }, []);
-
   return (
     <section className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:p-4 p-2 mt-15'>
       {isLoading ? (

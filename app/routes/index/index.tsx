@@ -31,7 +31,9 @@ export default function Index() {
 
   return (
     <main
-      className={`${showLogin && 'overflow-hidden'} flex flex-col items-center overflow-x-hidden`}
+      className={`${
+        showLogin && 'overflow-hidden'
+      } flex flex-col items-center overflow-x-hidden`}
     >
       <AnimatePresence>
         {showLogin && (
@@ -92,10 +94,10 @@ export default function Index() {
 
       {/* Images */}
       <motion.article
-        initial={{ opacity: 0,x: -100 }}
-        animate={{ opacity: 1, x: 1}}
+        initial={{ opacity: 0, x: -100 }}
+        animate={{ opacity: 1, x: 1 }}
         transition={{
-            duration: 0.5,
+          duration: 0.5,
         }}
         className='w-full flex gap-2 sm:gap-6 my-10 px-20'
       >
@@ -106,13 +108,14 @@ export default function Index() {
             </h3>
             <p className='lg indent-2 text-justify'>
               Explora algunos de los libros esenciales que tenemos disponibles,
-              como <span className='font-semibold'>Sostenibilidad Local</span>,
+              como <span className='font-semibold'>Sostenibilidad Local</span>
+              ,&nbsp;
               <span className='font-semibold'>
                 La Sostenibilidad del Desarrollo
               </span>
-              ,
+              ,&nbsp;
               <span className='font-semibold'>
-                La Sostenibilidad y el Turismo
+                La Sostenibilidad y el Turismo&nbsp;
               </span>
               entre otros. Estas lecturas ofrecen perspectivas valiosas y
               prácticas sobre el desarrollo humano y la sostenibilidad,
