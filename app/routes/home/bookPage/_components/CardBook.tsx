@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FaBookOpen, FaHeart, FaRegPaperPlane, FaRegThumbsUp } from 'react-icons/fa6';
+import { FaBookOpen, FaHeart, FaRegPaperPlane } from 'react-icons/fa6';
 import { AnimatePresence, motion } from 'motion/react';
 
 import { Button } from '~/components/ui/button';

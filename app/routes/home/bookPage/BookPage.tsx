@@ -3,6 +3,7 @@ import { FaSpinner } from 'react-icons/fa6';
 import type { Book } from '~/types/book.entity';
 import { API_URL } from '~/utils/constants';
 import CardBook from './_components/CardBook';
+import { toast, Toaster } from 'sonner';
 
 type BookPageProps = {
   books: Book[];
@@ -21,9 +22,10 @@ const BookPage = ({ books, setBooks }: BookPageProps) => {
         headers: { 'content-type': 'application/json' },
       });
 
-      const res: Array<Book> = await req.json();
+      const res: { err?: any; books: Array<Book> } = await req.json();
 
-      setBooks(res);
+      if (res.err !== undefined) toast.error(res.err);
+      else setBooks(res.books);
     } catch (err) {
       console.log(err);
     } finally {
@@ -38,7 +40,12 @@ const BookPage = ({ books, setBooks }: BookPageProps) => {
 
   return (
     <>
-      {books.length > 0 && <h2 className='mt-16 text-center text-2xl font-semibold'>Libros de sostenibilidad</h2>}
+      <Toaster richColors={true} />
+      {books.length > 0 && (
+        <h2 className='mt-16 text-center text-2xl font-semibold'>
+          Libros de sostenibilidad
+        </h2>
+      )}
       <section className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 m-2 lg:mx-5'>
         {isLoadingBook ? (
           <div className='w-screen h-screen flex justify-center items-center'>
