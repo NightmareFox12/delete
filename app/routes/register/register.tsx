@@ -17,7 +17,7 @@ import {
 import type { Route } from '../index/+types';
 import { API_URL, USER_ID_KEY } from '~/utils/constants';
 
-export function meta({}: Route.MetaArgs) {
+export function meta({ }: Route.MetaArgs) {
   return [{ title: 'Registro' }];
 }
 
@@ -37,12 +37,13 @@ const Register = () => {
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [registerLoader, setRegisterLoader] = useState<boolean>(false);
+  const [isEmailExist, setIsEmailExist] = useState<boolean>(false);
 
   //functions
   const handleCreateUser = async () => {
     try {
       setRegisterLoader(true);
-      const req = await fetch(`${API_URL}/create-user`, {
+      const req = await fetch(`${API_URL}/user`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -57,8 +58,14 @@ const Register = () => {
 
       const res = await req.json();
 
-      if (res.message !== undefined)
+      if (res.message !== undefined) {
         toast.error(res.message, { richColors: true });
+
+        if (res.message.includes('El correo electrónico ya existe')) {
+          setIsEmailExist(true);
+        }
+      }
+
 
       if (res.userID !== undefined) {
         localStorage.setItem(USER_ID_KEY, res.userID.toString());
@@ -275,6 +282,21 @@ const Register = () => {
                 </div>
               </Button>
             </div>
+            <AnimatePresence>
+              {isEmailExist && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className='text-center mt-5'
+                >
+                  ¿Ya tienes una cuenta?{' '}
+                  <Link to='/login' className='text-green-800 hover:text-green-900 underline'>
+                    Iniciar sesión
+                  </Link>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </CardContent>
         </Card>
       </main>

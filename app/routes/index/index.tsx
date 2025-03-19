@@ -83,7 +83,8 @@ export default function Index() {
 
         <Button
           className='px-8 h-12 md:px-16 lg:px-22 bg-green-800 hover:bg-green-900 hover:scale-105 delay-75 transition-all'
-          onClick={() => setShowLogin(true)}
+          onClick={() => navigate('/login')}
+
         >
           <div className='w-22 flex gap-2 items-center justify-center'>
             <FaArrowRightToBracket />
@@ -148,7 +149,7 @@ export default function Index() {
 
       <footer className='flex p-8 mt-10 w-full bg-slate-50'>
         <p className='font-semibold'>
-          © 2025 Educación Sustentable. Todos los derechos reservados.
+          © 2025 Educación Sustentable. Todos los derechos reservados. 
         </p>
       </footer>
     </main>
