@@ -1,11 +1,11 @@
 import type { Route } from './+types/index';
 import { Button } from '~/components/ui/button';
 import { FaUserPlus, FaArrowRightToBracket } from 'react-icons/fa6';
-import { useEffect, useState } from 'react';
-import { AnimatePresence, motion } from 'motion/react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { LoginForm } from './_components/LoginForm';
 import { USER_ID_KEY } from '~/utils/constants';
+import { motion } from 'motion/react'
+
 
 export function meta({ }: Route.MetaArgs) {
   return [
@@ -18,33 +18,13 @@ export default function Index() {
   //navigation
   const navigate = useNavigate();
 
-  //states
-  const [showLogin, setShowLogin] = useState<boolean>(false);
-
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-
   //effects
   useEffect(() => {
     if (localStorage.getItem(USER_ID_KEY) !== null) navigate('/home');
   }, []);
 
   return (
-    <main
-      className={`${showLogin && 'overflow-hidden'
-        } flex flex-col items-center overflow-x-hidden`}
-    >
-      <AnimatePresence>
-        {showLogin && (
-          <LoginForm
-            setShowLogin={setShowLogin}
-            email={email}
-            password={password}
-            setEmail={setEmail}
-            setPassword={setPassword}
-          />
-        )}
-      </AnimatePresence>
+    <main className='flex flex-col items-center overflow-x-hidden'>
       <img
         className='h-96 object-cover w-full'
         src='https://cdn0.ecologiaverde.com/es/posts/5/7/4/que_es_la_educacion_ambiental_concepto_y_objetivos_1475_600.jpg'

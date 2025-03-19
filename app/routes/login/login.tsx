@@ -29,7 +29,7 @@ const Login = () => {
     try {
       setIsLoading(true);
 
-      const req = await fetch(`${API_URL}/log-in`, {
+      const req = await fetch(`${API_URL}/user/log-in`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -39,6 +39,7 @@ const Login = () => {
           password,
         }),
       });
+
 
       const res = await req.json();
 
@@ -73,20 +74,22 @@ const Login = () => {
             <CardDescription className='text-center'>Ingresa tu correo y contraseña</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className='flex flex-col gap-6'>
-              <div className='grid gap-2'>
-                <Label htmlFor='email'>Correo Electrónico</Label>
-                <Input
-                  id='email'
-                  type='email'
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder='jose@example.com'
-                  required
-                />
-              </div>
-              <div className='grid gap-2'>
-                {/* <div className='flex items-center'>
+            <form >
+              <div className='flex flex-col gap-6'>
+                <div className='grid gap-2'>
+                  <Label htmlFor='email'>Correo Electrónico</Label>
+                  <Input
+                    id='email'
+                    type='email'
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder='jose@example.com'
+                    autoComplete='username'
+                    required
+                  />
+                </div>
+                <div className='grid gap-2'>
+                  {/* <div className='flex items-center'>
                   <Label htmlFor='password'>Contraseña</Label>
                   <a
                     href='#'
@@ -96,43 +99,54 @@ const Login = () => {
                   </a>
                 </div> */}
 
-                <div className='flex w-full items-center'>
-                  <Input
-                    id='password'
-                    placeholder='********'
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    type={showPassword ? 'text' : 'password'}
-                    required
-                  />
-                  <Button
-                    variant='link'
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <FaEyeSlash /> : <FaEye />}
-                  </Button>
+                  <Label htmlFor='password'>Contraseña</Label>
+                  <div className='flex w-full items-center'>
+                    <Input
+                      id='password'
+                      placeholder='********'
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      type={showPassword ? 'text' : 'password'}
+                      autoComplete='current-password'
+                      required
+                    />
+                    <Button
+                      type='button'
+                      variant='link'
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowPassword(!showPassword);
+                      }}
+                    >
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </Button>
+                  </div>
                 </div>
+                <Button
+                  type='submit'
+                  className='w-full bg-green-800 hover:bg-green-900'
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleLogin();
+                  }}
+                  disabled={
+                    email.length < 2 ||
+                    password.length < 2 ||
+                    isLoading
+                  }
+                >
+                  <div className='flex gap-2 items-center select-none'>
+                    {isLoading ? (
+                      <FaSpinner className='animate-spin' />
+                    ) : (
+                      <FaArrowRightToBracket />
+                    )}
+                    Iniciar Sesión
+                  </div>
+                </Button>
               </div>
-              <Button
-                type='submit'
-                className='w-full bg-green-800 hover:bg-green-900'
-                onClick={() => handleLogin()}
-                disabled={
-                  email.length < 2 ||
-                  password.length < 2 ||
-                  isLoading
-                }
-              >
-                <div className='flex gap-2 items-center'>
-                  {isLoading ? (
-                    <FaSpinner className='animate-spin' />
-                  ) : (
-                    <FaArrowRightToBracket />
-                  )}
-                  Iniciar Sesión
-                </div>
-              </Button>
-            </div>
+            </form>
+
             <div className='mt-4 text-sm flex gap-1 items-center justify-center'>
               <p>¿No tienes una cuenta?</p>
               <Link to='/register' className='text-green-800 hover:text-green-900 underline'>

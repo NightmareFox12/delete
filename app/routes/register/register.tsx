@@ -132,163 +132,170 @@ const Register = () => {
             {/* <CardDescription>Ingresa tu correo y contraseña</CardDescription> */}
           </CardHeader>
           <CardContent>
-            <div className='flex flex-col gap-6'>
-              {/* Name */}
-              <div className='grid gap-2'>
-                <Label htmlFor='name'>
-                  Nombre <span className='text-red-400 font-bold'>*</span>
-                </Label>
-                <div>
-                  <Input
-                    id='name'
-                    type='text'
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder='Jose'
-                    required
-                    autoComplete='off'
-                    autoCapitalize='words'
-                  />
-                  <AnimatePresence>
-                    {name.length > 0 && nameError !== '' && (
-                      <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className='font-bold text-sm text-red-500 ps-2 pt-1'
-                      >
-                        {nameError}
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </div>
-
-              {/* LastName  */}
-              <div className='grid gap-2'>
-                <Label htmlFor='lastName'>
-                  Apellido <span className='text-red-400 font-bold'>*</span>
-                </Label>
-                <div>
-                  <Input
-                    id='lastName'
-                    type='text'
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    placeholder='Rebolledo'
-                    required
-                    autoComplete='off'
-                    autoCapitalize='words'
-                  />
-                  <AnimatePresence>
-                    {lastName.length > 0 && lastNameError !== '' && (
-                      <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className='font-bold text-sm text-red-500 ps-2 pt-1'
-                      >
-                        {lastNameError}
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </div>
-
-              {/* Email */}
-              <div className='grid gap-2'>
-                <Label htmlFor='email'>
-                  Correo Electrónico
-                  <span className='text-red-400 font-bold'>*</span>
-                </Label>
-                <div>
-                  <Input
-                    id='email'
-                    type='email'
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder='jose@example.com'
-                    required
-                  />
-                  <AnimatePresence>
-                    {email.length > 0 && emailError !== '' && (
-                      <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className='font-bold text-sm text-red-500 ps-2 pt-1'
-                      >
-                        {emailError}
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </div>
-
-              {/* Password  */}
-              <div className='grid gap-2'>
-                <div className='flex items-center'>
-                  <Label htmlFor='password'>
-                    Contraseña <span className='text-red-400 font-bold'>*</span>
+            <form>
+              <div className='flex flex-col gap-6'>
+                {/* Name */}
+                <div className='grid gap-2'>
+                  <Label htmlFor='name'>
+                    Nombre <span className='text-red-400 font-bold'>*</span>
                   </Label>
-                </div>
-                <div>
-                  <div className='flex'>
+                  <div>
                     <Input
-                      id='password'
-                      type={showPassword ? 'text' : 'password'}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder='********'
+                      id='name'
+                      type='text'
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder='Jose'
+                      required
+                      autoComplete='off'
+                      autoCapitalize='words'
+                    />
+                    <AnimatePresence>
+                      {name.length > 0 && nameError !== '' && (
+                        <motion.p
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className='font-bold text-sm text-red-500 ps-2 pt-1'
+                        >
+                          {nameError}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+
+                {/* LastName  */}
+                <div className='grid gap-2'>
+                  <Label htmlFor='lastName'>
+                    Apellido <span className='text-red-400 font-bold'>*</span>
+                  </Label>
+                  <div>
+                    <Input
+                      id='lastName'
+                      type='text'
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      placeholder='Rebolledo'
+                      required
+                      autoComplete='off'
+                      autoCapitalize='words'
+                    />
+                    <AnimatePresence>
+                      {lastName.length > 0 && lastNameError !== '' && (
+                        <motion.p
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className='font-bold text-sm text-red-500 ps-2 pt-1'
+                        >
+                          {lastNameError}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+
+                {/* Email */}
+                <div className='grid gap-2'>
+                  <Label htmlFor='email'>
+                    Correo Electrónico
+                    <span className='text-red-400 font-bold'>*</span>
+                  </Label>
+                  <div>
+                    <Input
+                      id='email'
+                      type='email'
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder='jose@example.com'
+                      autoComplete='username'
                       required
                     />
-                    <Button
-                      variant='ghost'
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? <FaEyeSlash /> : <FaEye />}
-                    </Button>
+                    <AnimatePresence>
+                      {email.length > 0 && emailError !== '' && (
+                        <motion.p
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className='font-bold text-sm text-red-500 ps-2 pt-1'
+                        >
+                          {emailError}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
                   </div>
+                </div>
 
-                  <AnimatePresence>
-                    {password.length > 0 && passwordError !== '' && (
-                      <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className='font-bold text-sm text-red-500 ps-2 pt-1'
+                {/* Password  */}
+                <div className='grid gap-2'>
+                  <div className='flex items-center'>
+                    <Label htmlFor='password'>
+                      Contraseña <span className='text-red-400 font-bold'>*</span>
+                    </Label>
+                  </div>
+                  <div>
+                    <div className='flex'>
+                      <Input
+                        id='password'
+                        type={showPassword ? 'text' : 'password'}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder='********'
+                        autoComplete='current-password'
+                        required
+
+                      />
+                      <Button
+                        type='button'
+                        variant='ghost'
+                        onClick={() => setShowPassword(!showPassword)}
                       >
-                        {passwordError}
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
+                        {showPassword ? <FaEyeSlash /> : <FaEye />}
+                      </Button>
+                    </div>
+
+                    <AnimatePresence>
+                      {password.length > 0 && passwordError !== '' && (
+                        <motion.p
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className='font-bold text-sm text-red-500 ps-2 pt-1'
+                        >
+                          {passwordError}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </div>
+
+                <Button
+                  type='submit'
+                  className='w-full mt-5 bg-green-800 hover:bg-green-900 delay-75 transition-all'
+                  onClick={handleCreateUser}
+                  disabled={
+                    nameError !== '' ||
+                    lastNameError !== '' ||
+                    emailError !== '' ||
+                    passwordError !== '' ||
+                    registerLoader
+                  }
+                >
+                  <div className='flex gap-2 items-center'>
+                    {registerLoader ? (<>
+                      <FaSpinner className='animate-spin' />
+                      Cargando...
+                    </>) :
+                      <>
+                        <FaUserPlus />
+                        Registrarse
+                      </>}
+
+                  </div>
+                </Button>
               </div>
-
-              <Button
-                className='w-full mt-5 bg-green-800 hover:bg-green-900 delay-75 transition-all'
-                onClick={handleCreateUser}
-                disabled={
-                  nameError !== '' ||
-                  lastNameError !== '' ||
-                  emailError !== '' ||
-                  passwordError !== '' ||
-                  registerLoader
-                }
-              >
-                <div className='flex gap-2 items-center'>
-                  {registerLoader ? (<>
-                    <FaSpinner className='animate-spin' />
-                    Cargando...
-                  </>) :
-                    <>
-                      <FaUserPlus />
-                      Registrarse
-                    </>}
-
-                </div>
-              </Button>
-            </div>
+            </form>
             <AnimatePresence>
               {isEmailExist && (
                 <motion.div
