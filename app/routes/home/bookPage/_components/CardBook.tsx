@@ -29,7 +29,7 @@ const CardBook = ({ x }: CardBookProps) => {
       const userID = localStorage.getItem(USER_ID_KEY);
 
       const req = await fetch(
-        `${API_URL}/book-like?book_key=${x.key}&userID=${userID}`
+        `${API_URL}/books/like?book_key=${x.key}&userID=${userID}`
       );
 
       const res = await req.json();
@@ -47,7 +47,7 @@ const CardBook = ({ x }: CardBookProps) => {
     try {
       const userID = localStorage.getItem(USER_ID_KEY);
 
-      const req = await fetch(`${API_URL}/book-like`, {
+      const req = await fetch(`${API_URL}/books/like`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -92,9 +92,8 @@ const CardBook = ({ x }: CardBookProps) => {
                 .split(',')
                 .slice(0, 6)
                 .map((name) => name.trim());
-              return `${autores.slice(0, -1).join(', ')}${
-                autores.length > 1 ? ' y ' : ''
-              }${autores[autores.length - 1]}`;
+              return `${autores.slice(0, -1).join(', ')}${autores.length > 1 ? ' y ' : ''
+                }${autores[autores.length - 1]}`;
             })()}
           </CardDescription>
         </CardHeader>
@@ -120,11 +119,10 @@ const CardBook = ({ x }: CardBookProps) => {
 
           <Button
             onClick={handleLike}
-            className={`${
-              userLiked
+            className={`${userLiked
                 ? 'bg-red-400 hover:bg-red-300'
                 : 'bg-pink-50 hover:bg-red-100'
-            } rounded-full hover:scale-105 delay-75 transition-all`}
+              } rounded-full hover:scale-105 delay-75 transition-all`}
           >
             <FaHeart className={`${userLiked ? 'text-white' : 'text-black'}`} />
           </Button>
@@ -138,12 +136,12 @@ const CardBook = ({ x }: CardBookProps) => {
               </Button>
             </a>
           )}
-          <Button variant={'outline'} className='bg-green-100 hover:bg-green-200'>
+          {/* <Button variant={'outline'} className='bg-green-100 hover:bg-green-200'>
             <div className='flex items-center gap-2'>
               <FaRegPaperPlane />
               Recomendar
             </div>
-          </Button>
+          </Button> */}
         </CardFooter>
       </Card>
     </>

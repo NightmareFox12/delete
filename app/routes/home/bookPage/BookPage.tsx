@@ -12,7 +12,32 @@ type BookPageProps = {
 const BookPage = ({ books, setBooks }: BookPageProps) => {
   //states
   const [isLoadingBook, setIsLoadingBook] = useState<boolean>(false);
-  
+
+  //functions
+  const getBooks = async () => {
+    try {
+      setIsLoadingBook(true);
+      const req = await fetch(`${API_URL}/books`, {
+        method: 'GET',
+        headers: { 'content-type': 'application/json' },
+      });
+
+      const res: { err?: any; books: Array<Book> } = await req.json();
+
+      if (res.err !== undefined) toast.error(res.err);
+      else setBooks(res.books);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoadingBook(false);
+    }
+  };
+
+  useEffect(() => {
+    if (books.length > 0) return;
+    getBooks();
+  }, []);
+
   return (
     <>
       <Toaster richColors={true} />
