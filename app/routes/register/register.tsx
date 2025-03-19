@@ -1,6 +1,6 @@
 import { Toaster, toast } from 'sonner';
 
-import { FaArrowLeft, FaEye, FaEyeSlash, FaSpinner } from 'react-icons/fa6';
+import { FaArrowLeft, FaEye, FaEyeSlash, FaSpinner, FaUser, FaUserPlus } from 'react-icons/fa6';
 import { useEffect, useState } from 'react';
 import { Label } from '@radix-ui/react-label';
 import { Link, useNavigate } from 'react-router';
@@ -126,7 +126,7 @@ const Register = () => {
           </Link>
         </div>
 
-        <Card className='w-96 sm:w-7/12 md:w-6/12 lg:w-6/12 z-20 outline-1 shadow-xl p-5'>
+        <Card className='w-96 sm:w-7/12 md:w-6/12 lg:w-6/12 z-20 outline-1 shadow-xl p-5 mt-10'>
           <CardHeader>
             <CardTitle className='text-2xl text-center'>Registro</CardTitle>
             {/* <CardDescription>Ingresa tu correo y contraseña</CardDescription> */}
@@ -277,8 +277,15 @@ const Register = () => {
                 }
               >
                 <div className='flex gap-2 items-center'>
-                  {registerLoader && <FaSpinner className='animate-spin' />}
-                  Registrarse
+                  {registerLoader ? (<>
+                    <FaSpinner className='animate-spin' />
+                    Cargando...
+                  </>) :
+                    <>
+                      <FaUserPlus />
+                      Registrarse
+                    </>}
+
                 </div>
               </Button>
             </div>

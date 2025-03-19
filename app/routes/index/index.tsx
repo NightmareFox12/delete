@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router';
 import { LoginForm } from './_components/LoginForm';
 import { USER_ID_KEY } from '~/utils/constants';
 
-export function meta({}: Route.MetaArgs) {
+export function meta({ }: Route.MetaArgs) {
   return [
     { title: 'Educación sustentable' },
     { name: 'description', content: 'Educación sustentable' },
@@ -31,9 +31,8 @@ export default function Index() {
 
   return (
     <main
-      className={`${
-        showLogin && 'overflow-hidden'
-      } flex flex-col items-center overflow-x-hidden`}
+      className={`${showLogin && 'overflow-hidden'
+        } flex flex-col items-center overflow-x-hidden`}
     >
       <AnimatePresence>
         {showLogin && (
@@ -52,9 +51,9 @@ export default function Index() {
         alt='educacion sustentable'
       />
 
-      <h1 className='text-4xl font-bold my-4'>Educación sustentable</h1>
+      <h1 className='text-3xl sm:text-4xl font-bold px-2 my-4'>Educación sustentable</h1>
 
-      <p className='px-20 lg:px-40 text-justify font-medium'>
+      <p className='px-5 sm:px-10 lg:px-40 text-justify font-medium'>
         La educación sustentable no solo busca transmitir conocimientos, sino
         también fomentar un cambio profundo en nuestra manera de percibir y
         actuar en el mundo. A través de la sensibilización, podemos inspirar a
@@ -66,7 +65,7 @@ export default function Index() {
       </p>
 
       {/* Buttons */}
-      <h2 className='text-center text-lg font-semibold mt-10 mb-3 lg:w-5/12'>
+      <h2 className='px-2 sm:px-10 lg:px-20 text-center text-lg font-semibold mt-10 mb-3'>
         Regístrate ahora y accede a contenido exclusivo sobre desarrollo humano
         y sostenibilidad. Inspírate, aprende y transforma tu mundo
       </h2>
@@ -100,14 +99,14 @@ export default function Index() {
         transition={{
           duration: 0.5,
         }}
-        className='w-full flex gap-2 sm:gap-6 my-10 px-20'
+        className='w-full flex flex-col lg:flex-row justify-center items-center gap-2 sm:gap-6 my-10 px-5 md:px-10'
       >
-        <div className='flex-1 flex items-start'>
-          <div className='flex flex-col gap-4 lg:pe-32'>
-            <h3 className='text-xl font-semibold'>
+        <div className='flex-1 flex justify-center items-center'>
+          <div className='flex flex-col gap-4'>
+            <h3 className='text-xl font-semibold text-center'>
               Lecturas que Inspiran Sostenibilidad
             </h3>
-            <p className='lg indent-2 text-justify'>
+            <p className='lg indent-2 text-justify sm:px-10'>
               Explora algunos de los libros esenciales que tenemos disponibles,
               como <span className='font-semibold'>Sostenibilidad Local</span>
               ,&nbsp;
@@ -125,21 +124,22 @@ export default function Index() {
             </p>
           </div>
         </div>
-        <div className='flex flex-1'>
+
+        <div className='flex flex-1 gap-4 sm:gap-0 lg:gap-5 overflow-x-scroll overflow-y-hidden sm:overflow-hidden lg:overflow-x-auto'>
           <img
-            className='w-7/12 sm:w-56 lg:w-96 lg:h-72 h-56 rounded-lg object-contain hover:scale-105 delay-75 transition-all'
+            className='w-7/12 sm:w-56 lg:w-96 lg:h-72 h-56 rounded-lg object-contain'
             src='https://ia800502.us.archive.org/view_archive.php?archive=/31/items/m_covers_0013/m_covers_0013_51.zip&file=0013519133-M.jpg'
             alt='planeta saludable'
             draggable={false}
           />
           <img
-            className='w-7/12 sm:w-56 lg:w-96 lg:h-72  h-56 rounded-lg object-contain hover:scale-105 delay-75 transition-all'
+            className='w-7/12 sm:w-56 lg:w-96 lg:h-72  h-56 rounded-lg object-contain'
             src='https://covers.openlibrary.org/b/olid/OL19387708M-M.jpg'
             alt='planeta saludable'
             draggable={false}
           />
           <img
-            className='w-7/12 sm:w-56 lg:w-96 lg:h-72  h-56 rounded-lg object-contain hover:scale-105 delay-75 transition-all'
+            className='w-7/12 sm:w-56 lg:w-96 lg:h-72  h-56 rounded-lg object-contain'
             src='https://ia800502.us.archive.org/view_archive.php?archive=/31/items/m_covers_0013/m_covers_0013_55.zip&file=0013555485-M.jpg'
             alt='planeta saludable'
             draggable={false}
@@ -147,9 +147,9 @@ export default function Index() {
         </div>
       </motion.article>
 
-      <footer className='flex p-8 mt-10 w-full bg-slate-50'>
+      <footer className='flex p-2 lg:p-8 mt-10 w-full bg-slate-50 justify-center items-center'>
         <p className='font-semibold'>
-          © 2025 Educación Sustentable. Todos los derechos reservados. 
+          © 2025 Educación Sustentable. Todos los derechos reservados.
         </p>
       </footer>
     </main>

@@ -69,8 +69,8 @@ const Login = () => {
       <section className="w-full mt-22 flex justify-center">
         <Card className='w-96 sm:w-7/12 md:w-6/12 lg:w-6/12'>
           <CardHeader>
-            <CardTitle className='text-2xl'>Iniciar Sesión</CardTitle>
-            <CardDescription>Ingresa tu correo y contraseña</CardDescription>
+            <CardTitle className='text-2xl text-center'>Iniciar Sesión</CardTitle>
+            <CardDescription className='text-center'>Ingresa tu correo y contraseña</CardDescription>
           </CardHeader>
           <CardContent>
             <div className='flex flex-col gap-6'>
