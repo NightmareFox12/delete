@@ -1,39 +1,45 @@
-import { Toaster, toast } from 'sonner';
+import { Toaster, toast } from "sonner";
 
-import { FaArrowLeft, FaEye, FaEyeSlash, FaSpinner, FaUser, FaUserPlus } from 'react-icons/fa6';
-import { useEffect, useState } from 'react';
-import { Label } from '@radix-ui/react-label';
-import { Link, useNavigate } from 'react-router';
-import { Button } from '~/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
-import { Input } from '~/components/ui/input';
-import { AnimatePresence, motion } from 'motion/react';
+import {
+  FaArrowLeft,
+  FaEye,
+  FaEyeSlash,
+  FaSpinner,
+  FaUserPlus,
+} from "react-icons/fa6";
+import { useEffect, useState } from "react";
+import { Label } from "@radix-ui/react-label";
+import { Link, useNavigate } from "react-router";
+import { Button } from "~/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { Input } from "~/components/ui/input";
+import { AnimatePresence, motion } from "motion/react";
 import {
   emailSchema,
   lastNameSchema,
   nameSchema,
   passwordSchema,
-} from '~/utils/schemas';
-import type { Route } from '../index/+types';
-import { API_URL, USER_ID_KEY } from '~/utils/constants';
+} from "~/utils/schemas";
+import type { Route } from "../index/+types";
+import { API_URL, USERS_KEY, USER_ID_KEY } from "~/utils/constants";
 
-export function meta({ }: Route.MetaArgs) {
-  return [{ title: 'Registro' }];
+export function meta({}: Route.MetaArgs) {
+  return [{ title: "Registro" }];
 }
 
 const Register = () => {
   const navigate = useNavigate();
 
   //states
-  const [name, setName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [name, setName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
-  const [nameError, setNameError] = useState<string>('');
-  const [lastNameError, setLastNameError] = useState<string>('');
-  const [emailError, setEmailError] = useState<string>('');
-  const [passwordError, setPasswordError] = useState<string>('');
+  const [nameError, setNameError] = useState<string>("");
+  const [lastNameError, setLastNameError] = useState<string>("");
+  const [emailError, setEmailError] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<string>("");
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [registerLoader, setRegisterLoader] = useState<boolean>(false);
@@ -44,9 +50,9 @@ const Register = () => {
     try {
       setRegisterLoader(true);
       const req = await fetch(`${API_URL}/user`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
         },
         body: JSON.stringify({
           name,
@@ -61,15 +67,25 @@ const Register = () => {
       if (res.message !== undefined) {
         toast.error(res.message, { richColors: true });
 
-        if (res.message.includes('El correo electrónico ya existe')) {
+        if (res.message.includes("El correo electrónico ya existe")) {
           setIsEmailExist(true);
         }
       }
 
-
       if (res.userID !== undefined) {
         localStorage.setItem(USER_ID_KEY, res.userID.toString());
-        navigate('/home');
+        //save user in localStoage
+        const usersSaved = JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
+
+        usersSaved.push({
+          userID: res.userID,
+          name,
+          lastName,
+          email,
+        });
+        localStorage.setItem(USERS_KEY, JSON.stringify(usersSaved));
+
+        navigate("/home");
       }
     } catch (err) {
       console.log(err);
@@ -83,80 +99,80 @@ const Register = () => {
     const result = nameSchema.safeParse(name);
 
     if (!result.success) setNameError(result.error.errors[0].message);
-    else setNameError('');
+    else setNameError("");
   }, [name]);
 
   useEffect(() => {
     const result = lastNameSchema.safeParse(lastName);
 
     if (!result.success) setLastNameError(result.error.errors[0].message);
-    else setLastNameError('');
+    else setLastNameError("");
   }, [lastName]);
 
   useEffect(() => {
     const result = lastNameSchema.safeParse(lastName);
 
     if (!result.success) setLastNameError(result.error.errors[0].message);
-    else setLastNameError('');
+    else setLastNameError("");
   }, [lastName]);
 
   useEffect(() => {
     const result = emailSchema.safeParse(email);
 
     if (!result.success) setEmailError(result.error.errors[0].message);
-    else setEmailError('');
+    else setEmailError("");
   }, [email]);
 
   useEffect(() => {
     const result = passwordSchema.safeParse(password);
 
     if (!result.success) setPasswordError(result.error.errors[0].message);
-    else setPasswordError('');
+    else setPasswordError("");
   }, [password]);
 
   return (
     <>
-      <Toaster position='bottom-center' />
-      <main className='flex flex-col items-center'>
-        <div className='relative flex w-full p-3'>
-          <Link to='/'>
-            <Button variant='ghost' className='rounded-full border size-12'>
-              <FaArrowLeft className='w-16' />
+      <Toaster position="bottom-center" />
+      <main className="flex flex-col items-center">
+        <div className="relative flex w-full p-3">
+          <Link to="/">
+            <Button variant="ghost" className="rounded-full border size-12">
+              <FaArrowLeft className="w-16" />
             </Button>
           </Link>
         </div>
 
-        <Card className='w-96 sm:w-7/12 md:w-6/12 lg:w-6/12 z-20 outline-1 shadow-xl p-5 mt-10'>
+        <Card className="w-96 sm:w-7/12 md:w-6/12 lg:w-6/12 z-20 outline-1 shadow-xl p-5 mt-10">
           <CardHeader>
-            <CardTitle className='text-2xl text-center'>Registro</CardTitle>
+            <CardTitle className="text-2xl text-center">Registro</CardTitle>
             {/* <CardDescription>Ingresa tu correo y contraseña</CardDescription> */}
           </CardHeader>
           <CardContent>
             <form>
-              <div className='flex flex-col gap-6'>
+              <div className="flex flex-col gap-6">
                 {/* Name */}
-                <div className='grid gap-2'>
-                  <Label htmlFor='name'>
-                    Nombre <span className='text-red-400 font-bold'>*</span>
+                <div className="grid gap-2">
+                  <Label htmlFor="name">
+                    Nombre <span className="text-red-400 font-bold">*</span>
                   </Label>
                   <div>
                     <Input
-                      id='name'
-                      type='text'
+                      id="name"
+                      type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder='Jose'
+                      placeholder="Jose"
                       required
-                      autoComplete='off'
-                      autoCapitalize='words'
+                      autoComplete="off"
+                      autoCapitalize="words"
                     />
                     <AnimatePresence>
-                      {name.length > 0 && nameError !== '' && (
+                      {name.length > 0 && nameError !== "" && (
                         <motion.p
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
-                          className='font-bold text-sm text-red-500 ps-2 pt-1'
+                          className="font-bold text-sm text-red-500 ps-2 pt-1"
                         >
                           {nameError}
                         </motion.p>
@@ -166,28 +182,28 @@ const Register = () => {
                 </div>
 
                 {/* LastName  */}
-                <div className='grid gap-2'>
-                  <Label htmlFor='lastName'>
-                    Apellido <span className='text-red-400 font-bold'>*</span>
+                <div className="grid gap-2">
+                  <Label htmlFor="lastName">
+                    Apellido <span className="text-red-400 font-bold">*</span>
                   </Label>
                   <div>
                     <Input
-                      id='lastName'
-                      type='text'
+                      id="lastName"
+                      type="text"
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
-                      placeholder='Rebolledo'
+                      placeholder="Rebolledo"
                       required
-                      autoComplete='off'
-                      autoCapitalize='words'
+                      autoComplete="off"
+                      autoCapitalize="words"
                     />
                     <AnimatePresence>
-                      {lastName.length > 0 && lastNameError !== '' && (
+                      {lastName.length > 0 && lastNameError !== "" && (
                         <motion.p
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
-                          className='font-bold text-sm text-red-500 ps-2 pt-1'
+                          className="font-bold text-sm text-red-500 ps-2 pt-1"
                         >
                           {lastNameError}
                         </motion.p>
@@ -197,28 +213,28 @@ const Register = () => {
                 </div>
 
                 {/* Email */}
-                <div className='grid gap-2'>
-                  <Label htmlFor='email'>
+                <div className="grid gap-2">
+                  <Label htmlFor="email">
                     Correo Electrónico
-                    <span className='text-red-400 font-bold'>*</span>
+                    <span className="text-red-400 font-bold">*</span>
                   </Label>
                   <div>
                     <Input
-                      id='email'
-                      type='email'
+                      id="email"
+                      type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder='jose@example.com'
-                      autoComplete='username'
+                      placeholder="jose@example.com"
+                      autoComplete="username"
                       required
                     />
                     <AnimatePresence>
-                      {email.length > 0 && emailError !== '' && (
+                      {email.length > 0 && emailError !== "" && (
                         <motion.p
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
-                          className='font-bold text-sm text-red-500 ps-2 pt-1'
+                          className="font-bold text-sm text-red-500 ps-2 pt-1"
                         >
                           {emailError}
                         </motion.p>
@@ -228,27 +244,27 @@ const Register = () => {
                 </div>
 
                 {/* Password  */}
-                <div className='grid gap-2'>
-                  <div className='flex items-center'>
-                    <Label htmlFor='password'>
-                      Contraseña <span className='text-red-400 font-bold'>*</span>
+                <div className="grid gap-2">
+                  <div className="flex items-center">
+                    <Label htmlFor="password">
+                      Contraseña{" "}
+                      <span className="text-red-400 font-bold">*</span>
                     </Label>
                   </div>
                   <div>
-                    <div className='flex'>
+                    <div className="flex">
                       <Input
-                        id='password'
-                        type={showPassword ? 'text' : 'password'}
+                        id="password"
+                        type={showPassword ? "text" : "password"}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        placeholder='********'
-                        autoComplete='current-password'
+                        placeholder="********"
+                        autoComplete="current-password"
                         required
-
                       />
                       <Button
-                        type='button'
-                        variant='ghost'
+                        type="button"
+                        variant="ghost"
                         onClick={() => setShowPassword(!showPassword)}
                       >
                         {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -256,12 +272,12 @@ const Register = () => {
                     </div>
 
                     <AnimatePresence>
-                      {password.length > 0 && passwordError !== '' && (
+                      {password.length > 0 && passwordError !== "" && (
                         <motion.p
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
-                          className='font-bold text-sm text-red-500 ps-2 pt-1'
+                          className="font-bold text-sm text-red-500 ps-2 pt-1"
                         >
                           {passwordError}
                         </motion.p>
@@ -271,27 +287,29 @@ const Register = () => {
                 </div>
 
                 <Button
-                  type='submit'
-                  className='w-full mt-5 bg-green-800 hover:bg-green-900 delay-75 transition-all'
+                  type="submit"
+                  className="w-full mt-5 bg-green-800 hover:bg-green-900 delay-75 transition-all"
                   onClick={handleCreateUser}
                   disabled={
-                    nameError !== '' ||
-                    lastNameError !== '' ||
-                    emailError !== '' ||
-                    passwordError !== '' ||
+                    nameError !== "" ||
+                    lastNameError !== "" ||
+                    emailError !== "" ||
+                    passwordError !== "" ||
                     registerLoader
                   }
                 >
-                  <div className='flex gap-2 items-center'>
-                    {registerLoader ? (<>
-                      <FaSpinner className='animate-spin' />
-                      Cargando...
-                    </>) :
+                  <div className="flex gap-2 items-center">
+                    {registerLoader ? (
+                      <>
+                        <FaSpinner className="animate-spin" />
+                        Cargando...
+                      </>
+                    ) : (
                       <>
                         <FaUserPlus />
                         Registrarse
-                      </>}
-
+                      </>
+                    )}
                   </div>
                 </Button>
               </div>
@@ -302,10 +320,13 @@ const Register = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className='text-center mt-5'
+                  className="text-center mt-5"
                 >
-                  ¿Ya tienes una cuenta?{' '}
-                  <Link to='/login' className='text-green-800 hover:text-green-900 underline'>
+                  ¿Ya tienes una cuenta?{" "}
+                  <Link
+                    to="/login"
+                    className="text-green-800 hover:text-green-900 underline"
+                  >
                     Iniciar sesión
                   </Link>
                 </motion.div>

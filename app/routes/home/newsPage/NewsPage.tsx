@@ -21,7 +21,6 @@ const NewsPage = ({ news, setNews }: NewsPageProps) => {
 
       const res: { response: { data?: News[] } } = await req.json();
 
-      console.log(res);
       if (res.response.data === undefined) console.log(res.response.data);
       else setNews(res.response.data!!);
 

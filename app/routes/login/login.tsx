@@ -1,38 +1,49 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
 import type { Route } from "./+types/login";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { Link, useNavigate } from "react-router";
-import { FaArrowLeft, FaArrowRightToBracket, FaEye, FaEyeSlash, FaSpinner } from "react-icons/fa6";
+import {
+  FaArrowLeft,
+  FaArrowRightToBracket,
+  FaEye,
+  FaEyeSlash,
+  FaSpinner,
+} from "react-icons/fa6";
 import { useState } from "react";
-import { API_URL, USER_ID_KEY } from "~/utils/constants";
+import { ADMIN_JWT_KEY, API_URL, USER_ID_KEY } from "~/utils/constants";
 import { Toaster, toast } from "sonner";
 
-export function meta({ }: Route.MetaArgs) {
-  return [{ title: 'Iniciar sesión' }];
+export function meta({}: Route.MetaArgs) {
+  return [{ title: "Iniciar sesión" }];
 }
 
 const Login = () => {
   const navigate = useNavigate();
 
   //states
-  const [email, setEmail] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
 
   //functions
   const handleLogin = async () => {
     try {
       setIsLoading(true);
 
-      const req = await fetch(`${API_URL}/user/log-in`, {
-        method: 'POST',
+      const reqAdmin = await fetch(`${API_URL}/admin/`, {
+        method: "POST",
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
         },
         body: JSON.stringify({
           email,
@@ -40,13 +51,32 @@ const Login = () => {
         }),
       });
 
+      const resAdmin: { admin: boolean; token: string; message: string } =
+        await reqAdmin.json();
 
-      const res = await req.json();
+      if (resAdmin.admin) {
+        localStorage.setItem(ADMIN_JWT_KEY, resAdmin.token);
+        // console.log("ere admin"); TODO: implement admin login y todo el side admin
+        return;
+      } else {
+        const req = await fetch(`${API_URL}/user/log-in`, {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        });
 
-      if (res.message !== undefined) toast.error(res.message);
-      else {
-        localStorage.setItem(USER_ID_KEY, res.userID.toString());
-        navigate('/home');
+        const res = await req.json();
+
+        if (res.message !== undefined) toast.error(res.message);
+        else {
+          localStorage.setItem(USER_ID_KEY, res.userID.toString());
+          navigate("/home");
+        }
       }
     } catch (err) {
       console.log(err);
@@ -56,39 +86,43 @@ const Login = () => {
   };
 
   return (
-    <main className='flex flex-col items-center'>
-      <Toaster richColors={true} position='bottom-center' />
+    <main className="flex flex-col items-center">
+      <Toaster richColors={true} position="bottom-center" />
 
-      <div className='relative flex w-full p-3'>
-        <Link to='/'>
-          <Button variant='ghost' className='rounded-full border size-12'>
-            <FaArrowLeft className='w-16' />
+      <div className="relative flex w-full p-3">
+        <Link to="/">
+          <Button variant="ghost" className="rounded-full border size-12">
+            <FaArrowLeft className="w-16" />
           </Button>
         </Link>
       </div>
 
       <section className="w-full mt-22 flex justify-center">
-        <Card className='w-96 sm:w-7/12 md:w-6/12 lg:w-6/12'>
+        <Card className="w-96 sm:w-7/12 md:w-6/12 lg:w-6/12">
           <CardHeader>
-            <CardTitle className='text-2xl text-center'>Iniciar Sesión</CardTitle>
-            <CardDescription className='text-center'>Ingresa tu correo y contraseña</CardDescription>
+            <CardTitle className="text-2xl text-center">
+              Iniciar Sesión
+            </CardTitle>
+            <CardDescription className="text-center">
+              Ingresa tu correo y contraseña
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <form >
-              <div className='flex flex-col gap-6'>
-                <div className='grid gap-2'>
-                  <Label htmlFor='email'>Correo Electrónico</Label>
+            <form>
+              <div className="flex flex-col gap-6">
+                <div className="grid gap-2">
+                  <Label htmlFor="email">Correo Electrónico</Label>
                   <Input
-                    id='email'
-                    type='email'
+                    id="email"
+                    type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder='jose@example.com'
-                    autoComplete='username'
+                    placeholder="jose@example.com"
+                    autoComplete="username"
                     required
                   />
                 </div>
-                <div className='grid gap-2'>
+                <div className="grid gap-2">
                   {/* <div className='flex items-center'>
                   <Label htmlFor='password'>Contraseña</Label>
                   <a
@@ -99,20 +133,20 @@ const Login = () => {
                   </a>
                 </div> */}
 
-                  <Label htmlFor='password'>Contraseña</Label>
-                  <div className='flex w-full items-center'>
+                  <Label htmlFor="password">Contraseña</Label>
+                  <div className="flex w-full items-center">
                     <Input
-                      id='password'
-                      placeholder='********'
+                      id="password"
+                      placeholder="********"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      type={showPassword ? 'text' : 'password'}
-                      autoComplete='current-password'
+                      type={showPassword ? "text" : "password"}
+                      autoComplete="current-password"
                       required
                     />
                     <Button
-                      type='button'
-                      variant='link'
+                      type="button"
+                      variant="link"
                       onClick={(e) => {
                         e.preventDefault();
                         setShowPassword(!showPassword);
@@ -123,21 +157,19 @@ const Login = () => {
                   </div>
                 </div>
                 <Button
-                  type='submit'
-                  className='w-full bg-green-800 hover:bg-green-900'
+                  type="submit"
+                  className="w-full bg-green-800 hover:bg-green-900"
                   onClick={(e) => {
                     e.preventDefault();
                     handleLogin();
                   }}
                   disabled={
-                    email.length < 2 ||
-                    password.length < 2 ||
-                    isLoading
+                    email.length < 2 || password.length < 2 || isLoading
                   }
                 >
-                  <div className='flex gap-2 items-center select-none'>
+                  <div className="flex gap-2 items-center select-none">
                     {isLoading ? (
-                      <FaSpinner className='animate-spin' />
+                      <FaSpinner className="animate-spin" />
                     ) : (
                       <FaArrowRightToBracket />
                     )}
@@ -147,19 +179,20 @@ const Login = () => {
               </div>
             </form>
 
-            <div className='mt-4 text-sm flex gap-1 items-center justify-center'>
+            <div className="mt-4 text-sm flex gap-1 items-center justify-center">
               <p>¿No tienes una cuenta?</p>
-              <Link to='/register' className='text-green-800 hover:text-green-900 underline'>
+              <Link
+                to="/register"
+                className="text-green-800 hover:text-green-900 underline"
+              >
                 Registrarse
               </Link>
             </div>
           </CardContent>
         </Card>
       </section>
-
     </main>
-  )
+  );
 };
 
 export default Login;
-
