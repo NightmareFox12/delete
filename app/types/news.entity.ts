@@ -1,4 +1,4 @@
-export type News = {
+export type NewsEntity = {
   authors: string[];
   date: string;
   excerpt: string;

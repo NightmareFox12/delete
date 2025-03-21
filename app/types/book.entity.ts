@@ -1,4 +1,4 @@
-export type Book = {
+export type BookEntity = {
   key: string;
   title: string;
   author: string;
