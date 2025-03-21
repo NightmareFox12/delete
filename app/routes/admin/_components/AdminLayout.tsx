@@ -3,30 +3,29 @@ import {
   FaChevronLeft,
   FaChevronRight,
   FaHouse,
-  FaOpencart,
-  FaPerson,
   FaUser,
 } from "react-icons/fa6";
-import { Link } from "react-router";
+import {
+  Link,
+  useLocation,
+} from "react-router";
 import { Button } from "~/components/ui/button";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
-  SidebarTrigger,
   useSidebar,
 } from "~/components/ui/sidebar";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
-  
+  //navigation
+  const { pathname } = useLocation();
+
   const items = [
     {
       title: "Inicio",
@@ -43,13 +42,18 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <SidebarProvider>
       <Sidebar>
-        <SidebarContent className="bg-green-600 text-white">
+        <SidebarContent className="bg-green-700 text-white">
           <SidebarGroup>
             <SidebarGroupContent>
               <SidebarMenu>
                 {items.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
+                    <SidebarMenuButton
+                      asChild
+                      className={`${
+                        pathname === item.url && "bg-green-800"
+                      } p-5 hover:bg-green-800 active:bg-green-800 select-none decoration-gray-50 hover:text-white delay-75 transition-all`}
+                    >
                       <Link to={item.url}>
                         {item.icon}
                         <span>{item.title}</span>
@@ -62,7 +66,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
           </SidebarGroup>
         </SidebarContent>
       </Sidebar>
-      <main>
+      <main className="flex flex-1">
         <CustomTrigger />
         {children}
       </main>
