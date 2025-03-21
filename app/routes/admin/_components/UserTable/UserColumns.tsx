@@ -9,7 +9,7 @@ export const UserColumns = (
     React.SetStateAction<
       | {
           userID: number;
-          lock: boolean;
+          block: 0 | 1;
         }
       | undefined
     >
@@ -70,15 +70,28 @@ export const UserColumns = (
         <Button
           onClick={() =>
             setShowDialog({
-              lock: userData.lock,
+              block: userData.block,
               userID: userData.userID,
             })
           }
-          className="bg-red-600 hover:bg-red-700"
+          className={`${
+            userData.block === 1
+              ? "bg-green-800 hover:bg-green-900"
+              : "bg-red-600 hover:bg-red-700"
+          }`}
         >
           <div className="flex items-center justify-center gap-2 ">
-            <FaLock />
-            Bloquear
+            {userData.block === 0 ? (
+              <>
+                <FaLock />
+                Bloquear
+              </>
+            ) : (
+              <>
+                <FaLock />
+                Desbloquer
+              </>
+            )}
           </div>
         </Button>
       );

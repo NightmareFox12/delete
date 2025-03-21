@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "./_components/AdminLayout";
-import UserPieChart from "./_components/UserPieChart";
 import UserTable from "./_components/UserTable/UserTable";
 import DialogHandleBlock from "./_components/DialogHandleBlock";
 import { API_URL } from "~/utils/constants";
@@ -9,7 +8,7 @@ import type { UserEntity } from "~/types/user.entity";
 const UserSection = () => {
   //states
   const [showDialog, setShowDialog] = useState<
-    { userID: number; lock: boolean } | undefined
+    { userID: number; block: 0 | 1 } | undefined
   >(undefined);
 
   const [usersData, setUserData] = useState<UserEntity[]>([]);
@@ -39,6 +38,7 @@ const UserSection = () => {
         <DialogHandleBlock
           showDialog={showDialog}
           setShowDialog={setShowDialog}
+          getUsers={getUsers}
         />
       )}
       <AdminLayout>

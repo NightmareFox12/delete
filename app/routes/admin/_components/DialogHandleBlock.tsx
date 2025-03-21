@@ -15,27 +15,42 @@ import { API_URL } from "~/utils/constants";
 type DialogHandleBlockProps = {
   showDialog: {
     userID: number;
-    lock: boolean;
+    block: 0 | 1;
   };
   setShowDialog: React.Dispatch<
     React.SetStateAction<
       | {
           userID: number;
-          lock: boolean;
+          block: 0 | 1;
         }
       | undefined
     >
   >;
+  getUsers: () => Promise<void>;
 };
 
 const DialogHandleBlock = ({
   showDialog,
   setShowDialog,
+  getUsers,
 }: DialogHandleBlockProps) => {
   //functions
   const handleBlockUser = async () => {
     try {
-      const req = await fetch(`${API_URL}/user`);
+      const req = await fetch(`${API_URL}/user/block`, {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ userID: showDialog.userID }),
+      });
+
+      const res: { message?: string; success?: boolean } = await req.json();
+      if (res.message !== undefined) console.log("klanzar error");
+      else {
+        await getUsers();
+        setShowDialog(undefined);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -60,7 +75,7 @@ const DialogHandleBlock = ({
               Cancelar
             </Button>
             <Button onClick={handleBlockUser}>
-              {showDialog.lock ? "Bloquear" : "Desbloquear"}
+              {showDialog.block === 0 ? "Bloquear" : "Desbloquear"}
             </Button>
           </DialogFooter>
         </DialogContent>

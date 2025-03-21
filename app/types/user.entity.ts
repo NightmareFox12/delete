@@ -3,6 +3,6 @@ export type UserEntity = {
   name: string;
   lastName: string;
   email: string;
-  lock: boolean;
+  block: 0|1;
   date: string;
 };

@@ -11,16 +11,13 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal, User } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { Input } from "~/components/ui/input";
@@ -40,12 +37,11 @@ type UserTableProps = {
     React.SetStateAction<
       | {
           userID: number;
-          lock: boolean;
+          block: 0|1;
         }
       | undefined
     >
   >;
-
   usersData: UserEntity[];
 };
 
