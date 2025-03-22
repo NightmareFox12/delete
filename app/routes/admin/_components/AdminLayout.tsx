@@ -1,11 +1,13 @@
 import type React from "react";
 import {
+  FaDoorOpen,
+  FaHeart,
   FaHouse,
   FaSquareCaretLeft,
   FaSquareCaretRight,
   FaUser,
 } from "react-icons/fa6";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
 import {
   Sidebar,
@@ -18,13 +20,13 @@ import {
   SidebarProvider,
   useSidebar,
 } from "~/components/ui/sidebar";
-import DialogHandleBlock from "./DialogHandleBlock";
-import { useState } from "react";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   //navigation
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
+  //constans
   const items = [
     {
       title: "Inicio",
@@ -36,40 +38,59 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       url: "/admin/user",
       icon: <FaUser />,
     },
+    {
+      title: "Libros favoritos",
+      url: "/admin/like-book",
+      icon: <FaHeart />,
+    },
   ];
 
   return (
-      <SidebarProvider>
-        <Sidebar>
-          <SidebarContent className="bg-green-700 text-white">
-            <SidebarGroup>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {items.map((item) => (
-                    <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton
-                        asChild
-                        className={`${
-                          pathname === item.url && "bg-green-800"
-                        } p-5 hover:bg-green-800 active:bg-green-800 select-none decoration-gray-50 hover:text-white delay-75 transition-all`}
-                      >
-                        <Link to={item.url}>
-                          {item.icon}
-                          <span>{item.title}</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          </SidebarContent>
-        </Sidebar>
-        <main className="w-full h-full">
-          <CustomTrigger />
-          {children}
-        </main>
-      </SidebarProvider>
+    <SidebarProvider>
+      <Sidebar>
+        <SidebarContent className="bg-green-700 text-white">
+          <SidebarGroup>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {items.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      className={`${
+                        pathname === item.url && "bg-green-800"
+                      } p-5 hover:bg-green-800 active:bg-green-800 select-none decoration-gray-50 hover:text-white delay-75 transition-all`}
+                    >
+                      <Link to={item.url}>
+                        {item.icon}
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+
+                {/* Close session  */}
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    onClick={() => {
+                      localStorage.removeItem("token");
+                      navigate("/");
+                    }}
+                    className="cursor-pointer p-5 hover:bg-green-800 active:bg-green-800 select-none decoration-gray-50 hover:text-white delay-75 transition-all"
+                  >
+                    <FaDoorOpen />
+                    <span>Cerrar Sesión</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+      </Sidebar>
+      <main className="w-full h-full">
+        <CustomTrigger />
+        {children}
+      </main>
+    </SidebarProvider>
   );
 };
 

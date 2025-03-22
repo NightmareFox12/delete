@@ -30,7 +30,6 @@ const UserSection = () => {
 
       const res: { message?: string; users: UserEntity[] } = await req.json();
 
-      console.log(res);
       if (res.message !== undefined) console.log("lanzar el error");
       else setUserData(res.users);
     } catch (err) {
@@ -55,12 +54,13 @@ const UserSection = () => {
       <AdminLayout>
         <section className="p-5 flex-2">
           <div className="flex-1 justify-center items-center">
-            <UserTable usersData={usersData} setShowDialog={setShowDialog} />
+            <UserTable usersData={usersData} setShowDialog={setShowDialog} setShowForm={setShowForm} />
           </div>
         </section>
       </AdminLayout>
 
-      <div className="absolute bottom-0 right-0 p-10">
+{/* FAB  */}
+      {/* <div className="absolute bottom-0 right-0 p-10">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
@@ -78,7 +78,7 @@ const UserSection = () => {
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-      </div>
+      </div> */}
     </>
   );
 };

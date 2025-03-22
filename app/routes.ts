@@ -9,4 +9,5 @@ export default [
   //admin
   route('/admin', 'routes/admin/homeSection.tsx'),
   route('/admin/user', 'routes/admin/userSection.tsx'),
+  route('/admin/like-book', 'routes/admin/likeBookSection.tsx'),
 ] satisfies RouteConfig;

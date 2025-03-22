@@ -1,7 +1,6 @@
 import { Toaster, toast } from "sonner";
 
 import {
-  FaArrowLeft,
   FaEye,
   FaEyeSlash,
   FaSpinner,
@@ -9,7 +8,6 @@ import {
 } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { Label } from "@radix-ui/react-label";
-import { Link, useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
@@ -83,7 +81,6 @@ const FormRegister = ({ setShowForm, getUsers }: FormRegisterProps) => {
         setPassword("");
         toast.success("¡Usuario creado exitosamente!");
         await getUsers();
-        // navigate("/home");
       }
     } catch (err) {
       console.log(err);

@@ -29,25 +29,15 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { UserColumns } from "./UserColumns";
-import type { UserEntity } from "~/types/user.entity";
 import { FaPlus } from "react-icons/fa6";
+import type { LikeBookEntity } from "~/types/likeBook.entity";
+import { LikeBookColumns } from "./LikeBookColumns";
 
-type UserTableProps = {
-  setShowDialog: React.Dispatch<
-    React.SetStateAction<
-      | {
-          userID: number;
-          block: 0 | 1;
-        }
-      | undefined
-    >
-  >;
-  usersData: UserEntity[];
-  setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
+type LikeBookTableProps = {
+  likeBookData: LikeBookEntity[];
 };
 
-const UserTable = ({ usersData, setShowDialog, setShowForm }: UserTableProps) => {
+const LikeBookTable = ({ likeBookData }: LikeBookTableProps) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -57,8 +47,8 @@ const UserTable = ({ usersData, setShowDialog, setShowForm }: UserTableProps) =>
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
-    data: usersData,
-    columns: UserColumns(setShowDialog),
+    data: likeBookData,
+    columns: LikeBookColumns(),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -78,49 +68,48 @@ const UserTable = ({ usersData, setShowDialog, setShowForm }: UserTableProps) =>
   return (
     <div className="w-full">
       <div className="flex justify-end py-4">
-        {/* <Input
+        <Input
           placeholder="Filtrar correo..."
           value={(table.getColumn("correo")?.getFilterValue() as string) ?? ""}
           onChange={(event: { target: { value: any } }) =>
             table.getColumn("correo")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
-        /> */}
-      <div className="flex items-center gap-4">
-      <Button
-
-          className="bg-green-700 hover:bg-green-800"
-          onClick={() => setShowForm(true)}
-        >
-          <FaPlus /> Agregar Usuario
-        </Button>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">
-              Columnas <ChevronDown />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value: any) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+        />
+        <div className="flex items-center gap-4">
+          <Button
+            className="bg-green-700 hover:bg-green-800"
+            // onClick={() => setShowForm(true)}
+          >
+            <FaPlus /> Agregar Usuario
+          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                Columnas <ChevronDown />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value: any) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
       <div className="rounded-md border">
         <Table>
@@ -162,7 +151,7 @@ const UserTable = ({ usersData, setShowDialog, setShowForm }: UserTableProps) =>
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={UserColumns(setShowDialog).length}
+                  colSpan={LikeBookColumns().length}
                   className="h-24 text-center"
                 >
                   No hay resultados.
@@ -199,4 +188,4 @@ const UserTable = ({ usersData, setShowDialog, setShowForm }: UserTableProps) =>
   );
 };
 
-export default UserTable;
+export default LikeBookTable;
