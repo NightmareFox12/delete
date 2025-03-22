@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import type { News } from '~/types/news.entity';
 import { API_URL } from '~/utils/constants';
 import NewsCard from './_components/NewsCard';
 import { FaSpinner } from 'react-icons/fa6';
+import type { NewsEntity } from '~/types/news.entity';
 
 type NewsPageProps = {
-  news: Array<News>;
-  setNews: React.Dispatch<React.SetStateAction<News[]>>;
+  news: Array<NewsEntity>;
+  setNews: React.Dispatch<React.SetStateAction<NewsEntity[]>>;
 };
 
 const NewsPage = ({ news, setNews }: NewsPageProps) => {
@@ -19,7 +19,7 @@ const NewsPage = ({ news, setNews }: NewsPageProps) => {
       setIsLoading(true);
       const req = await fetch(`${API_URL}/news`);
 
-      const res: { response: { data?: News[] } } = await req.json();
+      const res: { response: { data?: NewsEntity[] } } = await req.json();
 
       if (res.response.data === undefined) console.log(res.response.data);
       else setNews(res.response.data!!);

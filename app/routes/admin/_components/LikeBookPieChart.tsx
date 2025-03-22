@@ -16,6 +16,7 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "~/components/ui/chart";
+import type { BookEntity } from "~/types/book.entity";
 
 type LikeBookPieChartProps = {
   likeStats: {
@@ -26,17 +27,30 @@ type LikeBookPieChartProps = {
 
 const LikeBookPieChart = ({ likeStats }: LikeBookPieChartProps) => {
   //constans
+  const colors = [
+    "#00a63e",
+    "#fd9a00",
+    "#007595",
+    "#51a2ff",
+    "#2b7fff",
+    "#7f22fe",
+    "#ff2056",
+    "#155dfc",
+    "#861043",
+    "#bbf451",
+  ];
+
   const chartConfig = {
     books: {
       label: "Libros",
     },
   } satisfies ChartConfig;
 
-  const chartData = likeStats.map((x) => {
+  const chartData = likeStats.map((x, y: number) => {
     return {
       title: x.bookTitle,
       likes: x.totalLikes,
-      fill: "#00a63e", //HACER UNA LISTA DE COLORES PARA LEERLA CON LA Y
+      fill: colors[y], //HACER UNA LISTA DE COLORES PARA LEERLA CON LA Y
     };
   });
 
@@ -49,7 +63,9 @@ const LikeBookPieChart = ({ likeStats }: LikeBookPieChartProps) => {
     <Card className="flex flex-col w-[350px]">
       <CardHeader className="items-center pb-0">
         <CardTitle>Total de Reacciones</CardTitle>
-        <CardDescription>Cantidad total de 'Me gusta' por libro.</CardDescription>
+        <CardDescription>
+          Cantidad total de 'Me gusta' por libro.
+        </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer config={chartConfig} className="mx-auto aspect-square ">
