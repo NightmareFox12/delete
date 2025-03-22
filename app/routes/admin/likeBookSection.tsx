@@ -11,10 +11,13 @@ const LikeBookSection = () => {
   //functions
   const getLikeBooks = async () => {
     try {
-      const req = await fetch(`${API_URL}/likeBook`);
-      const res: { message?: string; likeBooks: LikeBookEntity[] } = await req.json();
+      const req = await fetch(`${API_URL}/books/like-all`);
+
+      const res: { message?: string; likes: LikeBookEntity[] } = await req.json();
+
+      console.log(res);
       if (res.message !== undefined) console.log("lanzar el error");
-      else setLikeBookData(res.likeBooks);
+      else setLikeBookData(res.likes);
     } catch (err) {
       console.log(err);
     }

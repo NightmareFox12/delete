@@ -1,6 +1,7 @@
 export type LikeBookEntity = {
   likeBookID: number;
-  name: string;
+  userName: string;
   bookKey: string;
+  bookTitle: string;
   date: string;
 };

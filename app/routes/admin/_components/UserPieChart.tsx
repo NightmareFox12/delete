@@ -73,7 +73,7 @@ const UserPieChart = ({ totalUsers }: UserPieChartProps) => {
   return (
     <Card className="flex flex-col w-[350px]">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Usuarios Registrados</CardTitle>
+        <CardTitle>Total de Usuarios Registrados</CardTitle>
         {/* <CardDescription>January - June 2024</CardDescription> */}
       </CardHeader>
       <CardContent className="flex-1 pb-0">

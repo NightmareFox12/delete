@@ -45,21 +45,27 @@ const UserSection = () => {
     <>
       {showDialog !== undefined && (
         <DialogHandleBlock
-        showDialog={showDialog}
-        setShowDialog={setShowDialog}
-        getUsers={getUsers}
+          showDialog={showDialog}
+          setShowDialog={setShowDialog}
+          getUsers={getUsers}
         />
       )}
-      {showForm && <FormRegister setShowForm={setShowForm} getUsers={getUsers}/>}
+      {showForm && (
+        <FormRegister setShowForm={setShowForm} getUsers={getUsers} />
+      )}
       <AdminLayout>
         <section className="p-5 flex-2">
           <div className="flex-1 justify-center items-center">
-            <UserTable usersData={usersData} setShowDialog={setShowDialog} setShowForm={setShowForm} />
+            <UserTable
+              usersData={usersData}
+              setShowDialog={setShowDialog}
+              setShowForm={setShowForm}
+            />
           </div>
         </section>
       </AdminLayout>
 
-{/* FAB  */}
+      {/* FAB  */}
       {/* <div className="absolute bottom-0 right-0 p-10">
         <TooltipProvider>
           <Tooltip>
