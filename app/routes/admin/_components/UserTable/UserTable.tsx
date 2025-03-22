@@ -78,16 +78,16 @@ const UserTable = ({ usersData, setShowDialog }: UserTableProps) => {
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("correo")?.getFilterValue() as string) ?? ""}
           onChange={(event: { target: { value: any } }) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("correo")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown />
+              Columnas <ChevronDown />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">

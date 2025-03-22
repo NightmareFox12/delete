@@ -16,10 +16,6 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "~/components/ui/chart";
-const chartData = [
-  { browser: "Bloqueados: ", visitors: 2, fill: "#e7000b" },
-  { browser: "Desbloqueados: ", visitors: 3, fill: "#00a63e" },
-];
 
 const chartConfig = {
   visitors: {
@@ -47,10 +43,32 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const UserPieChart = () => {
+type UserPieChartProps = {
+  totalUsers: {
+    block: number;
+    unlock: number;
+  };
+};
+
+const UserPieChart = ({ totalUsers }: UserPieChartProps) => {
+  //constans
+  const chartData = [
+    {
+      browser: "Bloqueados: ",
+      visitors: totalUsers.block,
+      fill: "#e7000b",
+    },
+    {
+      browser: "Desbloqueados: ",
+      visitors: totalUsers.unlock,
+      fill: "#00a63e",
+    },
+  ];
+
+  //memos
   const totalVisitors = React.useMemo(() => {
     return chartData.reduce((acc, curr) => acc + curr.visitors, 0);
-  }, []);
+  }, [totalUsers]);
 
   return (
     <Card className="flex flex-col w-[350px]">
@@ -59,10 +77,7 @@ const UserPieChart = () => {
         {/* <CardDescription>January - June 2024</CardDescription> */}
       </CardHeader>
       <CardContent className="flex-1 pb-0">
-        <ChartContainer
-          config={chartConfig}
-          className="mx-auto aspect-square "
-        >
+        <ChartContainer config={chartConfig} className="mx-auto aspect-square ">
           <PieChart>
             <ChartTooltip
               cursor={false}

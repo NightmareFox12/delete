@@ -16,18 +16,18 @@ export const UserColumns = (
   >
 ): ColumnDef<UserEntity>[] => [
   {
-    accessorKey: "id",
+    id: "userID",
     cell: ({ row }) => <p className="font-semibold">{parseInt(row.id) + 1}</p>,
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "name",
+    accessorKey: "nombre",
     header: "Nombre",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
+    cell: ({ row }) => <div className="capitalize">{row.original.name}</div>,
   },
   {
-    accessorKey: "lastName",
+    accessorKey: "apellido",
     header: ({ column }) => {
       return (
         <Button
@@ -40,11 +40,11 @@ export const UserColumns = (
       );
     },
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("lastName")}</div>
+      <div className="capitalize">{row.original.lastName}</div>
     ),
   },
   {
-    accessorKey: "email",
+    accessorKey: "correo",
     header: ({ column }) => {
       return (
         <Button
@@ -56,10 +56,13 @@ export const UserColumns = (
         </Button>
       );
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    cell: ({ row }) => <div className="lowercase">{
+      // row.getValue("email")
+      row.original.email
+      }</div>,
   },
   {
-    accessorKey: "actions",
+    id: "actions",
     header: "Acciones",
     enableHiding: false,
     enableSorting: false,
@@ -76,7 +79,7 @@ export const UserColumns = (
           }
           className={`${
             userData.block === 1
-              ? "bg-green-800 hover:bg-green-900"
+              ? "bg-green-700 hover:bg-green-800"
               : "bg-red-600 hover:bg-red-700"
           }`}
         >
