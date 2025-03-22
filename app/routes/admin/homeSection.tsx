@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "./_components/AdminLayout";
 import UserPieChart from "./_components/UserPieChart";
-import UserTable from "./_components/UserTable/UserTable";
 import { API_URL } from "~/utils/constants";
 
 const HomeSection = () => {
@@ -22,7 +21,6 @@ const HomeSection = () => {
       const res: { message?: string; unlock: number; block: number } =
         await req.json();
 
-      console.log(res);
       if (res.message !== undefined) console.log("lanzar error");
       else
         setTotalUsers({

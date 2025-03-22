@@ -30,13 +30,14 @@ export const UserColumns = (
     accessorKey: "apellido",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Apellido
-          <ArrowUpDown />
-        </Button>
+        <p>Apellido</p>
+        // <Button
+        //   variant="ghost"
+        //   onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        // >
+        //   Apellido
+        //   <ArrowUpDown />
+        // </Button>
       );
     },
     cell: ({ row }) => (
@@ -45,21 +46,27 @@ export const UserColumns = (
   },
   {
     accessorKey: "correo",
+    enableColumnFilter: true,
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Correo Electrónico
-          <ArrowUpDown />
-        </Button>
+        <p>Correo Electrónico</p>
+        // <Button
+        //   variant="ghost"
+        //   onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        // >
+        //   Correo Electrónico
+        //   <ArrowUpDown />
+        // </Button>
       );
     },
-    cell: ({ row }) => <div className="lowercase">{
-      // row.getValue("email")
-      row.original.email
-      }</div>,
+    cell: ({ row }) => (
+      <div className="lowercase">
+        {
+          // row.getValue("correo")
+          row.original.email
+        }
+      </div>
+    ),
   },
   {
     id: "actions",
@@ -92,7 +99,7 @@ export const UserColumns = (
             ) : (
               <>
                 <FaLock />
-                Desbloquer
+                Desbloquear
               </>
             )}
           </div>

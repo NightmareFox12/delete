@@ -59,7 +59,7 @@ const DialogHandleBlock = ({
           <DialogHeader>
             <DialogTitle className="text-xl font-semibold">
               ¿Esta seguro que desea{" "}
-              {showDialog.block === 0 ? "desbloquear" : "desbloquear"} el
+              {showDialog.block === 1 ? "desbloquear" : "bloquear"} el
               usuario?
             </DialogTitle>
             <DialogDescription>
