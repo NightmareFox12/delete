@@ -1,8 +1,12 @@
-import { useEffect, useState } from "react";
+import { lazy, useEffect, useState } from "react";
 import AdminLayout from "./_components/AdminLayout";
-import UserPieChart from "./_components/UserPieChart";
 import { API_URL } from "~/utils/constants";
-import LikeBookPieChart from "./_components/LikeBookPieChart";
+import { FaSpinner } from "react-icons/fa6";
+import { AnimatePresence, motion } from "motion/react";
+
+//Lazy components
+const LikeBookPieChart = lazy(() => import("./_components/LikeBookPieChart"));
+const UserPieChart = lazy(() => import("./_components/UserPieChart"));
 
 const HomeSection = () => {
   //states
@@ -18,9 +22,13 @@ const HomeSection = () => {
     }[]
   >([]);
 
+  const [userLoading, setUserLoading] = useState(false);
+  const [likeLoading, setLikeLoading] = useState(false);
+
   //functions
   const getTotalUsers = async () => {
     try {
+      setUserLoading(true);
       const req = await fetch(`${API_URL}/user/count`);
 
       const res: { message?: string; unlock: number; block: number } =
@@ -34,11 +42,14 @@ const HomeSection = () => {
         });
     } catch (err) {
       console.log(err);
+    } finally {
+      setUserLoading(false);
     }
   };
 
   const getLikeStats = async () => {
     try {
+      setLikeLoading(true);
       const req = await fetch(`${API_URL}/books/like-stats`);
 
       const res: {
@@ -50,6 +61,8 @@ const HomeSection = () => {
       else setLikeStats(res.likes);
     } catch (err) {
       console.log(err);
+    } finally {
+      setLikeLoading(false);
     }
   };
 
@@ -63,8 +76,49 @@ const HomeSection = () => {
     <AdminLayout>
       <section className="p-5">
         <article className="h-screen w-full flex justify-center items-center gap-10">
-          <UserPieChart totalUsers={totalUsers} />
-          <LikeBookPieChart likeStats={likeStats} />
+          {/* Users */}
+          <AnimatePresence>
+            {userLoading ? (
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <FaSpinner className="animate-spin" size={20} />
+              </motion.span>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <UserPieChart totalUsers={totalUsers} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Likes Book */}
+          <AnimatePresence>
+            {likeLoading ? (
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <FaSpinner className="animate-spin" size={20} />
+              </motion.span>
+            ) : (
+              likeStats.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <LikeBookPieChart likeStats={likeStats} />
+                </motion.div>
+              )
+            )}
+          </AnimatePresence>
         </article>
       </section>
     </AdminLayout>
