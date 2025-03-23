@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  type ColumnDef,
   type ColumnFiltersState,
   type SortingState,
   type VisibilityState,
@@ -20,7 +19,6 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { Input } from "~/components/ui/input";
 import {
   Table,
   TableBody,
@@ -32,6 +30,7 @@ import {
 import { FaPlus } from "react-icons/fa6";
 import type { LikeBookEntity } from "~/types/likeBook.entity";
 import { LikeBookColumns } from "./LikeBookColumns";
+import { Input } from "~/components/ui/input";
 
 type LikeBookTableProps = {
   likeBookData: LikeBookEntity[];
@@ -48,7 +47,7 @@ const LikeBookTable = ({ likeBookData }: LikeBookTableProps) => {
 
   const table = useReactTable({
     data: likeBookData,
-    columns: LikeBookColumns(),
+    columns: LikeBookColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -67,22 +66,18 @@ const LikeBookTable = ({ likeBookData }: LikeBookTableProps) => {
 
   return (
     <div className="w-full">
-      <div className="flex justify-end py-4">
-        {/* <Input
-          placeholder="Filtrar correo..."
-          value={(table.getColumn("correo")?.getFilterValue() as string) ?? ""}
+      <div className="flex justify-between py-4">
+        <Input
+          placeholder="Filtrar por titulo..."
+          value={
+            (table.getColumn("bookTitle")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event: { target: { value: any } }) =>
-            table.getColumn("correo")?.setFilterValue(event.target.value)
+            table.getColumn("bookTitle")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
-        /> */}
+        />
         <div className="flex items-center gap-4">
-          <Button
-            className="bg-green-700 hover:bg-green-800"
-            // onClick={() => setShowForm(true)}
-          >
-            <FaPlus /> Agregar Usuario
-          </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">
@@ -151,7 +146,7 @@ const LikeBookTable = ({ likeBookData }: LikeBookTableProps) => {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={LikeBookColumns().length}
+                  colSpan={LikeBookColumns.length}
                   className="h-24 text-center"
                 >
                   No hay resultados.

@@ -1,19 +1,10 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { Button } from "~/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
-import { FaLock, FaSquareArrowUpRight } from "react-icons/fa6";
+import { FaSquareArrowUpRight } from "react-icons/fa6";
 import type { LikeBookEntity } from "~/types/likeBook.entity";
 
-export const LikeBookColumns = (): // setShowDialog: React.Dispatch<
-//   React.SetStateAction<
-//     | {
-//         userID: number;
-//         block: 0 | 1;
-//       }
-//     | undefined
-//   >
-// >
-ColumnDef<LikeBookEntity>[] => [
+export const LikeBookColumns: ColumnDef<LikeBookEntity>[] = [
   {
     id: "likeBookID",
     cell: ({ row }) => <p className="font-semibold">{parseInt(row.id) + 1}</p>,
@@ -57,6 +48,7 @@ ColumnDef<LikeBookEntity>[] => [
     ),
   },
   {
+    id: "bookTitle",
     accessorKey: "bookTitle",
     enableSorting: true,
     enableColumnFilter: true,

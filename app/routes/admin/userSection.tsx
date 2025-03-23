@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
+import { Suspense, lazy } from "react";
 import AdminLayout from "./_components/AdminLayout";
-import UserTable from "./_components/UserTable/UserTable";
-import DialogHandleBlock from "./_components/DialogHandleBlock";
 import { API_URL } from "~/utils/constants";
 import type { UserEntity } from "~/types/user.entity";
-import { Button } from "~/components/ui/button";
-import { FaPlus } from "react-icons/fa6";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@radix-ui/react-tooltip";
-import FormRegister from "./_components/FormRegister";
+import { FaSpinner } from "react-icons/fa6";
+import { AnimatePresence } from "motion/react";
+
+//lazy components
+const UserTable = lazy(() => import("./_components/UserTable/UserTable"));
+const DialogHandleBlock = lazy(() => import("./_components/DialogHandleBlock"));
+const FormRegister = lazy(() => import("./_components/FormRegister"));
 
 const UserSection = () => {
   //states
@@ -27,7 +24,6 @@ const UserSection = () => {
   const getUsers = async () => {
     try {
       const req = await fetch(`${API_URL}/user`);
-
       const res: { message?: string; users: UserEntity[] } = await req.json();
 
       if (res.message !== undefined) console.log("lanzar el error");
@@ -43,48 +39,58 @@ const UserSection = () => {
 
   return (
     <>
-      {showDialog !== undefined && (
-        <DialogHandleBlock
-          showDialog={showDialog}
-          setShowDialog={setShowDialog}
-          getUsers={getUsers}
-        />
-      )}
-      {showForm && (
-        <FormRegister setShowForm={setShowForm} getUsers={getUsers} />
-      )}
+    {/* Modal block  */}
+      <Suspense
+        fallback={
+          <div className="h-screen w-full flex justify-center items-center">
+            <FaSpinner className="animate-spin" size={20} />
+          </div>
+        }
+      >
+        <AnimatePresence>
+          {showDialog !== undefined && (
+            <DialogHandleBlock
+              showDialog={showDialog}
+              setShowDialog={setShowDialog}
+              getUsers={getUsers}
+            />
+          )}
+        </AnimatePresence>
+      </Suspense>
+
+      {/* Modal register  */}
+      <Suspense
+        fallback={
+          <div className="h-screen w-full flex justify-center items-center">
+            <FaSpinner className="animate-spin" size={20} />
+          </div>
+        }
+      >
+        <AnimatePresence>
+          {showForm && (
+            <FormRegister setShowForm={setShowForm} getUsers={getUsers} />
+          )}
+        </AnimatePresence>
+      </Suspense>
       <AdminLayout>
         <section className="p-5 flex-2">
           <div className="flex-1 justify-center items-center">
-            <UserTable
-              usersData={usersData}
-              setShowDialog={setShowDialog}
-              setShowForm={setShowForm}
-            />
+            <Suspense
+              fallback={
+                <div className="h-screen w-full flex justify-center items-center">
+                  <FaSpinner className="animate-spin" size={20} />
+                </div>
+              }
+            >
+              <UserTable
+                usersData={usersData}
+                setShowDialog={setShowDialog}
+                setShowForm={setShowForm}
+              />
+            </Suspense>
           </div>
         </section>
       </AdminLayout>
-
-      {/* FAB  */}
-      {/* <div className="absolute bottom-0 right-0 p-10">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <Button
-                onClick={() => setShowForm(true)}
-                className="rounded-full h-12 w-12 bg-green-700 hover:bg-green-800"
-              >
-                <FaPlus />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p className="bg-slate-100 rounded-2xl p-1 px-2 text-sm">
-                Crear Usuario
-              </p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </div> */}
     </>
   );
 };

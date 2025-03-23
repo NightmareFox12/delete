@@ -1,11 +1,6 @@
 import { Toaster, toast } from "sonner";
 
-import {
-  FaEye,
-  FaEyeSlash,
-  FaSpinner,
-  FaUserPlus,
-} from "react-icons/fa6";
+import { FaEye, FaEyeSlash, FaSpinner, FaUserPlus } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { Label } from "@radix-ui/react-label";
 import { Button } from "~/components/ui/button";
@@ -126,7 +121,10 @@ const FormRegister = ({ setShowForm, getUsers }: FormRegisterProps) => {
   }, [password]);
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
       onClick={() => setShowForm(false)}
       className="absolute w-screen h-screen bg-slate-950/50 z-20"
     >
@@ -310,7 +308,7 @@ const FormRegister = ({ setShowForm, getUsers }: FormRegisterProps) => {
           </CardContent>
         </Card>
       </section>
-    </div>
+    </motion.div>
   );
 };
 

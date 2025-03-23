@@ -4,6 +4,7 @@ import {
   DialogDescription,
   DialogTitle,
 } from "@radix-ui/react-dialog";
+import { motion } from "motion/react";
 import { Button } from "~/components/ui/button";
 import { DialogFooter, DialogHeader } from "~/components/ui/dialog";
 import { API_URL } from "~/utils/constants";
@@ -53,39 +54,53 @@ const DialogHandleBlock = ({
   };
 
   return (
-    <div className="absolute bg-slate-900/40 w-screen h-screen z-50 flex justify-center flex-1 items-center">
-      <Dialog open>
-        <DialogContent className="sm:max-w-[425px] bg-white p-10 rounded-2xl z-20">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-semibold">
-              ¿Esta seguro que desea{" "}
-              {showDialog.block === 1 ? "desbloquear" : "bloquear"} el
-              usuario?
-            </DialogTitle>
-            <DialogDescription>
-              Esta acción cambiará el estado de acceso del usuario en el
-              sistema.
-            </DialogDescription>
-          </DialogHeader>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="absolute bg-slate-900/40 w-screen h-screen z-50 flex justify-center flex-1 items-center"
+    >
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        <Dialog open>
+          <DialogContent className="sm:max-w-[425px] bg-white p-10 rounded-2xl z-20">
+            <DialogHeader>
+              <DialogTitle className="text-xl font-semibold">
+                ¿Esta seguro que desea{" "}
+                {showDialog.block === 1 ? "desbloquear" : "bloquear"} el
+                usuario?
+              </DialogTitle>
+              <DialogDescription>
+                Esta acción cambiará el estado de acceso del usuario en el
+                sistema.
+              </DialogDescription>
+            </DialogHeader>
 
-          <DialogFooter className="!justify-center gap-5 mt-5">
-            <Button variant="outline" onClick={() => setShowDialog(undefined)}>
-              Cancelar
-            </Button>
-            <Button
-              onClick={handleBlockUser}
-              className={`${
-                showDialog.block === 1
-                  ? "bg-green-700 hover:bg-green-800"
-                  : "bg-red-600 hover:bg-red-700"
-              }`}
-            >
-              {showDialog.block === 0 ? "Bloquear" : "Desbloquear"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </div>
+            <DialogFooter className="!justify-center gap-5 mt-5">
+              <Button
+                variant="outline"
+                onClick={() => setShowDialog(undefined)}
+              >
+                Cancelar
+              </Button>
+              <Button
+                onClick={handleBlockUser}
+                className={`${
+                  showDialog.block === 1
+                    ? "bg-green-700 hover:bg-green-800"
+                    : "bg-red-600 hover:bg-red-700"
+                }`}
+              >
+                {showDialog.block === 0 ? "Bloquear" : "Desbloquear"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </motion.div>
+    </motion.div>
   );
 };
 

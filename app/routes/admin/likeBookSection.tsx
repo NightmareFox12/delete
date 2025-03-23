@@ -1,8 +1,12 @@
 import AdminLayout from "./_components/AdminLayout";
-import LikeBookTable from "./_components/LikeBookTable/LikeBookTable";
 import type { LikeBookEntity } from "~/types/likeBook.entity";
-import { useEffect, useState } from "react";
+import { lazy, useEffect, useState } from "react";
 import { API_URL } from "~/utils/constants";
+
+//lazy components
+const LikeBookTable = lazy(
+  () => import("./_components/LikeBookTable/LikeBookTable")
+);
 
 const LikeBookSection = () => {
   //states
@@ -13,7 +17,8 @@ const LikeBookSection = () => {
     try {
       const req = await fetch(`${API_URL}/books/like-all`);
 
-      const res: { message?: string; likes: LikeBookEntity[] } = await req.json();
+      const res: { message?: string; likes: LikeBookEntity[] } =
+        await req.json();
 
       if (res.message !== undefined) console.log("lanzar el error");
       else setLikeBookData(res.likes);
