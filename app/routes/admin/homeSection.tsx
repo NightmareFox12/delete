@@ -5,9 +5,6 @@ import { API_URL } from "~/utils/constants";
 import LikeBookPieChart from "./_components/LikeBookPieChart";
 
 const HomeSection = () => {
-  //TODO: AQUI JALAR LOS DATOS DEL BACK, COMPROBANDO QUE HAYA JWT.
-  //TODO: En realidad creo que hay que jalar los usuarios del localStorage
-  //TODO: buscar que mas CRUD puedo crear
   //states
   const [totalUsers, setTotalUsers] = useState<{
     block: number;
@@ -49,7 +46,6 @@ const HomeSection = () => {
         likes: { bookTitle: string; totalLikes: number }[];
       } = await req.json();
 
-      console.log(res);
       if (res.message !== undefined) console.log("lanzar error");
       else setLikeStats(res.likes);
     } catch (err) {

@@ -54,7 +54,6 @@ const Login = () => {
       const resAdmin: { admin: boolean; token: string; message: string } =
         await reqAdmin.json();
 
-      console.log(resAdmin);
       if (resAdmin.admin) {
         localStorage.setItem(ADMIN_JWT_KEY, resAdmin.token);
         navigate("/admin");

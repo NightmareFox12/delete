@@ -22,10 +22,25 @@ import {
 } from "~/utils/schemas";
 import type { Route } from "../index/+types";
 import { API_URL, USERS_KEY, USER_ID_KEY } from "~/utils/constants";
+import { Calendar } from "~/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "~/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
 
 export function meta({}: Route.MetaArgs) {
   return [{ title: "Registro" }];
 }
+
+import { es } from "date-fns/locale";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -34,6 +49,9 @@ const Register = () => {
   const [name, setName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const [birthDate, setBirthDate] = useState<Date | undefined>(
+    new Date(2010, 1, 1)
+  );
   const [password, setPassword] = useState<string>("");
 
   const [nameError, setNameError] = useState<string>("");
@@ -240,6 +258,86 @@ const Register = () => {
                         </motion.p>
                       )}
                     </AnimatePresence>
+                  </div>
+                </div>
+
+                {/* BirthDate */}
+                <div className="grid gap-2">
+                  <Label htmlFor="birthDate">
+                    Fecha de Nacimiento
+                    <span className="text-red-400 font-bold">*</span>
+                  </Label>
+                  <div>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Input
+                          id="birthDate"
+                          type="date"
+                          value={
+                            birthDate
+                              ? birthDate.toISOString().split("T")[0]
+                              : ""
+                          }
+                          placeholder="dd/mm/yyyy"
+                          autoComplete="off"
+                          min={new Date().toISOString().split("T")[0]}
+                        />
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <div className="absolute ms-20 opacity-0 w-[85px] flex justify-center items-center mt-2 z-20">
+                          <Select
+                            onValueChange={(year) =>
+                              setBirthDate(new Date(parseInt(year), 1, 1))
+                            }
+                            defaultValue={birthDate?.getFullYear().toString()}
+                          >
+                            <SelectTrigger className="cursor-pointer border-1 ">
+                              <SelectValue
+                                placeholder={birthDate
+                                  ?.getFullYear()
+                                  .toString()}
+                              />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Array.from(
+                                {
+                                  length:
+                                    new Date(2010, 1).getFullYear() -
+                                    new Date(1930, 1).getFullYear() +
+                                    1,
+                                },
+                                (_, index) => {
+                                  const year =
+                                    new Date(1930, 1).getFullYear() + index;
+                                  return (
+                                    <SelectItem
+                                      onSelect={() => {
+                                        setBirthDate(new Date(year, 1, 1));
+                                      }}
+                                      key={year}
+                                      value={year.toString()}
+                                    >
+                                      {year}
+                                    </SelectItem>
+                                  );
+                                }
+                              )}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <Calendar
+                          className="select-none"
+                          mode="single"
+                          fixedWeeks
+                          locale={es}
+                          selected={birthDate}
+                          onSelect={setBirthDate}
+                          toYear={2010}
+                          fromYear={1930}
+                          month={birthDate}
+                        />
+                      </PopoverContent>
+                    </Popover>
                   </div>
                 </div>
 

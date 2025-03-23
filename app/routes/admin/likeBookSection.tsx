@@ -15,7 +15,6 @@ const LikeBookSection = () => {
 
       const res: { message?: string; likes: LikeBookEntity[] } = await req.json();
 
-      console.log(res);
       if (res.message !== undefined) console.log("lanzar el error");
       else setLikeBookData(res.likes);
     } catch (err) {
