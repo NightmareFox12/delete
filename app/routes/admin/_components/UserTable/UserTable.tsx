@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  type ColumnDef,
   type ColumnFiltersState,
   type SortingState,
   type VisibilityState,
@@ -77,15 +76,15 @@ const UserTable = ({ usersData, setShowDialog, setShowForm }: UserTableProps) =>
 
   return (
     <div className="w-full">
-      <div className="flex justify-end py-4">
-        {/* <Input
-          placeholder="Filtrar correo..."
-          value={(table.getColumn("correo")?.getFilterValue() as string) ?? ""}
+      <div className="flex justify-between py-4">
+        <Input
+          placeholder="Filtrar por correo..."
+          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
           onChange={(event: { target: { value: any } }) =>
-            table.getColumn("correo")?.setFilterValue(event.target.value)
+            table.getColumn("email")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
-        /> */}
+        /> 
       <div className="flex items-center gap-4">
       <Button
 

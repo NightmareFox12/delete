@@ -22,51 +22,55 @@ export const UserColumns = (
     enableHiding: false,
   },
   {
-    accessorKey: "nombre",
-    header: "Nombre",
-    cell: ({ row }) => <div className="capitalize">{row.original.name}</div>,
-  },
-  {
-    accessorKey: "apellido",
+    id: "name",
+    accessorKey: "name",
     header: ({ column }) => {
       return (
-        <p>Apellido</p>
-        // <Button
-        //   variant="ghost"
-        //   onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        // >
-        //   Apellido
-        //   <ArrowUpDown />
-        // </Button>
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Nombre
+          <ArrowUpDown />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
+  },
+  {
+    id: "lastName",
+    accessorKey: "lastName",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Apellido
+          <ArrowUpDown />
+        </Button>
       );
     },
     cell: ({ row }) => (
-      <div className="capitalize">{row.original.lastName}</div>
+      <div className="capitalize">{row.getValue("lastName")}</div>
     ),
   },
   {
-    accessorKey: "correo",
+    id: "email",
+    accessorKey: "email",
     enableColumnFilter: true,
     header: ({ column }) => {
       return (
-        <p>Correo Electrónico</p>
-        // <Button
-        //   variant="ghost"
-        //   onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        // >
-        //   Correo Electrónico
-        //   <ArrowUpDown />
-        // </Button>
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Correo Electrónico
+          <ArrowUpDown />
+        </Button>
       );
     },
-    cell: ({ row }) => (
-      <div className="lowercase">
-        {
-          // row.getValue("correo")
-          row.original.email
-        }
-      </div>
-    ),
+    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
   },
   {
     id: "actions",
