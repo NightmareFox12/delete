@@ -5,11 +5,16 @@ import { API_URL } from "~/utils/constants";
 import type { UserEntity } from "~/types/user.entity";
 import { FaSpinner } from "react-icons/fa6";
 import { AnimatePresence } from "motion/react";
+import type { Route } from "../index/+types";
 
 //lazy components
 const UserTable = lazy(() => import("./_components/UserTable/UserTable"));
 const DialogHandleBlock = lazy(() => import("./_components/DialogHandleBlock"));
 const FormRegister = lazy(() => import("./_components/FormRegister"));
+
+export function meta({}: Route.MetaArgs) {
+  return [{ title: 'Usuarios | Administrador' }];
+}
 
 const UserSection = () => {
   //states

@@ -4,10 +4,10 @@ import { Button } from '~/components/ui/button';
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import BookPage from './bookPage/BookPage';
-import type { Book } from '~/types/book.entity';
 import { USER_ID_KEY } from '~/utils/constants';
 import NewsPage from './newsPage/NewsPage';
-import type { News } from '~/types/news.entity';
+import type { BookEntity } from '~/types/book.entity';
+import type { NewsEntity } from '~/types/news.entity';
 
 export function meta({}: Route.MetaArgs) {
   return [{ title: 'Inicio' }];
@@ -16,8 +16,8 @@ const Home = () => {
   const navigate = useNavigate();
 
   //states
-  const [books, setBooks] = useState<Array<Book>>(Array());
-  const [news, setNews] = useState<Array<News>>(Array());
+  const [books, setBooks] = useState<Array<BookEntity>>(Array());
+  const [news, setNews] = useState<Array<NewsEntity>>(Array());
 
   const [currentPage, setCurrentPage] = useState<number>(0);
 

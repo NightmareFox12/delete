@@ -3,10 +3,15 @@ import AdminLayout from "./_components/AdminLayout";
 import { API_URL } from "~/utils/constants";
 import { FaSpinner } from "react-icons/fa6";
 import { AnimatePresence, motion } from "motion/react";
+import type { Route } from "../index/+types";
 
 //Lazy components
 const LikeBookPieChart = lazy(() => import("./_components/LikeBookPieChart"));
 const UserPieChart = lazy(() => import("./_components/UserPieChart"));
+
+export function meta({}: Route.MetaArgs) {
+  return [{ title: 'Inicio | Administrador' }];
+}
 
 const HomeSection = () => {
   //states
