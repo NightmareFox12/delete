@@ -41,6 +41,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 import { es } from "date-fns/locale";
+import { format } from "date-fns";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -57,6 +58,7 @@ const Register = () => {
   const [nameError, setNameError] = useState<string>("");
   const [lastNameError, setLastNameError] = useState<string>("");
   const [emailError, setEmailError] = useState<string>("");
+  const [birthDateError, setBirthDateError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -76,6 +78,7 @@ const Register = () => {
           name,
           lastName,
           email,
+          birthDate: birthDate?.toISOString().split("T")[0],
           password,
         }),
       });
@@ -140,6 +143,11 @@ const Register = () => {
     if (!result.success) setEmailError(result.error.errors[0].message);
     else setEmailError("");
   }, [email]);
+
+  useEffect(() => {
+    if (!birthDate) setBirthDateError("La fecha de nacimiento es obligatoria");
+    else setBirthDateError("");
+  }, [birthDate]);
 
   useEffect(() => {
     const result = passwordSchema.safeParse(password);
@@ -272,10 +280,10 @@ const Register = () => {
                       <PopoverTrigger asChild>
                         <Input
                           id="birthDate"
-                          type="date"
+                          type="text"
                           value={
                             birthDate
-                              ? birthDate.toISOString().split("T")[0]
+                              ? format(birthDate, "dd/MM/yyyy")
                               : ""
                           }
                           placeholder="dd/mm/yyyy"
@@ -338,6 +346,18 @@ const Register = () => {
                         />
                       </PopoverContent>
                     </Popover>
+                    <AnimatePresence>
+                      {birthDate === undefined && birthDateError && (
+                        <motion.p
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="font-bold text-sm text-red-500 ps-2 pt-1"
+                        >
+                          {birthDateError}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </div>
 
@@ -384,6 +404,7 @@ const Register = () => {
                   </div>
                 </div>
 
+                {/* Submit button */}
                 <Button
                   type="submit"
                   className="w-full mt-5 bg-green-800 hover:bg-green-900 delay-75 transition-all"
@@ -392,6 +413,7 @@ const Register = () => {
                     nameError !== "" ||
                     lastNameError !== "" ||
                     emailError !== "" ||
+                    birthDateError !== "" ||
                     passwordError !== "" ||
                     registerLoader
                   }
