@@ -16,7 +16,6 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "~/components/ui/chart";
-import type { BookEntity } from "~/types/book.entity";
 
 type LikeBookPieChartProps = {
   likeStats: {
@@ -50,7 +49,7 @@ const LikeBookPieChart = ({ likeStats }: LikeBookPieChartProps) => {
     return {
       title: x.bookTitle,
       likes: x.totalLikes,
-      fill: colors[y], //HACER UNA LISTA DE COLORES PARA LEERLA CON LA Y
+      fill: colors[y],
     };
   });
 

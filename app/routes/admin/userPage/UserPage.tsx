@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Suspense, lazy } from "react";
-import AdminLayout from "./_components/AdminLayout";
+import AdminLayout from "../_components/AdminLayout";
 import { API_URL } from "~/utils/constants";
 import type { UserEntity } from "~/types/user.entity";
 import { FaSpinner } from "react-icons/fa6";
 import { AnimatePresence } from "motion/react";
-import type { Route } from "../index/+types";
+import type { Route } from "../../index/+types";
 
 //lazy components
 const UserTable = lazy(() => import("./_components/UserTable/UserTable"));
@@ -16,7 +16,7 @@ export function meta({}: Route.MetaArgs) {
   return [{ title: 'Usuarios | Administrador' }];
 }
 
-const UserSection = () => {
+const UserPage = () => {
   //states
   const [showDialog, setShowDialog] = useState<
     { userID: number; block: 0 | 1 } | undefined
@@ -100,4 +100,4 @@ const UserSection = () => {
   );
 };
 
-export default UserSection;
+export default UserPage;

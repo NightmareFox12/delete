@@ -106,7 +106,7 @@ const Register = () => {
         });
         localStorage.setItem(USERS_KEY, JSON.stringify(usersSaved));
 
-        navigate("/home");
+        navigate("/home/book");
       }
     } catch (err) {
       console.log(err);
@@ -282,9 +282,7 @@ const Register = () => {
                           id="birthDate"
                           type="text"
                           value={
-                            birthDate
-                              ? format(birthDate, "dd/MM/yyyy")
-                              : ""
+                            birthDate ? format(birthDate, "dd/MM/yyyy") : ""
                           }
                           placeholder="dd/mm/yyyy"
                           autoComplete="off"

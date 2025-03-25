@@ -4,13 +4,11 @@ import type { BookEntity } from "~/types/book.entity";
 import { API_URL } from "~/utils/constants";
 import CardBook from "./_components/CardBook";
 import { toast, Toaster } from "sonner";
+import HomeHeader from "../_components/HomeHeader";
 
-type BookPageProps = {
-  books: BookEntity[];
-  setBooks: React.Dispatch<React.SetStateAction<BookEntity[]>>;
-};
-const BookPage = ({ books, setBooks }: BookPageProps) => {
+const BookPage = () => {
   //states
+  const [books, setBooks] = useState<Array<BookEntity>>(Array());
   const [isLoadingBook, setIsLoadingBook] = useState<boolean>(false);
 
   //functions
@@ -39,7 +37,8 @@ const BookPage = ({ books, setBooks }: BookPageProps) => {
   }, []);
 
   return (
-    <>
+    <main>
+      <HomeHeader />
       <Toaster richColors={true} />
       {books.length > 0 && (
         <h2 className="mt-16 text-center text-2xl font-semibold">
@@ -58,7 +57,7 @@ const BookPage = ({ books, setBooks }: BookPageProps) => {
           books.map((x, y) => <CardBook key={y} x={x} />)
         )}
       </section>
-    </>
+    </main>
   );
 };
 

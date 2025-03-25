@@ -1,9 +1,9 @@
 import { Suspense, lazy, useEffect, useState } from "react";
-import AdminLayout from "./_components/AdminLayout";
+import AdminLayout from "../_components/AdminLayout";
 import { API_URL } from "~/utils/constants";
 import { FaSpinner } from "react-icons/fa6";
 import { AnimatePresence, motion } from "motion/react";
-import type { Route } from "../index/+types";
+import type { Route } from "./+types/HomePage";
 
 //Lazy components
 const LikeBookPieChart = lazy(() => import("./_components/LikeBookPieChart"));
@@ -13,7 +13,7 @@ export function meta({}: Route.MetaArgs) {
   return [{ title: 'Inicio | Administrador' }];
 }
 
-const HomeSection = () => {
+const HomePage = () => {
   //states
   const [totalUsers, setTotalUsers] = useState<{
     block: number;
@@ -108,4 +108,4 @@ const HomeSection = () => {
   );
 };
 
-export default HomeSection;
+export default HomePage;

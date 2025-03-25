@@ -1,8 +1,8 @@
-import AdminLayout from "./_components/AdminLayout";
+import AdminLayout from "../_components/AdminLayout";
 import type { LikeBookEntity } from "~/types/likeBook.entity";
 import { lazy, useEffect, useState } from "react";
 import { API_URL } from "~/utils/constants";
-import type { Route } from "../index/+types";
+import type { Route } from "./+types/LikeBookPage";
 
 //lazy components
 const LikeBookTable = lazy(
@@ -13,7 +13,7 @@ export function meta({}: Route.MetaArgs) {
   return [{ title: 'Libros | Administrador' }];
 }
 
-const LikeBookSection = () => {
+const LikeBookPage = () => {
   //states
   const [likeBookData, setLikeBookData] = useState<LikeBookEntity[]>([]);
 
@@ -47,4 +47,4 @@ const LikeBookSection = () => {
   );
 };
 
-export default LikeBookSection;
+export default LikeBookPage;

@@ -1,16 +1,14 @@
-import { useEffect, useState } from 'react';
-import { API_URL } from '~/utils/constants';
-import NewsCard from './_components/NewsCard';
-import { FaSpinner } from 'react-icons/fa6';
-import type { NewsEntity } from '~/types/news.entity';
+import { useEffect, useState } from "react";
+import { API_URL } from "~/utils/constants";
+import NewsCard from "./_components/NewsCard";
+import { FaSpinner } from "react-icons/fa6";
+import type { NewsEntity } from "~/types/news.entity";
+import Header from "../_components/HomeHeader";
+import HomeHeader from "../_components/HomeHeader";
 
-type NewsPageProps = {
-  news: Array<NewsEntity>;
-  setNews: React.Dispatch<React.SetStateAction<NewsEntity[]>>;
-};
-
-const NewsPage = ({ news, setNews }: NewsPageProps) => {
+const NewsPage = () => {
   //states
+  const [news, setNews] = useState<Array<NewsEntity>>(Array());
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   //functions
@@ -38,18 +36,21 @@ const NewsPage = ({ news, setNews }: NewsPageProps) => {
   }, []);
 
   return (
-    <section className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:p-4 p-2 mt-15'>
-      {isLoading ? (
-        <div className='w-screen h-screen flex justify-center items-center'>
-          <div className='flex flex-col items-center gap-4'>
-            <FaSpinner className='animate-spin scale-200' />
-            <p className='font-medium'>Cargando Noticias...</p>
+    <main>
+      <HomeHeader />
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:p-4 p-2 mt-15">
+        {isLoading ? (
+          <div className="w-screen h-screen flex justify-center items-center">
+            <div className="flex flex-col items-center gap-4">
+              <FaSpinner className="animate-spin scale-200" />
+              <p className="font-medium">Cargando Noticias...</p>
+            </div>
           </div>
-        </div>
-      ) : (
-        news.map((x, y) => <NewsCard key={y} x={x} />)
-      )}
-    </section>
+        ) : (
+          news.map((x, y) => <NewsCard key={y} x={x} />)
+        )}
+      </section>
+    </main>
   );
 };
 

@@ -75,7 +75,7 @@ const Login = () => {
         if (res.message !== undefined) toast.error(res.message);
         else {
           localStorage.setItem(USER_ID_KEY, res.userID.toString());
-          navigate("/home");
+          navigate("/home/book");
         }
       }
     } catch (err) {
