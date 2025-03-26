@@ -3,8 +3,16 @@ import { API_URL } from "~/utils/constants";
 import NewsCard from "./_components/NewsCard";
 import { FaSpinner } from "react-icons/fa6";
 import type { NewsEntity } from "~/types/news.entity";
-import Header from "../_components/HomeHeader";
+
 import HomeHeader from "../_components/HomeHeader";
+import type { Route } from "./+types/NewsPage";
+
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Noticias | Educación sustentable" },
+    { name: "description", content: "Educación sustentable" },
+  ];
+}
 
 const NewsPage = () => {
   //states
@@ -22,7 +30,6 @@ const NewsPage = () => {
       if (res.response.data === undefined) console.log(res.response.data);
       else setNews(res.response.data!!);
 
-      //TODO: FALTA PONER EL LOADER
     } catch (err) {
       console.log(err);
     } finally {

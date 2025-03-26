@@ -9,6 +9,7 @@ export default [
   // route('/home', 'routes/home/home.tsx'),
   route('/home/book', 'routes/home/bookPage/BookPage.tsx'),
   route('/home/news', 'routes/home/newsPage/NewsPage.tsx'),
+  route('/home/search-book', 'routes/home/searchBookPage/SearchBookPage.tsx'),
 
   //admin
   route('/admin', 'routes/admin/homePage/HomePage.tsx'),

@@ -5,6 +5,14 @@ import { API_URL } from "~/utils/constants";
 import CardBook from "./_components/CardBook";
 import { toast, Toaster } from "sonner";
 import HomeHeader from "../_components/HomeHeader";
+import type { Route } from "./+types/BookPage";
+
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Libros | Educación sustentable" },
+    { name: "description", content: "Educación sustentable" },
+  ];
+}
 
 const BookPage = () => {
   //states
