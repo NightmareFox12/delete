@@ -23,10 +23,7 @@ const BookPage = () => {
   const getBooks = async () => {
     try {
       setIsLoadingBook(true);
-      const req = await fetch(`${API_URL}/books`, {
-        method: "GET",
-        headers: { "content-type": "application/json" },
-      });
+      const req = await fetch(`${API_URL}/books`);
 
       const res: { err?: any; books: Array<BookEntity> } = await req.json();
 

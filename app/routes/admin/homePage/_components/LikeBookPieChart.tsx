@@ -1,5 +1,3 @@
-import * as React from "react";
-import { TrendingUp } from "lucide-react";
 import { Label, Pie, PieChart } from "recharts";
 
 import {
@@ -20,11 +18,13 @@ import {
 type LikeBookPieChartProps = {
   likeStats: {
     bookTitle: string;
-    totalLikes: number;
+    bookLikes: number;
   }[];
+  totalLikes: number;
 };
 
-const LikeBookPieChart = ({ likeStats }: LikeBookPieChartProps) => {
+//TODO: agregar a este endpoint para obtener el numero de todos los loke
+const LikeBookPieChart = ({ likeStats,totalLikes }: LikeBookPieChartProps) => {
   //constans
   const colors = [
     "#00a63e",
@@ -48,15 +48,10 @@ const LikeBookPieChart = ({ likeStats }: LikeBookPieChartProps) => {
   const chartData = likeStats.map((x, y: number) => {
     return {
       title: x.bookTitle,
-      likes: x.totalLikes,
+      likes: x.bookLikes,
       fill: colors[y],
     };
   });
-
-  //memos
-  const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.likes, 0);
-  }, [likeStats]);
 
   return (
     <Card className="flex flex-col w-[350px]">
@@ -95,7 +90,7 @@ const LikeBookPieChart = ({ likeStats }: LikeBookPieChartProps) => {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {totalVisitors.toLocaleString()}
+                          {totalLikes}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
@@ -113,14 +108,12 @@ const LikeBookPieChart = ({ likeStats }: LikeBookPieChartProps) => {
           </PieChart>
         </ChartContainer>
       </CardContent>
-      {/* <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+      <CardFooter className="flex-col gap-2 text-sm">
+        <div className="flex items-center gap-2 px-2 font-medium leading-none">
+          En la gráfica se muestran los 10 libros con más 'me gusta'
         </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter> */}
+   
+      </CardFooter>
     </Card>
   );
 };

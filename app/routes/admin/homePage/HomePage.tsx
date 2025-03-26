@@ -4,13 +4,14 @@ import { API_URL } from "~/utils/constants";
 import { FaSpinner } from "react-icons/fa6";
 import { AnimatePresence, motion } from "motion/react";
 import type { Route } from "./+types/HomePage";
+import { Toaster, toast } from "sonner";
 
 //Lazy components
 const LikeBookPieChart = lazy(() => import("./_components/LikeBookPieChart"));
 const UserPieChart = lazy(() => import("./_components/UserPieChart"));
 
 export function meta({}: Route.MetaArgs) {
-  return [{ title: 'Inicio | Administrador' }];
+  return [{ title: "Inicio | Administrador" }];
 }
 
 const HomePage = () => {
@@ -23,19 +24,20 @@ const HomePage = () => {
   const [likeStats, setLikeStats] = useState<
     {
       bookTitle: string;
-      totalLikes: number;
+      bookLikes: number;
     }[]
   >([]);
+  const [totalLikes, setTotalLikes] = useState<number>(0);
 
   //functions
   const getTotalUsers = async () => {
     try {
       const req = await fetch(`${API_URL}/user/count`);
 
-      const res: { message?: string; unlock: number; block: number } =
+      const res: { err?: string; unlock: number; block: number } =
         await req.json();
 
-      if (res.message !== undefined) console.log("lanzar error");
+      if (res.err !== undefined) return toast.error(res.err);
       else
         setTotalUsers({
           block: res.block,
@@ -43,6 +45,7 @@ const HomePage = () => {
         });
     } catch (err) {
       console.log(err);
+      toast.error("Ha ocurrido un error con la conexión.");
     }
   };
 
@@ -51,14 +54,19 @@ const HomePage = () => {
       const req = await fetch(`${API_URL}/books/like-stats`);
 
       const res: {
-        message?: string;
-        likes: { bookTitle: string; totalLikes: number }[];
+        err?: string;
+        likes: { bookTitle: string; bookLikes: number }[];
+        totalLikes: number;
       } = await req.json();
 
-      if (res.message !== undefined) console.log("lanzar error");
-      else setLikeStats(res.likes);
+      if (res.err !== undefined) return toast.error(res.err);
+      else {
+        setLikeStats(res.likes);
+        setTotalLikes(res.totalLikes);
+      }
     } catch (err) {
       console.log(err);
+      toast.error("Ha ocurrido un error con la conexión.");
     }
   };
 
@@ -70,6 +78,7 @@ const HomePage = () => {
 
   return (
     <AdminLayout>
+      <Toaster richColors={true} />
       <section className="p-5">
         <article className="h-screen w-full flex justify-center items-center gap-10">
           {/* Users */}
@@ -97,7 +106,10 @@ const HomePage = () => {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                 >
-                  <LikeBookPieChart likeStats={likeStats} />
+                  <LikeBookPieChart
+                    likeStats={likeStats}
+                    totalLikes={totalLikes}
+                  />
                 </motion.div>
               )}
             </AnimatePresence>

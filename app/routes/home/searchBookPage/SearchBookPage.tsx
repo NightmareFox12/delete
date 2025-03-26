@@ -28,10 +28,7 @@ const SearchPage = () => {
   const handleSearch = async () => {
     try {
       setIsLoadingBook(true);
-      const req = await fetch(`${API_URL}/books?title=${search}`, {
-        method: "GET",
-        headers: { "content-type": "application/json" },
-      });
+      const req = await fetch(`${API_URL}/books?title=${search}`);
 
       const res: { err?: any; books: Array<BookEntity> } = await req.json();
 
@@ -39,7 +36,7 @@ const SearchPage = () => {
       else setBooks(res.books);
     } catch (err) {
       console.log(err);
-      toast.error("Error al buscar libros");
+      toast.error("Error al buscar libros.");
     } finally {
       setIsLoadingBook(false);
     }
@@ -69,16 +66,16 @@ const SearchPage = () => {
             type="submit"
             variant="default"
             className="bg-green-600 hover:bg-green-700"
-            disabled={isLoadingBook}
+            disabled={isLoadingBook || search.length < 2}
           >
             <FaMagnifyingGlass />
           </Button>
         </form>
 
         {books.length === 0 && !isLoadingBook ? (
-            <p className="text-center text-lg font-medium text-gray-500 mt-36">
-              No se encontraron libros
-            </p>
+          <p className="text-center text-lg font-medium text-gray-500 mt-36">
+            No se encontraron libros
+          </p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 m-2 lg:mx-5">
             {isLoadingBook ? (
