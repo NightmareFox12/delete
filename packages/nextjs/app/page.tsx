@@ -8,6 +8,7 @@ import { Suspense } from 'react';
 import { ParticlesBackground } from './_components/ParticleBackground';
 import { Vote } from 'lucide-react';
 import { CustomConnectButton } from '~~/components/scaffold-stark/CustomConnectButton';
+import { HeroSection } from './_components/HeroSection';
 
 const LandingPage: NextPage = async () => {
   return (
@@ -18,7 +19,7 @@ const LandingPage: NextPage = async () => {
       </Suspense>
 
       {/* Header */}
-      <header className='border-b bg-card/50 backdrop-blur-sm top-0 z-50 relative'>
+      <header className='border-b z-30 border-primary'>
         <div className='mx-auto px-4 py-4 flex items-center justify-between'>
           <div className='flex items-center space-x-2'>
             <div className='w-8 h-8 bg-primary rounded-lg flex items-center justify-center'>
@@ -29,19 +30,13 @@ const LandingPage: NextPage = async () => {
             </span>
           </div>
           <nav className='hidden md:flex items-center space-x-6'>
-            <a
-              href='#features'
-              className='text-muted-foreground hover:text-foreground transition-colors'
-            >
+            <a href='#features' className='text-accent-content'>
               Features
             </a>
-            <a
-              href='#how-it-works'
-              className='text-muted-foreground hover:text-foreground transition-colors'
-            >
+            <a href='#how-it-works' className='text-accent-content'>
               How it works
             </a>
-            {/* <a href="#rewards" className="text-muted-foreground hover:text-foreground transition-colors">
+            {/* <a href="#rewards" className="text-accent-content">
                 Recompensas
               </a> */}
           </nav>
@@ -50,6 +45,9 @@ const LandingPage: NextPage = async () => {
           </div>
         </div>
       </header>
+
+      {/* Hero Section */}
+      <HeroSection />
     </section>
   );
 

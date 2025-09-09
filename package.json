@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "lucide-react": "^0.543.0",
+    "motion": "^12.23.12",
     "postcss": "^8.4.38"
   },
   "devDependencies": {

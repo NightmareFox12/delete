@@ -81,7 +81,7 @@ const ConnectModal = () => {
     <div>
       <label
         htmlFor="connect-modal"
-        className="rounded-[18px] btn-sm  font-bold px-8 bg-btn-wallet py-3 cursor-pointer"
+        className="rounded-[18px] btn-sm font-bold px-8 bg-btn-wallet py-3 cursor-pointer"
       >
         <span>Connect</span>
       </label>
