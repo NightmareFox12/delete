@@ -3,6 +3,7 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  Check,
   CircleQuestionMarkIcon,
   Loader,
   Plus,
@@ -255,9 +256,70 @@ export const CreateDaoDialog: React.FC = () => {
                   accept='.jpeg,.png,.jpg'
                   className='absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20'
                 />
+
+                {logoFile !== undefined ? (
+                  <div className='relative w-full h-auto overflow-hidden'>
+                    {
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={URL.createObjectURL(logoFile)}
+                        alt='logo DAO'
+                        className='w-full h-auto object-cover block z-10'
+                        style={{ position: 'relative' }}
+                      />
+                    }
+
+                    {/* Button */}
+                    <div className='absolute top-0 right-0.5 z-30'>
+                      <button
+                        type='button'
+                        onClick={() => daoForm.setValue('logo', undefined)}
+                        disabled={submitLoading}
+                        className='btn btn-error rounded-full p-3'
+                      >
+                        <Trash className='w-4 h-4' />
+                      </button>
+                    </div>
+                  </div>
+                ) : !loadImage ? (
+                  <div
+                    className={`absolute inset-0 flex flex-col justify-center items-center pointer-events-none z-10  ${daoForm.formState.errors.logo ? 'text-destructive' : ''}`}
+                  >
+                    <Upload className='w-10 h-10' />
+                    <p className='my-0 font-semibold'>
+                      Choose or drag an image
+                    </p>
+                    <span className='font-semibold'>
+                      The image must be less than 1 MB
+                    </span>
+                    <span className='text-center text-sm'>
+                      It is recommended that the appearance of the image be
+                      100x100
+                    </span>
+                  </div>
+                ) : (
+                  <div className='w-full h-full px-4 flex justify-center items-center'>
+                    {/* <Progress value={progress} /> */}
+                  </div>
+                )}
               </div>
+
               <p className='label'>Optional</p>
             </fieldset>
+
+            {/* Is Public */}
+            <input type='checkbox' defaultChecked className='toggle' />
+
+            <div className='modal-action'>
+              <form method='dialog'>
+                {/* if there is a button in form, it will close the modal */}
+                <button className='btn'>Close</button>
+              </form>
+
+              <button type='submit' className='btn btn-accent'>
+                creat dao
+              </button>
+            </div>
           </form>
         </div>
       </dialog>
