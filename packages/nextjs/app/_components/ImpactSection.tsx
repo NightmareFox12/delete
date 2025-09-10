@@ -12,27 +12,25 @@ import {
   Vote,
 } from 'lucide-react';
 import CountUp from '~~/components/ui/CountUp';
+import { useScaffoldReadContract } from '~~/hooks/scaffold-stark/useScaffoldReadContract';
 // import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
 
 const daoCounterLoading = false;
 const daoCounter = 4n;
 
-const userCounterLoading = false;
-const userCounter = 4n;
-
 export const ImpactSection: React.FC = () => {
-  //smart contract
+  //Smart contract
+
   // const { data: daoCounter, isLoading: daoCounterLoading } =
   //   useScaffoldReadContract({
   //     contractName: 'AgoraDaoFabric',
   //     functionName: 'getTotalDaoCount',
   //   });
-
-  // const { data: userCounter, isLoading: userCounterLoading } =
-  //   useScaffoldReadContract({
-  //     contractName: 'AgoraDaoFabric',
-  //     functionName: 'userCounter',
-  //   });
+  const { data: userCounter, isLoading: userCounterLoading } =
+    useScaffoldReadContract({
+      contractName: 'AgoraDaoFabric',
+      functionName: 'user_counter',
+    });
 
   //components
   const NumbersTab = () => {
@@ -290,8 +288,13 @@ export const ImpactSection: React.FC = () => {
 
           <div className='tabs tabs-lift'>
             <label className='tab'>
-              <input type='radio' defaultChecked name='my_tabs_4' className='text-sm font-semibold'/>
-              <ListOrdered className="w-4 h-4 mr-2" />
+              <input
+                type='radio'
+                defaultChecked
+                name='my_tabs_4'
+                className='text-sm font-semibold'
+              />
+              <ListOrdered className='w-4 h-4 mr-2' />
               Numbers
             </label>
             <NumbersTab />

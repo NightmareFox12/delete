@@ -7,7 +7,7 @@ const deployedContracts = {
   devnet: {
     AgoraDaoFabric: {
       address:
-        "0x256c5c22bed3b5013e97c9456eaa883b4874e98e94ecf70f406d742d1827b61",
+        "0x1359e47ae6d10ca9423435b2c3b370ca8ae2d736a459f47d6a2afacf9354aea",
       abi: [
         {
           type: "impl",
@@ -27,11 +27,11 @@ const deployedContracts = {
             },
             {
               type: "function",
-              name: "get",
+              name: "user_counter",
               inputs: [],
               outputs: [
                 {
-                  type: "core::integer::u128",
+                  type: "core::integer::u16",
                 },
               ],
               state_mutability: "view",
@@ -40,13 +40,70 @@ const deployedContracts = {
         },
         {
           type: "event",
+          name: "openzeppelin_access::ownable::ownable::OwnableComponent::OwnershipTransferred",
+          kind: "struct",
+          members: [
+            {
+              name: "previous_owner",
+              type: "core::starknet::contract_address::ContractAddress",
+              kind: "key",
+            },
+            {
+              name: "new_owner",
+              type: "core::starknet::contract_address::ContractAddress",
+              kind: "key",
+            },
+          ],
+        },
+        {
+          type: "event",
+          name: "openzeppelin_access::ownable::ownable::OwnableComponent::OwnershipTransferStarted",
+          kind: "struct",
+          members: [
+            {
+              name: "previous_owner",
+              type: "core::starknet::contract_address::ContractAddress",
+              kind: "key",
+            },
+            {
+              name: "new_owner",
+              type: "core::starknet::contract_address::ContractAddress",
+              kind: "key",
+            },
+          ],
+        },
+        {
+          type: "event",
+          name: "openzeppelin_access::ownable::ownable::OwnableComponent::Event",
+          kind: "enum",
+          variants: [
+            {
+              name: "OwnershipTransferred",
+              type: "openzeppelin_access::ownable::ownable::OwnableComponent::OwnershipTransferred",
+              kind: "nested",
+            },
+            {
+              name: "OwnershipTransferStarted",
+              type: "openzeppelin_access::ownable::ownable::OwnableComponent::OwnershipTransferStarted",
+              kind: "nested",
+            },
+          ],
+        },
+        {
+          type: "event",
           name: "contracts::AgoraDaoFabric::AgoraDaoFabric::Event",
           kind: "enum",
-          variants: [],
+          variants: [
+            {
+              name: "OwnableEvent",
+              type: "openzeppelin_access::ownable::ownable::OwnableComponent::Event",
+              kind: "flat",
+            },
+          ],
         },
       ],
       classHash:
-        "0x69164bf8f2908f652aea11e536e36d971cd43ad24841e6cf23e3bd89f70abfb",
+        "0x7f18db88c8942c1f8e5acc8948c1f976b6579896e14e5f3ebf5838791b2aded",
     },
   },
 } as const;

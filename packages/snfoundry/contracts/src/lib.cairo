@@ -1,3 +1,2 @@
-pub mod YourContract;
-
-pub mod AgoraDaoFabric;
+mod agora_dao;
+mod agora_dao_fabric;
