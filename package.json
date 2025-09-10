@@ -29,9 +29,12 @@
     "verify": "yarn workspace @ss-2/snfoundry verify"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.1",
     "lucide-react": "^0.543.0",
     "motion": "^12.23.12",
-    "postcss": "^8.4.38"
+    "postcss": "^8.4.38",
+    "react-hook-form": "^7.62.0",
+    "zod": "^4.1.5"
   },
   "devDependencies": {
     "daisyui": "^4.7.3",

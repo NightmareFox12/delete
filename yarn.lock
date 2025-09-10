@@ -1668,6 +1668,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hookform/resolvers@npm:^5.2.1":
+  version: 5.2.1
+  resolution: "@hookform/resolvers@npm:5.2.1"
+  dependencies:
+    "@standard-schema/utils": ^0.3.0
+  peerDependencies:
+    react-hook-form: ^7.55.0
+  checksum: 7c1626ddd1833796ee4f8407125547bc83f7972a91a2564eee5f8056b0fd9d56f6ac7093041d5f2b5734016b9df9e5ca8fa0184fe7755f39db29a74abfacb58c
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.13.0":
   version: 0.13.0
   resolution: "@humanwhocodes/config-array@npm:0.13.0"
@@ -4029,6 +4040,13 @@ __metadata:
     eslint: ^8.0.0
   languageName: unknown
   linkType: soft
+
+"@standard-schema/utils@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@standard-schema/utils@npm:0.3.0"
+  checksum: 7084f875d322792f2e0a5904009434c8374b9345b09ba89828b68fd56fa3c2b366d35bf340d9e8c72736ef01793c2f70d350c372ed79845dc3566c58d34b4b51
+  languageName: node
+  linkType: hard
 
 "@starknet-io/starknet-types-07@npm:@starknet-io/types-js@~0.7.10, @starknet-io/types-js@npm:^0.7.10, @starknet-io/types-js@npm:^0.7.7":
   version: 0.7.10
@@ -11698,6 +11716,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-hook-form@npm:^7.62.0":
+  version: 7.62.0
+  resolution: "react-hook-form@npm:7.62.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18 || ^19
+  checksum: 76f0574d0df632c22b37c2666e8aef8b4378dfa0bcc5ae5b20c410d3103abd17e0bcf6256f8a6d9d18cbd687f96edf3fce35bf41d06872ffb412c91664361b1a
+  languageName: node
+  linkType: hard
+
 "react-hot-toast@npm:^2.4.1":
   version: 2.6.0
   resolution: "react-hot-toast@npm:2.6.0"
@@ -12703,6 +12730,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ss-2@workspace:."
   dependencies:
+    "@hookform/resolvers": ^5.2.1
     daisyui: ^4.7.3
     husky: ^9.0.11
     lucide-react: ^0.543.0
@@ -12710,6 +12738,8 @@ __metadata:
     pinst: ^3.0.0
     postcss: ^8.4.38
     prettier: ^3.2.5
+    react-hook-form: ^7.62.0
+    zod: ^4.1.5
   languageName: unknown
   linkType: soft
 
@@ -14937,6 +14967,13 @@ __metadata:
   version: 3.25.76
   resolution: "zod@npm:3.25.76"
   checksum: c9a403a62b329188a5f6bd24d5d935d2bba345f7ab8151d1baa1505b5da9f227fb139354b043711490c798e91f3df75991395e40142e6510a4b16409f302b849
+  languageName: node
+  linkType: hard
+
+"zod@npm:^4.1.5":
+  version: 4.1.5
+  resolution: "zod@npm:4.1.5"
+  checksum: e5519b3d5e5cfb07cdfd129e888dc12e8d7f07ab7b1354acc0c807481faf705379735be08bd4421d8f2e8d09133d5fc06ea52010c0035b2a04dcda67970c825d
   languageName: node
   linkType: hard
 

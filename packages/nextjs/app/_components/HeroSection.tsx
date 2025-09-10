@@ -12,9 +12,9 @@ export const HeroSection: React.FC = () => {
   const { isConnected } = useAccount();
   const router = useRouter();
 
-  // useEffect(() => {
-  //   if (isConnected) router.push('/daos');
-  // }, [isConnected, router]);
+  useEffect(() => {
+    if (isConnected) router.push('/daos');
+  }, [isConnected, router]);
 
   return (
     <section className='py-20 px-4 relative z-10'>
