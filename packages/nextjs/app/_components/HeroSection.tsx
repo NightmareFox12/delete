@@ -3,8 +3,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Rocket } from 'lucide-react';
-// import DecryptedText from "~~/components/ui/DecryptedText";
-// import RotatingText from "~~/components/ui/RotatingText";
 import { useAccount } from '~~/hooks/useAccount';
 import { CustomConnectButton } from '~~/components/scaffold-stark/CustomConnectButton';
 import DecryptedText from '~~/components/ui/DecryptedText';
@@ -14,24 +12,13 @@ export const HeroSection: React.FC = () => {
   const { isConnected } = useAccount();
   const router = useRouter();
 
-  useEffect(() => {
-    if (isConnected) router.push('/daos');
-  }, [isConnected, router]);
+  // useEffect(() => {
+  //   if (isConnected) router.push('/daos');
+  // }, [isConnected, router]);
 
   return (
     <section className='py-20 px-4 relative z-10'>
       <div className='container mx-auto text-center max-w-4xl'>
-        {/* <Badge variant="secondary" className="mb-6 bg-primary/10 text-primary border-primary/20 ">
-          <Rocket />
-          <DecryptedText
-            text="Decentralization in Action"
-            animateOn="view"
-            speed={100}
-            maxIterations={15}
-            revealDirection="center"
-          />
-        </Badge> */}
-
         <div className='badge badge-secondary border-base-200 py-3 mb-6'>
           <Rocket className='w-4 h-4' />
           <DecryptedText
