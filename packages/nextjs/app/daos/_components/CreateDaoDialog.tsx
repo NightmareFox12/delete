@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Check,
   CircleQuestionMarkIcon,
+  Info,
   Loader,
   Plus,
   Rocket,
@@ -71,7 +72,13 @@ export const CreateDaoDialog: React.FC = () => {
   });
 
   //Subscriptions
-  const logoFile = daoForm.watch('logo');
+  const {
+    name: nameWatch,
+    description: descriptionWatch,
+    categories: categoriesWatch,
+    isPublic: isPublicWatch,
+    logo: logoWatch,
+  } = daoForm.watch();
 
   //Smart contract
   // const { writeContractAsync: writeAgoraDaoFabricAsync } = useScaffoldWriteContract({ contractName: "AgoraDaoFabric" });
@@ -216,35 +223,87 @@ export const CreateDaoDialog: React.FC = () => {
             className='space-y-4 px-1'
           >
             {/* name */}
-            <input
-              {...daoForm.register('name')}
-              placeholder='Dao name'
-              className='input input-bordered w-full bg-base-200'
-            />
+            <fieldset className='fieldset'>
+              <legend className='fieldset-legend text-[13px]'>
+                Name
+                <span className='-ml-1 text-error font-bold text-bold'>*</span>
+              </legend>
+              <input
+                {...daoForm.register('name')}
+                className='input w-full bg-base-300'
+                placeholder='e.g. Governance Stark'
+              />
+              <div className='flex justify-between'>
+                {daoForm.formState.errors.name ? (
+                  <p className='label text-error my-0'>
+                    {daoForm.formState.errors.name.message}
+                  </p>
+                ) : (
+                  <span />
+                )}
+
+                <p className='label my-0'>{nameWatch?.length ?? 0}/30</p>
+              </div>
+            </fieldset>
 
             {/* description */}
-            <textarea
-              {...daoForm.register('description')}
-              className='textarea resize-none h-28 bg-base-200 w-full'
-              placeholder='Dao description'
-            />
+            <fieldset className='fieldset'>
+              <legend className='fieldset-legend text-[13px]'>
+                Description
+                <span className='-ml-1 text-error font-bold text-bold'>*</span>
+              </legend>
+              <textarea
+                {...daoForm.register('description')}
+                className='textarea resize-none h-28 bg-base-200 w-full'
+                placeholder='e.g. A decentralized organization that enables transparent decision-making, in which users actively participate in the financing and management of community-driven projects.'
+              />
+              <div className='flex justify-between'>
+                {daoForm.formState.errors.description ? (
+                  <p className='label text-error my-0'>
+                    {daoForm.formState.errors.description.message}
+                  </p>
+                ) : (
+                  <span />
+                )}
+
+                <p className='label my-0'>
+                  {descriptionWatch?.length ?? 0}/300
+                </p>
+              </div>
+            </fieldset>
 
             {/* categories */}
             <fieldset className='fieldset'>
-              <legend className='fieldset-legend'>Browsers</legend>
-              <select defaultValue='Pick a browser' className='select w-full'>
-                <option disabled={true}>Pick a browser</option>
+              <legend className='fieldset-legend'>
+                Categories{' '}
+                <span className='-ml-1 text-error font-bold text-bold'>*</span>
+              </legend>
+              <select defaultValue='Categories' className='select w-full'>
+                <option disabled={true}>Pick a category</option>
                 <option>Chrome</option>
                 <option>FireFox</option>
                 <option>Safari</option>
               </select>
-              <span className='label'>Optional</span>
+              <span className='label text-error my-0'>Optional</span>
             </fieldset>
 
             {/* logo */}
             <fieldset className='fieldset'>
-              <legend className='fieldset-legend'>What is your name?</legend>
-              <div className='relative h-60 bg-accent rounded-lg flex flex-col items-center justify-center overflow-hidden mx-2 border'>
+              <legend className='fieldset-legend w-full ml-2'>
+                <article className='w-full flex justify-between items-center'>
+                  <p>Logo</p>
+
+                  <div
+                    className='tooltip tooltip-left'
+                    data-tip='Choose the logo that your DAO will represent. This field is optional and can be modified later.'
+                  >
+                    <button className='btn btn-sm btn-ghost rounded-full'>
+                      <CircleQuestionMarkIcon className='w-4 h-4' />
+                    </button>
+                  </div>
+                </article>
+              </legend>
+              <div className='relative h-60 bg-accent rounded-lg flex flex-col items-center justify-center overflow-hidden mx-1 border'>
                 <input
                   type='file'
                   onClick={(e) => (e.currentTarget.value = '')}
@@ -257,12 +316,12 @@ export const CreateDaoDialog: React.FC = () => {
                   className='absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20'
                 />
 
-                {logoFile !== undefined ? (
+                {logoWatch !== undefined ? (
                   <div className='relative w-full h-auto overflow-hidden'>
                     {
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
-                        src={URL.createObjectURL(logoFile)}
+                        src={URL.createObjectURL(logoWatch)}
                         alt='logo DAO'
                         className='w-full h-auto object-cover block z-10'
                         style={{ position: 'relative' }}
@@ -273,9 +332,11 @@ export const CreateDaoDialog: React.FC = () => {
                     <div className='absolute top-0 right-0.5 z-30'>
                       <button
                         type='button'
-                        onClick={() => daoForm.setValue('logo', undefined)}
+                        onClick={() => {
+                          daoForm.setValue('logo', undefined);
+                        }}
                         disabled={submitLoading}
-                        className='btn btn-error rounded-full p-3'
+                        className='btn btn-error text-primary-content rounded-full p-3'
                       >
                         <Trash className='w-4 h-4' />
                       </button>
@@ -283,7 +344,7 @@ export const CreateDaoDialog: React.FC = () => {
                   </div>
                 ) : !loadImage ? (
                   <div
-                    className={`absolute inset-0 flex flex-col justify-center items-center pointer-events-none z-10  ${daoForm.formState.errors.logo ? 'text-destructive' : ''}`}
+                    className={`absolute inset-0 flex flex-col justify-center items-center pointer-events-none z-10 ${daoForm.formState.errors.logo ? 'text-error' : ''}`}
                   >
                     <Upload className='w-10 h-10' />
                     <p className='my-0 font-semibold'>
@@ -304,21 +365,76 @@ export const CreateDaoDialog: React.FC = () => {
                 )}
               </div>
 
-              <p className='label'>Optional</p>
+              {daoForm.formState.errors.logo ? (
+                <p className='label my-0 text-error ml-2'>
+                  {daoForm.formState.errors.logo.message}
+                </p>
+              ) : (
+                <p className='label my-0 ml-2'>Optional</p>
+              )}
             </fieldset>
 
             {/* Is Public */}
-            <input type='checkbox' defaultChecked className='toggle' />
+            <fieldset className='fieldset'>
+              <legend className='fieldset-legend w-full'>
+                <article className='w-full flex justify-between items-center'>
+                  <div className='flex gap-2'>
+                    <p className='m-0'> DAO Visibility</p>
+                    <span className='text-error font-bold text-bold'>*</span>
+                  </div>
+                  <div
+                    className='tooltip tooltip-left'
+                    data-tip='In any public DAO, anyone can join and help the growth of the
+                community. A private DAO can only join those users who have the
+                link (private DAO will not appear in the search engine)'
+                  >
+                    <button className='btn btn-sm btn-ghost rounded-full'>
+                      <CircleQuestionMarkIcon className='w-4 h-4' />
+                    </button>
+                  </div>
+                </article>
+              </legend>
+              <div className='flex justify-center gap-2 items-center'>
+                <p className='m-0 text-sm font-semibold'>
+                  {isPublicWatch ? 'Public' : 'Private'} DAO
+                </p>
+                <input
+                  type='checkbox'
+                  defaultChecked
+                  checked={isPublicWatch}
+                  onChange={(e) =>
+                    daoForm.setValue('isPublic', e.currentTarget.checked)
+                  }
+                  className='toggle'
+                />
+              </div>
+              <span className='label text-error my-0'>Optional</span>
+            </fieldset>
 
-            <div className='modal-action'>
-              <form method='dialog'>
-                {/* if there is a button in form, it will close the modal */}
-                <button className='btn'>Close</button>
-              </form>
+            {/* Action Buttons */}
+            <div className='modal-action justify-center'>
+              <div>
+                <button
+                  type='button'
+                  onClick={() => daoForm.reset()}
+                  disabled={submitLoading}
+                  className='btn btn-error mr-6'
+                >
+                  <Trash className='w-4 h-4' />
+                  Clear all
+                </button>
 
-              <button type='submit' className='btn btn-accent'>
-                creat dao
-              </button>
+                <button
+                  type='submit'
+                  disabled={
+                    // daoCategoriesLoading ||
+                    submitLoading || !daoForm.formState.isValid
+                  }
+                  className='btn btn-accent'
+                >
+                  <Rocket className='w-4 h-4' /> Launch DAO
+                </button>
+              </div>
             </div>
           </form>
         </div>
@@ -484,12 +600,12 @@ export const CreateDaoDialog: React.FC = () => {
   //                         className='absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20'
   //                       />
 
-  //                       {logoFile !== undefined ? (
+  //                       {logoWatch !== undefined ? (
   //                         <div className='relative w-full h-auto overflow-hidden'>
   //                           {
   //                             // eslint-disable-next-line @next/next/no-img-element
   //                             <img
-  //                               src={URL.createObjectURL(logoFile)}
+  //                               src={URL.createObjectURL(logoWatch)}
   //                               alt='logo DAO'
   //                               className='w-full h-auto object-cover block z-10'
   //                               style={{ position: 'relative' }}

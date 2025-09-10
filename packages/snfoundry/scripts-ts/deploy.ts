@@ -6,8 +6,8 @@ import {
   assertDeployerDefined,
   assertRpcNetworkActive,
   assertDeployerSignable,
-} from "./deploy-contract";
-import { green } from "./helpers/colorize-log";
+} from './deploy-contract';
+import { green } from './helpers/colorize-log';
 
 /**
  * Deploy a contract using the specified parameters.
@@ -46,10 +46,10 @@ import { green } from "./helpers/colorize-log";
  */
 const deployScript = async (): Promise<void> => {
   await deployContract({
-    contract: "YourContract",
-    constructorArgs: {
-      owner: deployer.address,
-    },
+    contract: 'AgoraDaoFabric',
+    // constructorArgs: {
+    //   owner: deployer.address,
+    // },
   });
 };
 
@@ -63,7 +63,7 @@ const main = async (): Promise<void> => {
     await executeDeployCalls();
     exportDeployments();
 
-    console.log(green("All Setup Done!"));
+    console.log(green('All Setup Done!'));
   } catch (err) {
     console.log(err);
     process.exit(1); //exit with error so that non subsequent scripts are run

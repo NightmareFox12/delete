@@ -3,6 +3,52 @@
  * You should not edit it manually or your changes might be overwritten.
  */
 
-const deployedContracts = {} as const;
+const deployedContracts = {
+  devnet: {
+    AgoraDaoFabric: {
+      address:
+        "0x256c5c22bed3b5013e97c9456eaa883b4874e98e94ecf70f406d742d1827b61",
+      abi: [
+        {
+          type: "impl",
+          name: "AgoraDaoFabric",
+          interface_name: "contracts::AgoraDaoFabric::IAgoraDaoFabric",
+        },
+        {
+          type: "interface",
+          name: "contracts::AgoraDaoFabric::IAgoraDaoFabric",
+          items: [
+            {
+              type: "function",
+              name: "createDao",
+              inputs: [],
+              outputs: [],
+              state_mutability: "external",
+            },
+            {
+              type: "function",
+              name: "get",
+              inputs: [],
+              outputs: [
+                {
+                  type: "core::integer::u128",
+                },
+              ],
+              state_mutability: "view",
+            },
+          ],
+        },
+        {
+          type: "event",
+          name: "contracts::AgoraDaoFabric::AgoraDaoFabric::Event",
+          kind: "enum",
+          variants: [],
+        },
+      ],
+      classHash:
+        "0x69164bf8f2908f652aea11e536e36d971cd43ad24841e6cf23e3bd89f70abfb",
+    },
+  },
+} as const;
 
 export default deployedContracts;
