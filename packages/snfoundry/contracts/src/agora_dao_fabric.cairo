@@ -39,12 +39,12 @@ mod AgoraDaoFabric {
     };
 
     //imports
-    use super::functions::add_user_counter;
+    use super::functions::{add_category, add_user_counter};
     use super::structs::Dao;
     use super::validations::create_dao_validation;
 
     //constants
-    const CLASS_HASH: felt252 = 0x2d05f63ace143c69e65f9e6475724e84f8bd087bf6040eaa129492acb9a358e;
+    const CLASS_HASH: felt252 = 0xafdfbcbabcc4748bb223d99dba8c6e56c79c3b8d3bc5b7b7d1450f230e4998;
 
     component!(path: OwnableComponent, storage: ownable, event: OwnableEvent);
 
@@ -66,22 +66,12 @@ mod AgoraDaoFabric {
     fn constructor(ref self: ContractState) {
         self.ownable.initializer(get_caller_address());
 
-        let mut category_counter = self.category_counter.read();
-
-        self.categories.write(category_counter, "GAMING");
-        category_counter = category_counter + 1;
-
-        self.categories.write(category_counter, "SERVICE");
-        category_counter = category_counter + 1;
-
-        self.categories.write(category_counter, "GOVERNANCE");
-        category_counter = category_counter + 1;
-
-        self.categories.write(category_counter, "SOCIAL IMPACT");
-        category_counter = category_counter + 1;
-
-        self.categories.write(category_counter, "ENERGY");
-        self.category_counter.write(category_counter + 1);
+        add_category(ref self, "DEFI");
+        add_category(ref self, "GAMING");
+        add_category(ref self, "SOCIAL IMPACT");
+        add_category(ref self, "SERVICE");
+        add_category(ref self, "ENERGY");
+        add_category(ref self, "GAMING");
     }
 
     #[event]

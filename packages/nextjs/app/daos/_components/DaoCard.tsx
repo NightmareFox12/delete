@@ -73,7 +73,7 @@ export const DaoCard: React.FC<DaoCardProps> = ({
     }
   };
 
-  console.log(daoAddress);
+  console.log(userCounter);
 
   const CardHeader = () => {
     return (
