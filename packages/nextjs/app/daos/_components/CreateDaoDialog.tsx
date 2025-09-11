@@ -123,6 +123,12 @@ export const CreateDaoDialog: React.FC = () => {
         ],
       });
       daoForm.reset();
+
+      const closeModalButton = document.getElementById(
+        'close-modal-button-create-dao'
+      ) as HTMLButtonElement;
+      if (!closeModalButton) return;
+      closeModalButton.click();
     } catch (err) {
       console.log(err);
     } finally {
@@ -177,6 +183,7 @@ export const CreateDaoDialog: React.FC = () => {
         <div className='modal-box sm:w-6/12 sm:!max-w-3xl md:w-6/12 md:!max-w-5xl max-h-[80dvh] !overflow-y-visible'>
           <form method='dialog'>
             <button
+              id='close-modal-button-create-dao'
               disabled={submitLoading}
               className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2'
             >

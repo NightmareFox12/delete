@@ -71,7 +71,6 @@ mod AgoraDaoFabric {
         add_category(ref self, "SOCIAL IMPACT");
         add_category(ref self, "SERVICE");
         add_category(ref self, "ENERGY");
-        add_category(ref self, "GAMING");
     }
 
     #[event]

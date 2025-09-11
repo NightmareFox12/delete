@@ -24,7 +24,7 @@ pub fn add_category(ref self: ContractState, category: ByteArray) {
     let mut i: u16 = 0;
 
     while i != category_counter {
-        assert!(self.categories.read(i) == category, "Category already exists");
+        assert!(self.categories.read(i) != category, "Category already exists");
         i += 1;
     }
 
