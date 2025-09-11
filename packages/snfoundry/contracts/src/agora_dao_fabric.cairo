@@ -1,16 +1,27 @@
 mod functions;
 mod structs;
+mod validations;
 
+//Types for interface
+use super::agora_dao_fabric::structs::Dao;
 
 #[starknet::interface]
 trait IAgoraDaoFabric<TContractState> {
     // --- write functions ---
-    fn create_dao(ref self: TContractState, name: ByteArray, description: ByteArray);
+    fn create_dao(
+        ref self: TContractState,
+        name: ByteArray,
+        description: ByteArray,
+        category_ID: u16,
+        image_URI: ByteArray,
+        is_public: bool,
+    );
 
     // --- read functions ---
     fn user_counter(self: @TContractState) -> u16;
     fn dao_counter(self: @TContractState) -> u16;
     fn get_all_categories(self: @TContractState) -> Array<ByteArray>;
+    fn public_daos(self: @TContractState) -> Array<Dao>;
 }
 
 #[starknet::contract]
@@ -28,6 +39,7 @@ mod AgoraDaoFabric {
     //imports
     use super::functions::add_user_counter;
     use super::structs::Dao;
+    use super::validations::create_dao_validation;
 
     //constants
     const CLASS_HASH: felt252 = 0x58398a6e5d0e495f7f15becadd6dfdc1ed5b6705af6f4dce97f8d0a7fc180b6;
@@ -79,11 +91,24 @@ mod AgoraDaoFabric {
 
     #[abi(embed_v0)]
     impl AgoraDaoFabric of super::IAgoraDaoFabric<ContractState> {
-        fn create_dao(ref self: ContractState, name: ByteArray, description: ByteArray) {
+        fn create_dao(
+            ref self: ContractState,
+            name: ByteArray,
+            description: ByteArray,
+            category_ID: u16,
+            image_URI: ByteArray,
+            is_public: bool,
+        ) {
             let caller = get_caller_address();
 
-            assert!(name.len() > 0, "Dao name must not be empty");
-            assert!(description.len() > 0, "Dao description must not be empty");
+            //validations
+            create_dao_validation(
+                ref self,
+                name.clone(),
+                description.clone(),
+                category_ID,
+                self.category_counter.read(),
+            );
 
             //create dao
             let salt: felt252 = get_block_timestamp().into();
@@ -105,10 +130,10 @@ mod AgoraDaoFabric {
                 creator: caller,
                 name: name,
                 description: description,
-                category: "kadkdakadkadkdakad",
+                category: self.categories.read(category_ID),
                 dao_address: dao_address,
-                image_URI: "djdjd",
-                is_public: true,
+                image_URI: image_URI,
+                is_public: is_public,
                 creation_timestamp: get_block_timestamp(),
             };
 
@@ -135,8 +160,20 @@ mod AgoraDaoFabric {
                 res.append(self.categories.read(i));
                 i += 1;
             }
+            res
+        }
 
-            return res;
+        fn public_daos(self: @ContractState) -> Array<Dao> {
+            let mut res: Array<Dao> = ArrayTrait::new();
+            let mut i: u16 = 0;
+
+            while i != self.dao_counter.read() {
+                if self.daos.read(i).is_public {
+                    res.append(self.daos.read(i));
+                }
+                i += 1;
+            }
+            res
         }
     }
 }
