@@ -5,6 +5,7 @@ import { Frown, X } from 'lucide-react';
 import { IDao } from '~~/types/dao';
 import React, { JSX } from 'react';
 import { DaoCard } from './DaoCard';
+import { num } from 'starknet';
 
 export const DaoGrid: React.FC = () => {
   //smart contract
@@ -43,13 +44,12 @@ export const DaoGrid: React.FC = () => {
           <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
             {publicDaos.map((dao) => {
               const x = dao as unknown as IDao;
-              const daoAddress = x.dao_address.toString().replace('n', '');
 
               return (
                 <DaoCard
                   key={x.dao_ID}
                   daoID={x.dao_ID}
-                  daoAddress={daoAddress}
+                  daoAddress={num.toHex(x.dao_address)}
                   name={x.name}
                   description={x.description}
                   category={x.category}

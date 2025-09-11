@@ -73,45 +73,123 @@ export const DaoCard: React.FC<DaoCardProps> = ({
     }
   };
 
+  console.log(daoAddress);
+
+  const CardHeader = () => {
+    return (
+      <article className='p-5 mt-1'>
+        <div className='w-full flex items-start justify-between'>
+          <div className='flex items-center gap-3'>
+            <div className='rounded-lg bg-accent/50 p-2'>
+              {imageUri.length > 4 ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={`https://ipfs.io/ipfs/${imageUri}`}
+                  alt={name}
+                  className='object-cover'
+                />
+              ) : (
+                // eslint-disable-next-line jsx-a11y/alt-text
+                <Image className='w-6 h-6' />
+              )}
+            </div>
+
+            <div>
+              <h2 className='card-title'>{name}</h2>
+              <div className='flex items-center gap-1'>
+                <Users className='h-4 w-4 text-muted-foreground' />
+                {userCounter === undefined || userCounterLoading ? (
+                  <div className='h-5 w-16 bg-accent skeleton' />
+                ) : (
+                  <span className='text-sm text-muted-foreground'>
+                    {parseInt(`${userCounter}`) > 1 ? 'users' : 'user'}
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+          <span className='badge badge-accent font-semibold text-[12px]'>
+            #{daoID}
+          </span>
+        </div>
+
+        {/* Category Badge */}
+        <span
+          className={`w-fit mt-2 badge text-[12px] font-semibold ${
+            isDarkMode
+              ? darkCategoryColors[
+                  category.toLowerCase() as keyof typeof darkCategoryColors
+                ]
+              : lightCategoryColors[
+                  category.toLowerCase() as keyof typeof lightCategoryColors
+                ]
+          }`}
+        >
+          {category.toLowerCase()}
+        </span>
+      </article>
+    );
+
+    // <div className='flex items-start justify-between'>
+    //   <div className='flex items-center gap-3'>
+    //     <div className='rounded-lg bg-primary/10 p-2'>
+    //       {imageUri.length > 4 ? (
+    //         // eslint-disable-next-line @next/next/no-img-element
+    //         <img
+    //           src={`https://ipfs.io/ipfs/${imageUri}`}
+    //           alt={name}
+    //           className='object-cover'
+    //         />
+    //       ) : (
+    //         // eslint-disable-next-line jsx-a11y/alt-text
+    //         <Image className='w-6 h-6' />
+    //       )}
+    //     </div>
+    //     <div>
+    //       <CardTitle className='text-lg'>{name}</CardTitle>
+    //       <div className='flex items-center gap-1'>
+    //         <Users className='h-4 w-4 text-muted-foreground' />
+    //         {userCounter === undefined || userCounterLoading ? (
+    //           <Skeleton className='h-5 w-5 bg-primary/50' />
+    //         ) : (
+    //           <span className='text-sm text-muted-foreground'>
+    //             {userCounter}{' '}
+    //             {parseInt(`${userCounter}`) > 1 ? 'users' : 'user'}
+    //           </span>
+    //         )}
+    //       </div>
+    //     </div>
+    //   </div>
+    //   <NoSSRBadge>#{daoID}</NoSSRBadge>
+    // </div>
+    // <NoSSRBadge
+    //   variant='secondary'
+    //   className={`w-fit ${
+    //     isDarkMode
+    //       ? darkCategoryColors[
+    //           category.toLowerCase() as keyof typeof darkCategoryColors
+    //         ]
+    //       : lightCategoryColors[
+    //           category.toLowerCase() as keyof typeof lightCategoryColors
+    //         ]
+    //   }`}
+    // >
+    //   {category.toLowerCase()}
+    // </NoSSRBadge>
+  };
 
   return (
     <div className='card bg-base-100 w-full shadow-sm'>
-      <div className='flex items-center gap-3'>
-        <div className='rounded-lg bg-primary/10 p-2'>
-          {imageUri.length > 4 ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={`https://ipfs.io/ipfs/${imageUri}`}
-              alt={name}
-              className='object-cover'
-            />
-          ) : (
-            // eslint-disable-next-line jsx-a11y/alt-text
-            <Image className='w-6 h-6' />
-          )}
-        </div>
-        <div>
-          {/* <CardTitle className='text-lg'>{name}</CardTitle> */}
-          <div className='flex items-center gap-1'>
-            <Users className='h-4 w-4 text-muted-foreground' />
-            {userCounter === undefined || userCounterLoading ? (
-              <div className='h-5 w-5 bg-primary skeleton' />
-            ) : (
-              <span className='text-sm text-muted-foreground'>
-                {parseInt(`${userCounter}`) > 1 ? 'users' : 'user'}
-              </span>
-            )}
-          </div>
-        </div>
-      </div>
+      <CardHeader />
       <div className='card-body items-center text-center'>
-        <h2 className='card-title'>Card Title</h2>
         <p>
           A card component has a figure, a body part, and inside body there are
           title and actions parts
         </p>
         <div className='card-actions'>
-          <button onClick={handleJoinDao} className='btn btn-primary'>Join DAO</button>
+          <button onClick={handleJoinDao} className='btn btn-primary'>
+            Join DAO
+          </button>
         </div>
       </div>
     </div>
@@ -119,54 +197,54 @@ export const DaoCard: React.FC<DaoCardProps> = ({
 
   // return (
   //   <Card className='flex flex-col transition-all hover:shadow-lg'>
-  //     <CardHeader>
-  //       <div className='flex items-start justify-between'>
-  //         <div className='flex items-center gap-3'>
-  //           <div className='rounded-lg bg-primary/10 p-2'>
-  //             {imageUri.length > 4 ? (
-  //               // eslint-disable-next-line @next/next/no-img-element
-  //               <img
-  //                 src={`https://ipfs.io/ipfs/${imageUri}`}
-  //                 alt={name}
-  //                 className='object-cover'
-  //               />
-  //             ) : (
-  //               // eslint-disable-next-line jsx-a11y/alt-text
-  //               <Image className='w-6 h-6' />
-  //             )}
-  //           </div>
-  //           <div>
-  //             <CardTitle className='text-lg'>{name}</CardTitle>
-  //             <div className='flex items-center gap-1'>
-  //               <Users className='h-4 w-4 text-muted-foreground' />
-  //               {userCounter === undefined || userCounterLoading ? (
-  //                 <Skeleton className='h-5 w-5 bg-primary/50' />
-  //               ) : (
-  //                 <span className='text-sm text-muted-foreground'>
-  //                   {userCounter}{' '}
-  //                   {parseInt(`${userCounter}`) > 1 ? 'users' : 'user'}
-  //                 </span>
-  //               )}
-  //             </div>
-  //           </div>
-  //         </div>
-  //         <NoSSRBadge>#{daoID}</NoSSRBadge>
+  // <CardHeader>
+  //   <div className='flex items-start justify-between'>
+  //     <div className='flex items-center gap-3'>
+  //       <div className='rounded-lg bg-primary/10 p-2'>
+  //         {imageUri.length > 4 ? (
+  //           // eslint-disable-next-line @next/next/no-img-element
+  //           <img
+  //             src={`https://ipfs.io/ipfs/${imageUri}`}
+  //             alt={name}
+  //             className='object-cover'
+  //           />
+  //         ) : (
+  //           // eslint-disable-next-line jsx-a11y/alt-text
+  //           <Image className='w-6 h-6' />
+  //         )}
   //       </div>
-  //       <NoSSRBadge
-  //         variant='secondary'
-  //         className={`w-fit ${
-  //           isDarkMode
-  //             ? darkCategoryColors[
-  //                 category.toLowerCase() as keyof typeof darkCategoryColors
-  //               ]
-  //             : lightCategoryColors[
-  //                 category.toLowerCase() as keyof typeof lightCategoryColors
-  //               ]
-  //         }`}
-  //       >
-  //         {category.toLowerCase()}
-  //       </NoSSRBadge>
-  //     </CardHeader>
+  //       <div>
+  //         <CardTitle className='text-lg'>{name}</CardTitle>
+  //         <div className='flex items-center gap-1'>
+  //           <Users className='h-4 w-4 text-muted-foreground' />
+  //           {userCounter === undefined || userCounterLoading ? (
+  //             <Skeleton className='h-5 w-5 bg-primary/50' />
+  //           ) : (
+  //             <span className='text-sm text-muted-foreground'>
+  //               {userCounter}{' '}
+  //               {parseInt(`${userCounter}`) > 1 ? 'users' : 'user'}
+  //             </span>
+  //           )}
+  //         </div>
+  //       </div>
+  //     </div>
+  //     <NoSSRBadge>#{daoID}</NoSSRBadge>
+  //   </div>
+  //   <NoSSRBadge
+  //     variant='secondary'
+  //     className={`w-fit ${
+  //       isDarkMode
+  //         ? darkCategoryColors[
+  //             category.toLowerCase() as keyof typeof darkCategoryColors
+  //           ]
+  //         : lightCategoryColors[
+  //             category.toLowerCase() as keyof typeof lightCategoryColors
+  //           ]
+  //     }`}
+  //   >
+  //     {category.toLowerCase()}
+  //   </NoSSRBadge>
+  // </CardHeader>;
 
   //     <CardContent className='flex-1'>
   //       <CardDescription className='text-sm leading-relaxed break-all'>
