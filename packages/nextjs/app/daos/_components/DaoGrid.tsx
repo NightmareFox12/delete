@@ -1,9 +1,10 @@
 'use client';
 
 import { useScaffoldReadContract } from '~~/hooks/scaffold-stark/useScaffoldReadContract';
-// import { DaoCard } from './DaoCard';
-import { Frown } from 'lucide-react';
+import { Frown, X } from 'lucide-react';
 import { IDao } from '~~/types/dao';
+import React, { JSX } from 'react';
+import { DaoCard } from './DaoCard';
 
 export const DaoGrid: React.FC = () => {
   //smart contract
@@ -13,26 +14,18 @@ export const DaoGrid: React.FC = () => {
   });
 
   //components
-  const LoadingCards = () => {
+  const LoadingCards = (): JSX.Element => {
     return (
       <article className='w-full grid gap-6 sm:grid-cols-2 md:grid-cols-3 px-4 sm:mt-4 mb-2 sm:mb-4'>
         {Array(9)
           .fill(0)
           .map((_x, y) => (
             <div key={y} className='skeleton bg-primary h-56 w-full' />
-            // <Skeleton key={y} className='h-56 w-full bg-primary/50' />
           ))}
       </article>
     );
   };
 
-  //TOOD: verificar como es que lo lee el debug contract
-  if (publicDaos !== undefined) {
-    console.log(publicDaos.length);
-    publicDaos.map((x: any) => {
-      console.log(x.category);
-    });
-  }
   return (
     <section>
       {publicDaos === undefined || daoLoading ? (
@@ -50,18 +43,19 @@ export const DaoGrid: React.FC = () => {
           <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
             {publicDaos.map((dao) => {
               const x = dao as unknown as IDao;
+              const daoAddress = x.dao_address.toString().replace('n', '');
+
               return (
-                <div key={x.dao_id}>{x.category}</div>
-                // <DaoCard
-                //   key={x.daoID}
-                //   daoID={x.daoID}
-                //   daoAddress={x.daoAddress}
-                //   name={x.name}
-                //   description={x.description}
-                //   category={x.category}
-                //   imageUri={x.imageURI}
-                //   creationDate={x.creationTimestamp}
-                // />
+                <DaoCard
+                  key={x.dao_ID}
+                  daoID={x.dao_ID}
+                  daoAddress={daoAddress}
+                  name={x.name}
+                  description={x.description}
+                  category={x.category}
+                  imageUri={x.image_URI}
+                  creationDate={x.creation_timestamp}
+                />
               );
             })}
           </div>

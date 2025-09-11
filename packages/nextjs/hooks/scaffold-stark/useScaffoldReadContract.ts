@@ -1,13 +1,13 @@
-import { Abi, useReadContract } from "@starknet-react/core";
-import { BlockNumber } from "starknet";
-import { useDeployedContractInfo } from "~~/hooks/scaffold-stark";
+import { Abi, useReadContract } from '@starknet-react/core';
+import { BlockNumber } from 'starknet';
+import { useDeployedContractInfo } from '~~/hooks/scaffold-stark';
 import {
   AbiFunctionOutputs,
   ContractAbi,
   ContractName,
   ExtractAbiFunctionNamesScaffold,
   UseScaffoldReadConfig,
-} from "~~/utils/scaffold-stark/contract";
+} from '~~/utils/scaffold-stark/contract';
 
 /**
  * Provides a function to read (call view functions) from a contract.
@@ -34,11 +34,12 @@ export const useScaffoldReadContract = <
   TContractName extends ContractName,
   TFunctionName extends ExtractAbiFunctionNamesScaffold<
     ContractAbi<TContractName>,
-    "view"
+    'view'
   >,
 >({
   contractName,
   functionName,
+  contractAddress,
   args,
   ...readConfig
 }: UseScaffoldReadConfig<TAbi, TContractName, TFunctionName>) => {
@@ -46,15 +47,15 @@ export const useScaffoldReadContract = <
 
   return useReadContract({
     functionName,
-    address: deployedContract?.address,
+    address: contractAddress ?? deployedContract?.address,
     abi: deployedContract?.abi,
     watch: true,
     args: args || [],
     enabled:
       args && (!Array.isArray(args) || !args.some((arg) => arg === undefined)),
-    blockIdentifier: "pending" as BlockNumber,
+    blockIdentifier: 'pending' as BlockNumber,
     ...(readConfig as any),
-  }) as Omit<ReturnType<typeof useReadContract>, "data"> & {
+  }) as Omit<ReturnType<typeof useReadContract>, 'data'> & {
     data: AbiFunctionOutputs<ContractAbi, TFunctionName> | undefined;
   };
 };

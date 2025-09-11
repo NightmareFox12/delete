@@ -1,9 +1,10 @@
 export interface IDao {
-  dao_id: number;
-  dao_address: string;
+  dao_ID: bigint;
+  dao_address: bigint;
+  creator: bigint;
   name: string;
   description: string;
   category: string;
-  image_uri: string;
-  creation_date: number;
+  image_URI: string;
+  creation_timestamp: bigint;
 }

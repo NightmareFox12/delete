@@ -7,7 +7,7 @@ const deployedContracts = {
   devnet: {
     AgoraDaoFabric: {
       address:
-        "0x788e8d2a1fb646de11dc70be0718d27343ebc8cc52922be57faa51d0ebe683d",
+        "0x141ac9857c2782fc5c9bc06b5b7ad6290f4031bbc0709d220d7c377ea9b8950",
       abi: [
         {
           type: "impl",
@@ -236,11 +236,11 @@ const deployedContracts = {
         },
       ],
       classHash:
-        "0x342e0cac479f1a773252645756e179a3c8d7f5653b43b76011a2afdedc407e1",
+        "0x526bb71f86a22c8650f4cfa8d080f7fe7954bbbbe7ea020492e9717d1846bd8",
     },
     AgoraDao: {
       address:
-        "0x3c6bac38c80ab3237f76802e73bb4e4c3cc9eec419fe02a770543692e685a80",
+        "0x79a9c443cf789fcd72315df9a6dde9a698257ad37111ebc67b94810bc6d718",
       abi: [
         {
           type: "impl",
@@ -257,6 +257,17 @@ const deployedContracts = {
               inputs: [],
               outputs: [],
               state_mutability: "external",
+            },
+            {
+              type: "function",
+              name: "user_counter",
+              inputs: [],
+              outputs: [
+                {
+                  type: "core::integer::u16",
+                },
+              ],
+              state_mutability: "view",
             },
           ],
         },
@@ -375,7 +386,7 @@ const deployedContracts = {
         },
       ],
       classHash:
-        "0x2d05f63ace143c69e65f9e6475724e84f8bd087bf6040eaa129492acb9a358e",
+        "0xafdfbcbabcc4748bb223d99dba8c6e56c79c3b8d3bc5b7b7d1450f230e4998",
     },
   },
 } as const;

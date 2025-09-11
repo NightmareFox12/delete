@@ -1,6 +1,12 @@
 #[starknet::interface]
 pub trait IAgoraDao<TContractState> {
+    // --- write functions ---
     fn join_dao(ref self: TContractState);
+
+    // --- read states ---
+    fn user_counter(self: @TContractState) -> u16;
+
+    // --- read functions ---
 }
 
 #[starknet::contract]
@@ -51,6 +57,10 @@ pub mod AgoraDao {
 
             self.is_user.write(caller, true);
             self.user_counter.write(self.user_counter.read() + 1);
+        }
+
+        fn user_counter(self: @ContractState) -> u16 {
+            self.user_counter.read()
         }
     }
 }

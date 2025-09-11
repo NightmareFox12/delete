@@ -1,18 +1,18 @@
-import scaffoldConfig from "~~/scaffold.config";
-import deployedContractsData from "~~/contracts/deployedContracts";
-import predeployedContracts from "~~/contracts/predeployedContracts";
-import configExternalContracts from "~~/contracts/configExternalContracts";
+import scaffoldConfig from '~~/scaffold.config';
+import deployedContractsData from '~~/contracts/deployedContracts';
+import predeployedContracts from '~~/contracts/predeployedContracts';
+import configExternalContracts from '~~/contracts/configExternalContracts';
 import type {
   Abi,
   ExtractAbiEventNames,
   ExtractAbiInterfaces,
   ExtractArgs,
-} from "abi-wan-kanabi/dist/kanabi";
+} from 'abi-wan-kanabi/dist/kanabi';
 import {
   UseReadContractProps,
   UseSendTransactionProps,
-} from "@starknet-react/core";
-import { Address } from "@starknet-react/chains";
+} from '@starknet-react/core';
+import { Address } from '@starknet-react/chains';
 import {
   CairoCustomEnum,
   CairoOption,
@@ -22,10 +22,10 @@ import {
   getChecksumAddress,
   uint256,
   validateAndParseAddress,
-} from "starknet";
-import { byteArray } from "starknet";
-import type { MergeDeepRecord } from "type-fest/source/merge-deep";
-import { feltToHex, isJsonString } from "~~/utils/scaffold-stark/common";
+} from 'starknet';
+import { byteArray } from 'starknet';
+import type { MergeDeepRecord } from 'type-fest/source/merge-deep';
+import { feltToHex, isJsonString } from '~~/utils/scaffold-stark/common';
 import {
   isCairoArray,
   isCairoBigInt,
@@ -41,7 +41,7 @@ import {
   isCairoType,
   isCairoU256,
   parseGenericType,
-} from "~~/utils/scaffold-stark/types";
+} from '~~/utils/scaffold-stark/types';
 
 type AddExternalFlag<T> = {
   [network in keyof T]: {
@@ -50,7 +50,7 @@ type AddExternalFlag<T> = {
 };
 
 type ConfiguredChainId =
-  (typeof scaffoldConfig)["targetNetworks"][0]["network"];
+  (typeof scaffoldConfig)['targetNetworks'][0]['network'];
 export type InheritedFunctions = { readonly [key: string]: string };
 
 type Contracts = ContractsDeclaration[ConfiguredChainId];
@@ -59,9 +59,9 @@ export type Contract<TContractName extends ContractName> =
   Contracts[TContractName];
 
 export enum ContractCodeStatus {
-  "LOADING",
-  "DEPLOYED",
-  "NOT_FOUND",
+  'LOADING',
+  'DEPLOYED',
+  'NOT_FOUND',
 }
 
 export type GenericContract = {
@@ -81,18 +81,18 @@ export const deepMergeContracts = <
   E extends Record<PropertyKey, any>,
 >(
   local: L,
-  external: E,
+  external: E
 ) => {
   const result: Record<PropertyKey, any> = {};
   const allKeys = Array.from(
-    new Set([...Object.keys(local), ...Object.keys(external)]),
+    new Set([...Object.keys(local), ...Object.keys(external)])
   );
   for (const key of allKeys) {
     const localValue = local[key];
     const externalValue = external[key];
     if (
-      typeof localValue === "object" &&
-      typeof externalValue === "object" &&
+      typeof localValue === 'object' &&
+      typeof externalValue === 'object' &&
       localValue !== null &&
       externalValue !== null
     ) {
@@ -107,18 +107,18 @@ export const deepMergeContracts = <
   return result as MergeDeepRecord<
     AddExternalFlag<L>,
     AddExternalFlag<E>,
-    { arrayMergeMode: "spread" }
+    { arrayMergeMode: 'spread' }
   >;
 };
 
 const mergedPredeployedContracts = deepMergeContracts(
   predeployedContracts,
-  configExternalContracts,
+  configExternalContracts
 );
 
 const contractsData = deepMergeContracts(
   deployedContractsData,
-  mergedPredeployedContracts,
+  mergedPredeployedContracts
 );
 
 type IsContractDeclarationMissing<TYes, TNo> = typeof contractsData extends {
@@ -142,36 +142,36 @@ export type AbiParameter = {
 export type AbiOutput = {
   type: string;
 };
-type AbiStateMutability = "view" | "external";
+type AbiStateMutability = 'view' | 'external';
 type AbiImpl = {
-  type: "impl";
+  type: 'impl';
   name: string;
   interface_name: string;
 };
 type AbiInterface = {
-  type: "interface";
+  type: 'interface';
   name: string;
   items: readonly AbiFunction[];
 };
 type AbiConstructor = {
-  type: "constructor";
-  name: "constructor";
+  type: 'constructor';
+  name: 'constructor';
   inputs: readonly AbiParameter[];
 };
 export type AbiFunction = {
-  type: "function";
+  type: 'function';
   name: string;
   inputs: readonly AbiParameter[];
   outputs: readonly AbiOutput[];
   state_mutability: AbiStateMutability;
 };
 export type AbiStruct = {
-  type: "struct";
+  type: 'struct';
   name: string;
   members: readonly AbiParameter[];
 };
 export type AbiEnum = {
-  type: "enum";
+  type: 'enum';
   name: string;
   variants: readonly AbiParameter[];
 };
@@ -185,7 +185,7 @@ export type UseScaffoldWriteConfig<
   TContractName extends ContractName,
   TFunctionName extends ExtractAbiFunctionNamesScaffold<
     ContractAbi<TContractName>,
-    "external"
+    'external'
   >,
 > = {
   contractName: TContractName;
@@ -199,7 +199,7 @@ export type UseScaffoldWriteConfig<
     functionName: TFunctionName;
   } & Omit<
     UseSendTransactionProps,
-    "chainId" | "abi" | "address" | "functionName" | "mode"
+    'chainId' | 'abi' | 'address' | 'functionName' | 'mode'
   > &
     UseScaffoldArgsParam<TAbi, TContractName, TFunctionName>
 >;
@@ -216,16 +216,16 @@ export type FunctionNamesWithInputs<TContractName extends ContractName> =
     Extract<
       Extract<
         ContractAbi<TContractName>[number],
-        { type: "interface" }
-      >["items"][number],
+        { type: 'interface' }
+      >['items'][number],
       {
-        type: "function";
+        type: 'function';
       }
     >,
     {
       inputs: readonly [];
     }
-  >["name"];
+  >['name'];
 
 type OptionalTupple<T> = T extends readonly [infer H, ...infer R]
   ? readonly [H | undefined, ...OptionalTupple<R>]
@@ -245,16 +245,16 @@ type Expand<T> = T extends object
 export type ExtractAbiFunctionNamesScaffold<
   TAbi extends Abi,
   TAbiStateMutability extends AbiStateMutability = AbiStateMutability,
-> = ExtractAbiFunctionsScaffold<TAbi, TAbiStateMutability>["name"];
+> = ExtractAbiFunctionsScaffold<TAbi, TAbiStateMutability>['name'];
 
 // helper function will only take from interfaces : //TODO: see if we can make it more generic
 export type ExtractAbiFunctionsScaffold<
   TAbi extends Abi,
   TAbiStateMutability extends AbiStateMutability = AbiStateMutability,
 > = Extract<
-  ExtractAbiInterfaces<TAbi>["items"][number],
+  ExtractAbiInterfaces<TAbi>['items'][number],
   {
-    type: "function";
+    type: 'function';
     state_mutability: TAbiStateMutability;
   }
 >;
@@ -265,16 +265,16 @@ export type ExtractAbiFunctionNamesWithInputsScaffold<
   TAbiStateMutibility extends AbiStateMutability = AbiStateMutability,
 > = Exclude<
   Extract<
-    ExtractAbiInterfaces<TAbi>["items"][number],
+    ExtractAbiInterfaces<TAbi>['items'][number],
     {
-      type: "function";
+      type: 'function';
       state_mutability: TAbiStateMutibility;
     }
   >,
   {
     inputs: readonly [];
   }
->["name"];
+>['name'];
 
 export type ExtractAbiFunctionScaffold<
   TAbi extends Abi,
@@ -316,17 +316,18 @@ export type UseScaffoldReadConfig<
   TContractName extends ContractName,
   TFunctionName extends ExtractAbiFunctionNamesScaffold<
     ContractAbi<TContractName>,
-    "view"
+    'view'
   >,
 > = {
   contractName: TContractName;
+  contractAddress?: string;
 } & IsContractDeclarationMissing<
   Partial<UseReadContractProps<TAbi, TFunctionName>>,
   {
     functionName: TFunctionName;
   } & Omit<
     UseReadContractProps<TAbi, TFunctionName>,
-    "chainId" | "abi" | "address" | "functionName" | "args"
+    'chainId' | 'abi' | 'address' | 'functionName' | 'args'
   > &
     UseScaffoldArgsParam<TAbi, TContractName, TFunctionName>
 >;
@@ -334,7 +335,7 @@ export type UseScaffoldReadConfig<
 export type AbiFunctionOutputs<
   TAbi extends Abi,
   TFunctionName extends string,
-> = ExtractAbiFunctionScaffold<TAbi, TFunctionName>["outputs"];
+> = ExtractAbiFunctionScaffold<TAbi, TFunctionName>['outputs'];
 
 /*export type AbiEventInputs<TAbi extends Abi, TEventName extends ExtractAbiEventNames<TAbi>> = ExtractAbiEvent<
   TAbi,
@@ -398,15 +399,15 @@ export type UseScaffoldWatchContractEventConfig<
 
 export function getFunctionsByStateMutability(
   abi: Abi,
-  stateMutability: AbiStateMutability,
+  stateMutability: AbiStateMutability
 ): AbiFunction[] {
   return abi
     .reduce((acc, part) => {
-      if (part.type === "function") {
+      if (part.type === 'function') {
         acc.push(part);
-      } else if (part.type === "interface" && Array.isArray(part.items)) {
+      } else if (part.type === 'interface' && Array.isArray(part.items)) {
         part.items.forEach((item) => {
-          if (item.type === "function") {
+          if (item.type === 'function') {
             acc.push(item);
           }
         });
@@ -423,18 +424,18 @@ export function getFunctionsByStateMutability(
 function tryParsingParamReturnValues(
   fn: (x: any) => {},
   param: any,
-  isReadArgsParsing: boolean,
+  isReadArgsParsing: boolean
 ) {
   try {
     const objectValue = fn(param);
     if (
-      typeof objectValue === "object" &&
+      typeof objectValue === 'object' &&
       objectValue !== null &&
       !isReadArgsParsing
     ) {
       // handle empty array
       return Object.values(objectValue).map((value) => {
-        if (Array.isArray(value) && value.length === 0) return "0x0";
+        if (Array.isArray(value) && value.length === 0) return '0x0';
         return value;
       });
     } else {
@@ -469,11 +470,11 @@ const decodeParamsWithType = (paramType: string, param: any): unknown => {
     return tryParsingParamReturnObject((x) => {
       const option = x as CairoOption<any>;
       return option.isNone()
-        ? "None"
+        ? 'None'
         : `Some(${parseParamWithType(
-            paramType.split("<").pop()!,
+            paramType.split('<').pop()!,
             option.unwrap(),
-            isRead,
+            isRead
           )})`;
     }, param);
   } else if (isCairoResult(paramType)) {
@@ -493,17 +494,17 @@ const decodeParamsWithType = (paramType: string, param: any): unknown => {
   } else if (isCairoFelt(paramType)) {
     return feltToHex(param);
   } else if (isCairoBool(paramType)) {
-    return typeof param === "boolean"
+    return typeof param === 'boolean'
       ? param
-      : (param as string).startsWith("0x0")
-        ? "false"
-        : "true";
+      : (param as string).startsWith('0x0')
+        ? 'false'
+        : 'true';
   } else if (isCairoBytes31(paramType)) {
     return tryParsingParamReturnObject((x: bigint) => feltToHex(x), param);
   } else if (isCairoInt(paramType)) {
     return tryParsingParamReturnObject(
-      (x) => (typeof x === "bigint" ? Number(x) : parseInt(x, 16)),
-      param,
+      (x) => (typeof x === 'bigint' ? Number(x) : parseInt(x, 16)),
+      param
     );
   } else if (isCairoBigInt(paramType)) {
     return tryParsingParamReturnObject((x) => BigInt(x), param);
@@ -513,22 +514,22 @@ const decodeParamsWithType = (paramType: string, param: any): unknown => {
 };
 
 const encodeParamsWithType = (
-  paramType: string = "",
+  paramType: string = '',
   param: any,
-  isReadArgsParsing: boolean,
+  isReadArgsParsing: boolean
 ): unknown => {
   if (isCairoTuple(paramType)) {
     return tryParsingParamReturnValues(
       (x) => stringToObjectTuple(x, paramType, isReadArgsParsing),
       param,
-      isReadArgsParsing,
+      isReadArgsParsing
     );
   } else if (isCairoArray(paramType)) {
     const genericType = parseGenericType(paramType)[0];
 
     // if we have to process string
-    if (typeof param === "string") {
-      const tokens = param.split(",");
+    if (typeof param === 'string') {
+      const tokens = param.split(',');
       const encodedArray = [];
       if (genericType) {
         if (!isReadArgsParsing) encodedArray.push(tokens.length);
@@ -537,10 +538,10 @@ const encodeParamsWithType = (
           ...tokens.map((item) =>
             encodeParamsWithType(
               genericType,
-              typeof item === "string" ? item.trim() : item,
-              isReadArgsParsing,
-            ),
-          ),
+              typeof item === 'string' ? item.trim() : item,
+              isReadArgsParsing
+            )
+          )
         );
 
         return encodedArray;
@@ -559,10 +560,10 @@ const encodeParamsWithType = (
           ...param.map((item) =>
             encodeParamsWithType(
               genericType,
-              typeof item === "string" ? item.trim() : item,
-              isReadArgsParsing,
-            ),
-          ),
+              typeof item === 'string' ? item.trim() : item,
+              isReadArgsParsing
+            )
+          )
         );
 
         return encodedArray;
@@ -576,7 +577,7 @@ const encodeParamsWithType = (
       return param;
     }
   } else if (isCairoOption(paramType)) {
-    if (param === "None") {
+    if (param === 'None') {
       return new CairoOption(CairoOptionVariant.None);
     }
     const type = parseGenericType(paramType);
@@ -584,14 +585,14 @@ const encodeParamsWithType = (
     const parsedValue = encodeParamsWithType(
       type as string,
       parsedParam,
-      isReadArgsParsing,
+      isReadArgsParsing
     );
     return new CairoOption(CairoOptionVariant.Some, parsedValue);
   } else if (isCairoU256(paramType)) {
     return tryParsingParamReturnValues(
       uint256.bnToUint256,
       param,
-      isReadArgsParsing,
+      isReadArgsParsing
     );
   } else if (isCairoFelt(paramType)) {
     return param;
@@ -602,16 +603,16 @@ const encodeParamsWithType = (
     return tryParsingParamReturnValues(
       byteArray.byteArrayFromString,
       param,
-      isReadArgsParsing,
+      isReadArgsParsing
     );
   } else if (isCairoContractAddress(paramType)) {
     return tryParsingParamReturnValues(
       validateAndParseAddress,
       param,
-      isReadArgsParsing,
+      isReadArgsParsing
     );
   } else if (isCairoBool(paramType)) {
-    return param == "false" ? "0x0" : "0x1";
+    return param == 'false' ? '0x0' : '0x1';
   } else if (isCairoResult(paramType)) {
     if (param) {
       const variantType =
@@ -627,7 +628,7 @@ const encodeParamsWithType = (
       const valueType: any = encodeParamsWithType(
         variantType.type,
         variantValue,
-        isReadArgsParsing,
+        isReadArgsParsing
       );
 
       return new CairoResult(resultVariant, valueType);
@@ -635,11 +636,11 @@ const encodeParamsWithType = (
   } else {
     try {
       // custom enum encoding
-      if (param?.variant && typeof param.variant == "object") {
+      if (param?.variant && typeof param.variant == 'object') {
         const parsedVariant = Object.keys(param.variant).reduce(
           (acc, key) => {
             if (
-              param.variant[key].value === "" ||
+              param.variant[key].value === '' ||
               param.variant[key].value === undefined
             ) {
               acc[key] = undefined;
@@ -649,15 +650,15 @@ const encodeParamsWithType = (
             acc[key] = encodeParamsWithType(
               param.variant[key].type,
               param.variant[key].value,
-              isReadArgsParsing,
+              isReadArgsParsing
             );
             return acc;
           },
-          {} as Record<string, any>,
+          {} as Record<string, any>
         );
 
         const isDevnet =
-          scaffoldConfig.targetNetworks[0].network.toString() === "devnet";
+          scaffoldConfig.targetNetworks[0].network.toString() === 'devnet';
 
         if (isReadArgsParsing) return new CairoCustomEnum(parsedVariant);
 
@@ -678,15 +679,15 @@ const encodeParamsWithType = (
             const parsed = encodeParamsWithType(
               param[key].type,
               param[key].value,
-              isReadArgsParsing,
+              isReadArgsParsing
             );
 
-            if (parsed !== undefined && parsed !== "") {
+            if (parsed !== undefined && parsed !== '') {
               acc[key] = parsed;
             }
             return acc;
           },
-          {} as Record<string, any>,
+          {} as Record<string, any>
         );
       }
 
@@ -696,10 +697,10 @@ const encodeParamsWithType = (
           const parsed = encodeParamsWithType(
             param[key].type,
             param[key].value,
-            isReadArgsParsing,
+            isReadArgsParsing
           );
 
-          if (parsed !== undefined && parsed !== "") {
+          if (parsed !== undefined && parsed !== '') {
             if (Array.isArray(parsed)) {
               acc.push(...parsed);
             } else {
@@ -720,7 +721,7 @@ export function parseParamWithType(
   paramType: string,
   param: any,
   isRead: boolean,
-  isReadArgsParsing?: boolean,
+  isReadArgsParsing?: boolean
 ): any {
   if (isRead) return decodeParamsWithType(paramType, param);
   return encodeParamsWithType(paramType, param, !!isReadArgsParsing);
@@ -729,25 +730,25 @@ export function parseParamWithType(
 export function parseTuple(value: string): string[] {
   const values: string[] = [];
   let depth = 0;
-  let current = "";
+  let current = '';
 
   for (const char of value) {
-    if (char === "(") {
+    if (char === '(') {
       if (depth > 0) {
         current += char;
       }
       depth++;
-    } else if (char === ")") {
+    } else if (char === ')') {
       depth--;
       if (depth > 0) {
         current += char;
       } else {
         values.push(current.trim());
-        current = "";
+        current = '';
       }
-    } else if (char === "," && depth === 1) {
+    } else if (char === ',' && depth === 1) {
       values.push(current.trim());
-      current = "";
+      current = '';
     } else {
       current += char;
     }
@@ -765,7 +766,7 @@ function objectToCairoTuple(obj: { [key: number]: any }, type: string): string {
       const valueType = types[index];
       return decodeParamsWithType(valueType, value);
     })
-    .join(",");
+    .join(',');
 
   return `(${values})`;
 }
@@ -773,7 +774,7 @@ function objectToCairoTuple(obj: { [key: number]: any }, type: string): string {
 function stringToObjectTuple(
   tupleString: string,
   paramType: string,
-  isReadArgsParsing?: boolean,
+  isReadArgsParsing?: boolean
 ): { [key: number]: any } {
   const values = parseTuple(tupleString);
   const types = parseTuple(paramType);
@@ -790,14 +791,14 @@ function stringToObjectTuple(
 // NOTE: positions based on starknetjs compile function
 // NOTE: this assumes that the active variant is the only one without undefined
 function encodeCustomEnumWithParsedVariants(
-  parsedVariants: Record<string, any>,
+  parsedVariants: Record<string, any>
 ) {
   const values = Object.values(parsedVariants);
 
   // check for correct active variant count
   const nonUndefinedCount = values.filter((value) => !!value).length;
   if (nonUndefinedCount > 1) {
-    throw Error("Custom Enum has > 1 active variant");
+    throw Error('Custom Enum has > 1 active variant');
   }
 
   // find non undefined
