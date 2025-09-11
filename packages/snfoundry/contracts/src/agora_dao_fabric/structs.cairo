@@ -1,6 +1,6 @@
 use starknet::ContractAddress;
 
-#[derive(Drop, Serde)]
+#[derive(Drop, Serde,starknet::Store)]
 pub struct Dao {
     daoID: u16,
     creator: ContractAddress,

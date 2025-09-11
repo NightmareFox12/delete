@@ -47,9 +47,9 @@ import { green } from './helpers/colorize-log';
 const deployScript = async (): Promise<void> => {
   await deployContract({
     contract: 'AgoraDaoFabric',
-    // constructorArgs: {
-    //   owner: deployer.address,
-    // },
+    constructorArgs: {
+      // owner: deployer.address,
+    },
   });
 };
 

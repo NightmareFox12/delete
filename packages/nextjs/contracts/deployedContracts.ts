@@ -7,21 +7,48 @@ const deployedContracts = {
   devnet: {
     AgoraDaoFabric: {
       address:
-        "0x73ab0a7fb41a5b6ea10c189edead035597e8a7940dd04a676c31ef979a31d32",
+        "0x220f99ed27a6f672ab2c1d6af00a385597ff20e4ac8119d67a3648532f2b6b",
       abi: [
         {
           type: "impl",
           name: "AgoraDaoFabric",
-          interface_name: "contracts::AgoraDaoFabric::IAgoraDaoFabric",
+          interface_name: "contracts::agora_dao_fabric::IAgoraDaoFabric",
+        },
+        {
+          type: "struct",
+          name: "core::byte_array::ByteArray",
+          members: [
+            {
+              name: "data",
+              type: "core::array::Array::<core::bytes_31::bytes31>",
+            },
+            {
+              name: "pending_word",
+              type: "core::felt252",
+            },
+            {
+              name: "pending_word_len",
+              type: "core::integer::u32",
+            },
+          ],
         },
         {
           type: "interface",
-          name: "contracts::AgoraDaoFabric::IAgoraDaoFabric",
+          name: "contracts::agora_dao_fabric::IAgoraDaoFabric",
           items: [
             {
               type: "function",
-              name: "createDao",
-              inputs: [],
+              name: "create_dao",
+              inputs: [
+                {
+                  name: "name",
+                  type: "core::byte_array::ByteArray",
+                },
+                {
+                  name: "description",
+                  type: "core::byte_array::ByteArray",
+                },
+              ],
               outputs: [],
               state_mutability: "external",
             },
@@ -36,7 +63,34 @@ const deployedContracts = {
               ],
               state_mutability: "view",
             },
+            {
+              type: "function",
+              name: "dao_counter",
+              inputs: [],
+              outputs: [
+                {
+                  type: "core::integer::u16",
+                },
+              ],
+              state_mutability: "view",
+            },
+            {
+              type: "function",
+              name: "get_all_categories",
+              inputs: [],
+              outputs: [
+                {
+                  type: "core::array::Array::<core::byte_array::ByteArray>",
+                },
+              ],
+              state_mutability: "view",
+            },
           ],
+        },
+        {
+          type: "constructor",
+          name: "constructor",
+          inputs: [],
         },
         {
           type: "event",
@@ -91,7 +145,7 @@ const deployedContracts = {
         },
         {
           type: "event",
-          name: "contracts::AgoraDaoFabric::AgoraDaoFabric::Event",
+          name: "contracts::agora_dao_fabric::AgoraDaoFabric::Event",
           kind: "enum",
           variants: [
             {
@@ -103,7 +157,7 @@ const deployedContracts = {
         },
       ],
       classHash:
-        "0x7f18db88c8942c1f8e5acc8948c1f976b6579896e14e5f3ebf5838791b2aded",
+        "0x49277a73970f813161f24fc15f9da8271b3a69c14921d7ac14e7abb7737bf6d",
     },
   },
 } as const;
