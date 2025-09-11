@@ -1,6 +1,12 @@
 'use client';
 
-import { ChangeEvent, useEffect, useState } from 'react';
+//TODO: pinnata eliminacion tambien,si el usuario rechaza la metamask
+//TODO: luego de la imagen conectar la creacion con el smart contract
+//TODO: Poner filtros al buscador como por ejemplo daos creadas por ti
+//TODO: inventarme la de la vaina de acceso para daos privadas
+//TODO: en el header poner el nombre de mi dao actual. Tambien que puedas customizar el color del header de mi dao... o mejor dicho, el color primario (o agregar a premium)
+
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   CircleQuestionMarkIcon,
@@ -24,6 +30,9 @@ export const CreateDaoDialog: React.FC = () => {
   const [loadImage, setLoadImage] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
+
+  //refs
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
   // Form
   const daoForm = useForm<z.infer<typeof DaoFormSchema>>({
@@ -124,11 +133,8 @@ export const CreateDaoDialog: React.FC = () => {
       });
       daoForm.reset();
 
-      const closeModalButton = document.getElementById(
-        'close-modal-button-create-dao'
-      ) as HTMLButtonElement;
-      if (!closeModalButton) return;
-      closeModalButton.click();
+      dialogRef.current?.close();
+      toast.success('DAO created successfully', { duration: 5000 });
     } catch (err) {
       console.log(err);
     } finally {
@@ -136,25 +142,13 @@ export const CreateDaoDialog: React.FC = () => {
     }
   };
 
-  //TODO: pinnata eliminacion tambien,si el usuario rechaza la metamask
-  //TODO: luego de la imagen conectar la creacion con el smart contract
-  //TODO: Poner filtros al buscador como por ejemplo daos creadas por ti
-  //TODO: inventarme la de la vaina de acceso para daos privadas
-  //TODO: en el header poner el nombre de mi dao actual. Tambien que puedas customizar el color del header de mi dao... o mejor dicho, el color primario (o agregar a premium)
-
   return (
     <>
       {/* Button Modal */}
       <div className='flex justify-center p-3'>
         <button
           className='btn btn-accent'
-          onClick={() => {
-            const myModal = document.getElementById(
-              'create_dao_modal'
-            ) as HTMLDialogElement;
-            if (!myModal) return;
-            myModal.showModal();
-          }}
+          onClick={() => dialogRef.current?.showModal()}
         >
           <Plus className='w-4 h-4' />
 
@@ -179,17 +173,15 @@ export const CreateDaoDialog: React.FC = () => {
         </button>
       </div>
 
-      <dialog id='create_dao_modal' className='modal'>
+      <dialog ref={dialogRef} id='create_dao_modal' className='modal'>
         <div className='modal-box sm:w-6/12 sm:!max-w-3xl md:w-6/12 md:!max-w-5xl max-h-[80dvh] !overflow-y-visible'>
-          <form method='dialog'>
-            <button
-              id='close-modal-button-create-dao'
-              disabled={submitLoading}
-              className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2'
-            >
-              <X className='w-4 h-4' />
-            </button>
-          </form>
+          <button
+            disabled={submitLoading}
+            onClick={() => dialogRef.current?.close()}
+            className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2'
+          >
+            <X className='w-4 h-4' />
+          </button>
           <h3 className='font-bold text-lg'>⚒️ Create your DAO!</h3>
           <p className='text-sm text-base-content/60'>
             Once you have completed all the required fields press the
