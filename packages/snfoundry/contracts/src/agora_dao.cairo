@@ -1,30 +1,20 @@
 #[starknet::interface]
 pub trait IAgoraDao<TContractState> {
-    fn hello(self: @TContractState) -> ByteArray;
+    fn join_dao(ref self: TContractState);
 }
 
 #[starknet::contract]
 pub mod AgoraDao {
-    use openzeppelin_access::ownable::OwnableComponent;
     use starknet::storage::{
-        Map, StoragePointerReadAccess,
+        Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
+        StoragePointerWriteAccess,
     };
-    use starknet::{ContractAddress};
+    use starknet::{ContractAddress, get_caller_address};
 
-    component!(path: OwnableComponent, storage: ownable, event: OwnableEvent);
-
-    #[abi(embed_v0)]
-    impl OwnableImpl = OwnableComponent::OwnableImpl<ContractState>;
-    impl OwnableInternalImpl = OwnableComponent::InternalImpl<ContractState>;
-
-    pub const FELT_STRK_CONTRACT: felt252 =
-        0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d;
 
     #[event]
     #[derive(Drop, starknet::Event)]
     enum Event {
-        #[flat]
-        OwnableEvent: OwnableComponent::Event,
         GreetingChanged: GreetingChanged,
     }
 
@@ -40,23 +30,27 @@ pub mod AgoraDao {
 
     #[storage]
     struct Storage {
-        greeting: ByteArray,
-        premium: bool,
-        total_counter: u256,
-        user_greeting_counter: Map<ContractAddress, u256>,
-        #[substorage(v0)]
-        ownable: OwnableComponent::Storage,
+        fabric: ContractAddress,
+        creator: ContractAddress,
+        user_counter: u16,
+        is_user: Map<ContractAddress, bool>,
     }
 
     #[constructor]
-    fn constructor(ref self: ContractState, fabric: ContractAddress, creator: ContractAddress) {// self.greeting.write("Building Unstoppable Apps!!!");
-    // self.ownable.initializer(owner);
+    fn constructor(ref self: ContractState, fabric: ContractAddress, creator: ContractAddress) {
+        self.fabric.write(fabric);
+        self.creator.write(creator);
+        self.user_counter.write(self.user_counter.read() + 1);
     }
 
     #[abi(embed_v0)]
     impl AgoraDaoImpl of super::IAgoraDao<ContractState> {
-        fn hello(self: @ContractState) -> ByteArray {
-            self.greeting.read()
+        fn join_dao(ref self: ContractState) {
+            let caller = get_caller_address();
+            assert!(!self.is_user.read(caller), "User already joined");
+
+            self.is_user.write(caller, true);
+            self.user_counter.write(self.user_counter.read() + 1);
         }
     }
 }

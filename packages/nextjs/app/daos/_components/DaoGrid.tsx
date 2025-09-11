@@ -3,6 +3,7 @@
 import { useScaffoldReadContract } from '~~/hooks/scaffold-stark/useScaffoldReadContract';
 // import { DaoCard } from './DaoCard';
 import { Frown } from 'lucide-react';
+import { IDao } from '~~/types/dao';
 
 export const DaoGrid: React.FC = () => {
   //smart contract
@@ -25,7 +26,13 @@ export const DaoGrid: React.FC = () => {
     );
   };
 
-  console.log(publicDaos?.length) //TOOD: verificar como es que lo lee el debug contract
+  //TOOD: verificar como es que lo lee el debug contract
+  if (publicDaos !== undefined) {
+    console.log(publicDaos.length);
+    publicDaos.map((x: any) => {
+      console.log(x.category);
+    });
+  }
   return (
     <section>
       {publicDaos === undefined || daoLoading ? (
@@ -40,13 +47,11 @@ export const DaoGrid: React.FC = () => {
         </article>
       ) : (
         <article className='container mx-auto px-4 py-8'>
-          Main Content
-          {/* <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
-            {publicDaos.map((x) => {
+          <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
+            {publicDaos.map((dao) => {
+              const x = dao as unknown as IDao;
               return (
-                <div key={x}>
-
-                </div>
+                <div key={x.dao_id}>{x.category}</div>
                 // <DaoCard
                 //   key={x.daoID}
                 //   daoID={x.daoID}
@@ -59,7 +64,7 @@ export const DaoGrid: React.FC = () => {
                 // />
               );
             })}
-          </div> */}
+          </div>
         </article>
       )}
     </section>

@@ -7,7 +7,7 @@ const deployedContracts = {
   devnet: {
     AgoraDaoFabric: {
       address:
-        "0x566046dc3d5c480e26d5a9786145615ba034674bc0b6441fc22bfb93f6fd8a",
+        "0x788e8d2a1fb646de11dc70be0718d27343ebc8cc52922be57faa51d0ebe683d",
       abi: [
         {
           type: "impl",
@@ -236,11 +236,11 @@ const deployedContracts = {
         },
       ],
       classHash:
-        "0x3ecc2f15d664ef14843ce54d89eb0ac6ac71dc741317b5a59cd661d89aa200f",
+        "0x342e0cac479f1a773252645756e179a3c8d7f5653b43b76011a2afdedc407e1",
     },
     AgoraDao: {
       address:
-        "0x52cca038042c1700513fe3ca89f35dcbc72945a4a8d488d4ea3943bbcb5b84d",
+        "0x3c6bac38c80ab3237f76802e73bb4e4c3cc9eec419fe02a770543692e685a80",
       abi: [
         {
           type: "impl",
@@ -248,75 +248,12 @@ const deployedContracts = {
           interface_name: "contracts::agora_dao::IAgoraDao",
         },
         {
-          type: "struct",
-          name: "core::byte_array::ByteArray",
-          members: [
-            {
-              name: "data",
-              type: "core::array::Array::<core::bytes_31::bytes31>",
-            },
-            {
-              name: "pending_word",
-              type: "core::felt252",
-            },
-            {
-              name: "pending_word_len",
-              type: "core::integer::u32",
-            },
-          ],
-        },
-        {
           type: "interface",
           name: "contracts::agora_dao::IAgoraDao",
           items: [
             {
               type: "function",
-              name: "hello",
-              inputs: [],
-              outputs: [
-                {
-                  type: "core::byte_array::ByteArray",
-                },
-              ],
-              state_mutability: "view",
-            },
-          ],
-        },
-        {
-          type: "impl",
-          name: "OwnableImpl",
-          interface_name: "openzeppelin_access::ownable::interface::IOwnable",
-        },
-        {
-          type: "interface",
-          name: "openzeppelin_access::ownable::interface::IOwnable",
-          items: [
-            {
-              type: "function",
-              name: "owner",
-              inputs: [],
-              outputs: [
-                {
-                  type: "core::starknet::contract_address::ContractAddress",
-                },
-              ],
-              state_mutability: "view",
-            },
-            {
-              type: "function",
-              name: "transfer_ownership",
-              inputs: [
-                {
-                  name: "new_owner",
-                  type: "core::starknet::contract_address::ContractAddress",
-                },
-              ],
-              outputs: [],
-              state_mutability: "external",
-            },
-            {
-              type: "function",
-              name: "renounce_ownership",
+              name: "join_dao",
               inputs: [],
               outputs: [],
               state_mutability: "external",
@@ -338,53 +275,20 @@ const deployedContracts = {
           ],
         },
         {
-          type: "event",
-          name: "openzeppelin_access::ownable::ownable::OwnableComponent::OwnershipTransferred",
-          kind: "struct",
+          type: "struct",
+          name: "core::byte_array::ByteArray",
           members: [
             {
-              name: "previous_owner",
-              type: "core::starknet::contract_address::ContractAddress",
-              kind: "key",
+              name: "data",
+              type: "core::array::Array::<core::bytes_31::bytes31>",
             },
             {
-              name: "new_owner",
-              type: "core::starknet::contract_address::ContractAddress",
-              kind: "key",
-            },
-          ],
-        },
-        {
-          type: "event",
-          name: "openzeppelin_access::ownable::ownable::OwnableComponent::OwnershipTransferStarted",
-          kind: "struct",
-          members: [
-            {
-              name: "previous_owner",
-              type: "core::starknet::contract_address::ContractAddress",
-              kind: "key",
+              name: "pending_word",
+              type: "core::felt252",
             },
             {
-              name: "new_owner",
-              type: "core::starknet::contract_address::ContractAddress",
-              kind: "key",
-            },
-          ],
-        },
-        {
-          type: "event",
-          name: "openzeppelin_access::ownable::ownable::OwnableComponent::Event",
-          kind: "enum",
-          variants: [
-            {
-              name: "OwnershipTransferred",
-              type: "openzeppelin_access::ownable::ownable::OwnableComponent::OwnershipTransferred",
-              kind: "nested",
-            },
-            {
-              name: "OwnershipTransferStarted",
-              type: "openzeppelin_access::ownable::ownable::OwnableComponent::OwnershipTransferStarted",
-              kind: "nested",
+              name: "pending_word_len",
+              type: "core::integer::u32",
             },
           ],
         },
@@ -463,11 +367,6 @@ const deployedContracts = {
           kind: "enum",
           variants: [
             {
-              name: "OwnableEvent",
-              type: "openzeppelin_access::ownable::ownable::OwnableComponent::Event",
-              kind: "flat",
-            },
-            {
               name: "GreetingChanged",
               type: "contracts::agora_dao::AgoraDao::GreetingChanged",
               kind: "nested",
@@ -476,7 +375,7 @@ const deployedContracts = {
         },
       ],
       classHash:
-        "0x58398a6e5d0e495f7f15becadd6dfdc1ed5b6705af6f4dce97f8d0a7fc180b6",
+        "0x2d05f63ace143c69e65f9e6475724e84f8bd087bf6040eaa129492acb9a358e",
     },
   },
 } as const;

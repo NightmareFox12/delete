@@ -64,6 +64,8 @@ mod AgoraDaoFabric {
 
     #[constructor]
     fn constructor(ref self: ContractState) {
+        self.ownable.initializer(get_caller_address());
+
         let mut category_counter = self.category_counter.read();
 
         self.categories.write(category_counter, "GAMING");

@@ -189,6 +189,7 @@ export type UseScaffoldWriteConfig<
   >,
 > = {
   contractName: TContractName;
+  contractAddress?: string;
 } & IsContractDeclarationMissing<
   Partial<UseSendTransactionProps> & {
     functionName: string;
