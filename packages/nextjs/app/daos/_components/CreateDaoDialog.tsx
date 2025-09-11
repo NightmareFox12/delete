@@ -55,6 +55,7 @@ export const CreateDaoDialog: React.FC = () => {
   const { isMd } = useBreakpoint();
 
   //states
+  const [imageCid, setImageCid] = useState<string | undefined>(undefined);
   const [loadImage, setLoadImage] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
@@ -77,12 +78,22 @@ export const CreateDaoDialog: React.FC = () => {
     name: nameWatch,
     description: descriptionWatch,
     categories: categoriesWatch,
-    isPublic: isPublicWatch,
     logo: logoWatch,
+    isPublic: isPublicWatch,
   } = daoForm.watch();
 
   //Smart contract
-  // const { writeContractAsync: writeAgoraDaoFabricAsync } = useScaffoldWriteContract({ contractName: "AgoraDaoFabric" });
+  const { sendAsync } = useScaffoldWriteContract({
+    contractName: 'AgoraDaoFabric',
+    functionName: 'create_dao',
+    args: [
+      nameWatch,
+      descriptionWatch,
+      BigInt(categoriesWatch ?? 0),
+      imageCid ?? '',
+      isPublicWatch,
+    ],
+  });
 
   const { data: daoCategories, isLoading: daoCategoriesLoading } =
     useScaffoldReadContract({
@@ -128,28 +139,27 @@ export const CreateDaoDialog: React.FC = () => {
   const onSubmit = async (data: z.infer<typeof DaoFormSchema>) => {
     try {
       setSubmitLoading(true);
-      console.log(data);
-      // let res: { response: string; cid: string } | undefined;
-      // if (data.logo) {
-      //   const formData = new FormData();
-      //   formData.append('name', data.name);
-      //   formData.append('logo', data.logo);
+      let res: { response: string; cid: string } | undefined;
+      if (data.logo) {
+        const formData = new FormData();
+        formData.append('name', data.name);
+        formData.append('logo', data.logo);
 
-      //   const req = await fetch('/api/upload-image', {
-      //     method: 'POST',
-      //     body: formData,
-      //   });
+        const req = await fetch('/api/upload-image', {
+          method: 'POST',
+          body: formData,
+        });
 
-      //   res = await req.json();
-      //   console.log(res);
+        res = await req.json();
+        console.log(res);
 
-      //   if (!req.ok) return toast.error(res!.response);
-      // }
+        if (!req.ok) return toast.error(res!.response);
+      }
 
-      // await writeAgoraDaoFabricAsync({
-      //   functionName: "createDao",
-      //   args: [data.name, data.description, BigInt(data.categories), res?.cid || "", data.isPublic],
-      // });
+      //TODO: revisar que es lo que pasa AQUI
+
+    await  setImageCid(res?.cid);
+      await sendAsync();
     } catch (err) {
       console.log(err);
     } finally {
@@ -410,7 +420,7 @@ export const CreateDaoDialog: React.FC = () => {
                 </p>
                 <input
                   type='checkbox'
-                  defaultChecked
+                  defaultChecked={true}
                   checked={isPublicWatch}
                   onChange={(e) =>
                     daoForm.setValue('isPublic', e.currentTarget.checked)
