@@ -3,9 +3,7 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
-  Check,
   CircleQuestionMarkIcon,
-  Info,
   Loader,
   Plus,
   Rocket,
@@ -16,43 +14,12 @@ import {
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import RotatingText from '~~/components/ui/RotatingText';
-import { useBreakpoint } from '~~/hooks/useBreakpoint';
 import { useScaffoldWriteContract } from '~~/hooks/scaffold-stark/useScaffoldWriteContract';
 import { DaoFormSchema } from '~~/libs/schemas/dao.schema';
 import toast from 'react-hot-toast';
 import { useScaffoldReadContract } from '~~/hooks/scaffold-stark/useScaffoldReadContract';
-// import {
-//   Dialog,
-//   DialogContent,
-//   DialogDescription,
-//   DialogHeader,
-//   DialogTitle,
-//   DialogTrigger,
-// } from "~~/components/ui/shadcn/dialog";
-// import {
-//   Form,
-//   FormControl,
-//   FormDescription,
-//   FormField,
-//   FormItem,
-//   FormLabel,
-//   FormMessage,
-// } from "~~/components/ui/shadcn/form";
-// import { Input } from "~~/components/ui/shadcn/input";
-// import { Label } from "~~/components/ui/shadcn/label";
-// import { Progress } from "~~/components/ui/shadcn/progress";
-// import { ScrollArea } from "~~/components/ui/shadcn/scroll-area";
-// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~~/components/ui/shadcn/select";
-// import { Skeleton } from "~~/components/ui/shadcn/skeleton";
-// import { Switch } from "~~/components/ui/shadcn/switch";
-// import { Textarea } from "~~/components/ui/shadcn/textarea";
-// import { Tooltip, TooltipContent, TooltipTrigger } from "~~/components/ui/shadcn/tooltip";
-// import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
-// import { useBreakpoint } from "~~/hooks/useBreakpoint";
-// import { DaoFormSchema } from "~~/lib/schemes/dao.scheme";
 
 export const CreateDaoDialog: React.FC = () => {
-
   //states
   const [loadImage, setLoadImage] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
@@ -143,8 +110,6 @@ export const CreateDaoDialog: React.FC = () => {
         });
 
         res = await req.json();
-        console.log(res);
-
         if (!req.ok) return toast.error(res!.response);
       }
 
@@ -157,6 +122,7 @@ export const CreateDaoDialog: React.FC = () => {
           data.isPublic,
         ],
       });
+      daoForm.reset();
     } catch (err) {
       console.log(err);
     } finally {
@@ -210,7 +176,10 @@ export const CreateDaoDialog: React.FC = () => {
       <dialog id='create_dao_modal' className='modal'>
         <div className='modal-box sm:w-6/12 sm:!max-w-3xl md:w-6/12 md:!max-w-5xl max-h-[80dvh] !overflow-y-visible'>
           <form method='dialog'>
-            <button className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2'>
+            <button
+              disabled={submitLoading}
+              className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2'
+            >
               <X className='w-4 h-4' />
             </button>
           </form>
@@ -299,7 +268,11 @@ export const CreateDaoDialog: React.FC = () => {
                     </option>
                   ))}
                 </select>
-                <span className='label text-error my-0'>Optional</span>
+                {daoForm.formState.errors.categories && (
+                  <span className='label text-error my-0'>
+                    {daoForm.formState.errors.categories.message}
+                  </span>
+                )}
               </fieldset>
             )}
 
@@ -376,7 +349,11 @@ export const CreateDaoDialog: React.FC = () => {
                   </div>
                 ) : (
                   <div className='w-full h-full px-4 flex justify-center items-center'>
-                    {/* <Progress value={progress} /> */}
+                    <progress
+                      className='progress w-full'
+                      value={progress}
+                      max='100'
+                    />
                   </div>
                 )}
               </div>
@@ -400,9 +377,7 @@ export const CreateDaoDialog: React.FC = () => {
                   </div>
                   <div
                     className='tooltip tooltip-left'
-                    data-tip='In any public DAO, anyone can join and help the growth of the
-                community. A private DAO can only join those users who have the
-                link (private DAO will not appear in the search engine)'
+                    data-tip='In any public DAO, anyone can join and help the growth of the community. A private DAO can only join those users who have the link (private DAO will not appear in the search engine)'
                   >
                     <button className='btn btn-sm btn-ghost rounded-full'>
                       <CircleQuestionMarkIcon className='w-4 h-4' />
@@ -466,310 +441,4 @@ export const CreateDaoDialog: React.FC = () => {
       </dialog>
     </>
   );
-
-  // return (
-  //   <Dialog>
-
-  //     <DialogContent className='p-3'>
-  //       <ScrollArea className='h-[500px] p-1 px-1 mt-2.5'>
-  //         <DialogHeader>
-  //           <DialogTitle>Create your DAO!</DialogTitle>
-  //           <DialogDescription>
-  //             Once you have completed all the required fields press the
-  //             &quot;Launch DAO&quot; button.
-  //           </DialogDescription>
-  //         </DialogHeader>
-
-  //         <Form {...daoForm}>
-  //           <form
-  //             onSubmit={daoForm.handleSubmit(onSubmit)}
-  //             autoComplete='off'
-  //             autoCapitalize='sentences'
-  //             className='space-y-4 px-1'
-  //           >
-  //             {/* Name */}
-  //             <FormField
-  //               control={daoForm.control}
-  //               name='name'
-  //               disabled={submitLoading}
-  //               render={({ field, fieldState }) => (
-  //                 <FormItem>
-  //                   <FormLabel>
-  //                     Name{' '}
-  //                     <span className='text-destructive font-bold text-bold'>
-  //                       *
-  //                     </span>
-  //                   </FormLabel>
-  //                   <FormControl>
-  //                     <Input placeholder='shadcn' {...field} />
-  //                   </FormControl>
-  //                   <div className='w-full flex justify-between px-1'>
-  //                     {fieldState.error === undefined && <span />}
-  //                     <FormMessage className='-my-1' />
-
-  //                     <FormDescription className='-my-1 justify-end'>
-  //                       {field.value.length}/30
-  //                     </FormDescription>
-  //                   </div>
-  //                 </FormItem>
-  //               )}
-  //             />
-
-  //             {/* Description */}
-  //             <FormField
-  //               control={daoForm.control}
-  //               name='description'
-  //               disabled={submitLoading}
-  //               render={({ field, fieldState }) => (
-  //                 <FormItem>
-  //                   <FormLabel>
-  //                     Description{' '}
-  //                     <span className='text-destructive font-bold text-bold'>
-  //                       *
-  //                     </span>
-  //                   </FormLabel>
-  //                   <FormControl>
-  //                     <Textarea
-  //                       placeholder='e.g. Decentralized organization supporting social impact projects'
-  //                       className='resize-none h-28'
-  //                       {...field}
-  //                     />
-  //                   </FormControl>
-  //                   <div className='w-full flex justify-between px-1'>
-  //                     {fieldState.error === undefined && <span />}
-  //                     <FormMessage className='-my-1' />
-
-  //                     <FormDescription className='-my-1 justify-end'>
-  //                       {field.value.length}/300
-  //                     </FormDescription>
-  //                   </div>
-  //                 </FormItem>
-  //               )}
-  //             />
-
-  //             {/* Categories */}
-  //             {daoCategoriesLoading || daoCategories === undefined ? (
-  //               <Skeleton className='h-10 w-full' />
-  //             ) : (
-  //               <FormField
-  //                 control={daoForm.control}
-  //                 name='categories'
-  //                 disabled={submitLoading}
-  //                 render={({ field }) => (
-  //                   <FormItem>
-  //                     <FormLabel>
-  //                       Categories{' '}
-  //                       <span className='text-destructive font-bold text-bold'>
-  //                         *
-  //                       </span>
-  //                     </FormLabel>
-  //                     <Select
-  //                       value={field.value}
-  //                       onValueChange={field.onChange}
-  //                       disabled={submitLoading}
-  //                     >
-  //                       <FormControl>
-  //                         <SelectTrigger className='w-full'>
-  //                           <SelectValue placeholder='Choose a category' />
-  //                         </SelectTrigger>
-  //                       </FormControl>
-
-  //                       <SelectContent>
-  //                         {daoCategories.map((x, y) => (
-  //                           <SelectItem key={y} value={y.toString()}>
-  //                             {x.toString().toLowerCase()}
-  //                           </SelectItem>
-  //                         ))}
-  //                       </SelectContent>
-  //                     </Select>
-  //                     <FormMessage className='-my-1' />
-  //                   </FormItem>
-  //                 )}
-  //               />
-  //             )}
-
-  //             {/* Logo */}
-  //             <FormField
-  //               control={daoForm.control}
-  //               name='logo'
-  //               disabled={submitLoading}
-  //               render={({ field, fieldState }) => (
-  //                 <FormItem>
-  //                   <FormLabel className='flex justify-between items-center'>
-  //                     Logo
-  //                     <Tooltip>
-  //                       <TooltipTrigger asChild>
-  //                         <Button type='button' size='icon' variant='ghost'>
-  //                           <CircleQuestionMarkIcon className='w-4 h-4' />
-  //                         </Button>
-  //                       </TooltipTrigger>
-  //                       <TooltipContent>
-  //                         <p>
-  //                           Choose the logo that your DAO will represent. This
-  //                           field is optional and can be modified later.
-  //                         </p>
-  //                       </TooltipContent>
-  //                     </Tooltip>
-  //                   </FormLabel>
-  //                   <FormControl>
-  //                     <div className='relative h-60 bg-accent rounded-lg flex flex-col items-center justify-center overflow-hidden mx-2 border'>
-  //                       <input
-  //                         type='file'
-  //                         onClick={(e) => (e.currentTarget.value = '')}
-  //                         onChange={async (e) => {
-  //                           const file = await isUploadFormImage(e);
-  //                           if (file !== undefined) field.onChange(file);
-  //                         }}
-  //                         disabled={submitLoading}
-  //                         accept='.jpeg,.png,.jpg'
-  //                         className='absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20'
-  //                       />
-
-  //                       {logoWatch !== undefined ? (
-  //                         <div className='relative w-full h-auto overflow-hidden'>
-  //                           {
-  //                             // eslint-disable-next-line @next/next/no-img-element
-  //                             <img
-  //                               src={URL.createObjectURL(logoWatch)}
-  //                               alt='logo DAO'
-  //                               className='w-full h-auto object-cover block z-10'
-  //                               style={{ position: 'relative' }}
-  //                             />
-  //                           }
-
-  //                           {/* Button */}
-  //                           <div className='absolute top-2 right-2 z-30'>
-  //                             <Button
-  //                               type='button'
-  //                               size='sm'
-  //                               variant='destructive'
-  //                               onClick={() =>
-  //                                 daoForm.setValue('logo', undefined)
-  //                               }
-  //                               disabled={submitLoading}
-  //                               className='hover:bg-destructive/80 hover:scale-[0.90] transition-all delay-75'
-  //                             >
-  //                               <Trash />
-  //                             </Button>
-  //                           </div>
-  //                         </div>
-  //                       ) : !loadImage ? (
-  //                         <div
-  //                           className={`absolute inset-0 flex flex-col justify-center items-center pointer-events-none z-10  ${fieldState.error ? 'text-destructive' : ''}`}
-  //                         >
-  //                           <Upload className='w-10 h-10' />
-  //                           <p className='my-0 font-semibold'>
-  //                             Choose or drag an image
-  //                           </p>
-  //                           <span className='font-semibold'>
-  //                             The image must be less than 1 MB
-  //                           </span>
-  //                           <span className='text-center text-sm'>
-  //                             It is recommended that the appearance of the image
-  //                             be 100x100
-  //                           </span>
-  //                         </div>
-  //                       ) : (
-  //                         <div className='w-full h-full px-4 flex justify-center items-center'>
-  //                           <Progress value={progress} />
-  //                         </div>
-  //                       )}
-  //                     </div>
-  //                   </FormControl>
-  //                   <FormMessage className='-my-1 ml-2' />
-  //                 </FormItem>
-  //               )}
-  //             />
-
-  //             {/* Is Public */}
-  //             <FormField
-  //               control={daoForm.control}
-  //               name='isPublic'
-  //               disabled={submitLoading}
-  //               render={({ field }) => (
-  //                 <FormItem>
-  //                   <FormLabel className='w-full flex justify-between'>
-  //                     <div>
-  //                       Dao Visibility{' '}
-  //                       <span className='text-destructive font-bold text-bold'>
-  //                         *
-  //                       </span>
-  //                     </div>
-  //                     <Tooltip>
-  //                       <TooltipTrigger asChild>
-  //                         <Button type='button' size='icon' variant='ghost'>
-  //                           <CircleQuestionMarkIcon className='w-4 h-4' />
-  //                         </Button>
-  //                       </TooltipTrigger>
-  //                       <TooltipContent>
-  //                         <p>
-  //                           In any public DAO, anyone can join and help the
-  //                           growth of the community.
-  //                         </p>
-
-  //                         <p>
-  //                           A private DAO can only join those users who have the
-  //                           link{' '}
-  //                           <b>
-  //                             (private DAO will not appear in the search engine)
-  //                           </b>
-  //                         </p>
-  //                       </TooltipContent>
-  //                     </Tooltip>
-  //                   </FormLabel>
-  //                   <FormControl>
-  //                     <div className='flex justify-center gap-2'>
-  //                       <Label htmlFor='airplane-mode'>
-  //                         {field.value ? 'Public DAO' : 'Private DAO'}
-  //                       </Label>
-  //                       <Switch
-  //                         checked={field.value}
-  //                         onCheckedChange={(value) => field.onChange(value)}
-  //                         disabled={submitLoading}
-  //                       />
-  //                     </div>
-  //                   </FormControl>
-  //                   <FormMessage />
-  //                 </FormItem>
-  //               )}
-  //             />
-
-  //             {/* Submit buttons */}
-  //             <div className='w-full flex justify-center gap-6 mt-4'>
-  //               <Button
-  //                 type='button'
-  //                 onClick={() => daoForm.reset()}
-  //                 disabled={submitLoading}
-  //                 variant='destructive'
-  //               >
-  //                 <Trash className='w-4 h-4' />
-  //                 Clear all
-  //               </Button>
-
-  //               <Button
-  //                 type='submit'
-  //                 disabled={
-  //                   daoCategoriesLoading ||
-  //                   submitLoading ||
-  //                   !daoForm.formState.isValid
-  //                 }
-  //               >
-  //                 {daoCategoriesLoading || submitLoading ? (
-  //                   <>
-  //                     <Loader className='w-4 h-4 animate-spin' />
-  //                     Creating DAO
-  //                   </>
-  //                 ) : (
-  //                   <>
-  //                     <Rocket className='w-4 h-4' /> Launch DAO
-  //                   </>
-  //                 )}
-  //               </Button>
-  //             </div>
-  //           </form>
-  //         </Form>
-  //       </ScrollArea>
-  //     </DialogContent>
-  //   </Dialog>
-  // );
 };
