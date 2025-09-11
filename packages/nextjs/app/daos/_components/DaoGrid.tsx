@@ -40,7 +40,7 @@ export const DaoGrid: React.FC = () => {
           </p>
         </article>
       ) : (
-        <article className='container mx-auto px-4 py-8'>
+        <article className='container px-2 sm:px-2 md:max-w-6xl mx-auto py-8'>
           <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
             {publicDaos.map((dao) => {
               const x = dao as unknown as IDao;

@@ -2,7 +2,7 @@
 
 import React from 'react';
 // import { DaoDetailsDialog } from "./DaoDetailsDialog";
-import { Image, Users } from 'lucide-react';
+import { Image, Info, Users } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useScaffoldWriteContract } from '~~/hooks/scaffold-stark/useScaffoldWriteContract';
 import { useScaffoldReadContract } from '~~/hooks/scaffold-stark/useScaffoldReadContract';
@@ -73,20 +73,20 @@ export const DaoCard: React.FC<DaoCardProps> = ({
     }
   };
 
-  console.log(userCounter);
-
   const CardHeader = () => {
     return (
-      <article className='p-5 mt-1'>
+      <article className='p-5 pb-0 mt-1'>
         <div className='w-full flex items-start justify-between'>
           <div className='flex items-center gap-3'>
-            <div className='rounded-lg bg-accent/50 p-2'>
+            <div
+              className={`rounded-lg bg-accent/50 ${imageUri.length > 4 ? '' : 'p-2'}`}
+            >
               {imageUri.length > 4 ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={`https://ipfs.io/ipfs/${imageUri}`}
                   alt={name}
-                  className='object-cover'
+                  className='object-cover w-10 h-10 rounded-lg'
                 />
               ) : (
                 // eslint-disable-next-line jsx-a11y/alt-text
@@ -102,7 +102,8 @@ export const DaoCard: React.FC<DaoCardProps> = ({
                   <div className='h-5 w-16 bg-accent skeleton' />
                 ) : (
                   <span className='text-sm text-muted-foreground'>
-                    {parseInt(`${userCounter}`) > 1 ? 'users' : 'user'}
+                    {parseInt(`${userCounter}`)}{' '}
+                    {BigInt(`${userCounter}`) > 1n ? 'users' : 'user'}
                   </span>
                 )}
               </div>
@@ -181,14 +182,14 @@ export const DaoCard: React.FC<DaoCardProps> = ({
   return (
     <div className='card bg-base-100 w-full shadow-sm'>
       <CardHeader />
-      <div className='card-body items-center text-center'>
-        <p>
-          A card component has a figure, a body part, and inside body there are
-          title and actions parts
-        </p>
+      <div className='card-body pt-3'>
+        <p className='mt-0'>{description}</p>
         <div className='card-actions'>
-          <button onClick={handleJoinDao} className='btn btn-primary'>
+          <button onClick={handleJoinDao} className='btn flex-1 btn-accent'>
             Join DAO
+          </button>
+          <button onClick={handleJoinDao} className='btn btn-accent p-3'>
+            <Info className='w-4 h-4' />
           </button>
         </div>
       </div>
