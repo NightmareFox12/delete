@@ -11447,6 +11447,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pinata@npm:^2.5.0":
+  version: 2.5.0
+  resolution: "pinata@npm:2.5.0"
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 92a91a010bbedbc118b1b82b5918987a9ca0d69cd8ba4a6970da341199749a5ca9ceff0c24ed3c2502fdaf4a735b469616711b39210698253ea108aefe3e7c9c
+  languageName: node
+  linkType: hard
+
 "pinkie-promise@npm:^2.0.0":
   version: 2.0.1
   resolution: "pinkie-promise@npm:2.0.1"
@@ -12735,6 +12750,7 @@ __metadata:
     husky: ^9.0.11
     lucide-react: ^0.543.0
     motion: ^12.23.12
+    pinata: ^2.5.0
     pinst: ^3.0.0
     postcss: ^8.4.38
     prettier: ^3.2.5

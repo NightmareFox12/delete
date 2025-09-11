@@ -20,6 +20,7 @@ import { useBreakpoint } from '~~/hooks/useBreakpoint';
 import { useScaffoldWriteContract } from '~~/hooks/scaffold-stark/useScaffoldWriteContract';
 import { DaoFormSchema } from '~~/libs/schemas/dao.schema';
 import toast from 'react-hot-toast';
+import { useScaffoldReadContract } from '~~/hooks/scaffold-stark/useScaffoldReadContract';
 // import {
 //   Dialog,
 //   DialogContent,
@@ -83,15 +84,11 @@ export const CreateDaoDialog: React.FC = () => {
   //Smart contract
   // const { writeContractAsync: writeAgoraDaoFabricAsync } = useScaffoldWriteContract({ contractName: "AgoraDaoFabric" });
 
-  //   const { sendAsync } = useScaffoldWriteContract({
-  //   contractName: "YourContract",
-  //   functionName: "updateGreeting",
-  //   args: ["0xd8da6bf26964af9d7eed9e03e53415d37aa96045", "Hello, world!"],
-  // });
-  // const { data: daoCategories, isLoading: daoCategoriesLoading } = useScaffoldReadContract({
-  //   contractName: "AgoraDaoFabric",
-  //   functionName: "getAllDaoCategories",
-  // });
+  const { data: daoCategories, isLoading: daoCategoriesLoading } =
+    useScaffoldReadContract({
+      contractName: 'AgoraDaoFabric',
+      functionName: 'get_all_categories',
+    });
 
   //effects
   useEffect(() => {
@@ -132,22 +129,22 @@ export const CreateDaoDialog: React.FC = () => {
     try {
       setSubmitLoading(true);
       console.log(data);
-      let res: { response: string; cid: string } | undefined;
-      if (data.logo) {
-        const formData = new FormData();
-        formData.append('name', data.name);
-        formData.append('logo', data.logo);
+      // let res: { response: string; cid: string } | undefined;
+      // if (data.logo) {
+      //   const formData = new FormData();
+      //   formData.append('name', data.name);
+      //   formData.append('logo', data.logo);
 
-        const req = await fetch('/api/upload-image', {
-          method: 'POST',
-          body: formData,
-        });
+      //   const req = await fetch('/api/upload-image', {
+      //     method: 'POST',
+      //     body: formData,
+      //   });
 
-        res = await req.json();
-        console.log(res);
+      //   res = await req.json();
+      //   console.log(res);
 
-        if (!req.ok) return toast.error(res!.response);
-      }
+      //   if (!req.ok) return toast.error(res!.response);
+      // }
 
       // await writeAgoraDaoFabricAsync({
       //   functionName: "createDao",
@@ -273,19 +270,32 @@ export const CreateDaoDialog: React.FC = () => {
             </fieldset>
 
             {/* categories */}
-            <fieldset className='fieldset'>
-              <legend className='fieldset-legend'>
-                Categories{' '}
-                <span className='-ml-1 text-error font-bold text-bold'>*</span>
-              </legend>
-              <select defaultValue='Categories' className='select w-full'>
-                <option disabled={true}>Pick a category</option>
-                <option>Chrome</option>
-                <option>FireFox</option>
-                <option>Safari</option>
-              </select>
-              <span className='label text-error my-0'>Optional</span>
-            </fieldset>
+            {daoCategoriesLoading || daoCategories === undefined ? (
+              <div className='h-10 w-full skeleton bg-primary' />
+            ) : (
+              <fieldset className='fieldset'>
+                <legend className='fieldset-legend'>
+                  Categories
+                  <span className='-ml-1 text-error font-bold text-bold'>
+                    *
+                  </span>
+                </legend>
+                <select
+                  defaultValue=''
+                  value={categoriesWatch ?? ''}
+                  {...daoForm.register('categories')}
+                  className='select w-full'
+                >
+                  <option disabled={true}>Pick a category</option>
+                  {daoCategories.map((x, y) => (
+                    <option key={y} value={y.toString()}>
+                      {x.toString()}
+                    </option>
+                  ))}
+                </select>
+                <span className='label text-error my-0'>Optional</span>
+              </fieldset>
+            )}
 
             {/* logo */}
             <fieldset className='fieldset'>

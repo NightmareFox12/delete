@@ -7,7 +7,7 @@ const deployedContracts = {
   devnet: {
     AgoraDaoFabric: {
       address:
-        "0x3f12dbad5d58c2bf1178c8901041fc9ee550e3d6b182f6718fd588dae3b69c0",
+        "0x6d614bdc6f4e0368234b76257b689cf23d24a9c09670583a3e8faaa2f25345c",
       abi: [
         {
           type: "impl",
@@ -33,6 +33,62 @@ const deployedContracts = {
           ],
         },
         {
+          type: "enum",
+          name: "core::bool",
+          variants: [
+            {
+              name: "False",
+              type: "()",
+            },
+            {
+              name: "True",
+              type: "()",
+            },
+          ],
+        },
+        {
+          type: "struct",
+          name: "contracts::agora_dao_fabric::structs::Dao",
+          members: [
+            {
+              name: "dao_ID",
+              type: "core::integer::u16",
+            },
+            {
+              name: "creator",
+              type: "core::starknet::contract_address::ContractAddress",
+            },
+            {
+              name: "dao_address",
+              type: "core::starknet::contract_address::ContractAddress",
+            },
+            {
+              name: "name",
+              type: "core::byte_array::ByteArray",
+            },
+            {
+              name: "description",
+              type: "core::byte_array::ByteArray",
+            },
+            {
+              name: "category",
+              type: "core::byte_array::ByteArray",
+            },
+            {
+              name: "image_URI",
+              type: "core::byte_array::ByteArray",
+            },
+            {
+              name: "is_public",
+              type: "core::bool",
+            },
+            {
+              name: "creation_timestamp",
+              type: "core::integer::u64",
+            },
+          ],
+        },
+        {
           type: "interface",
           name: "contracts::agora_dao_fabric::IAgoraDaoFabric",
           items: [
@@ -47,6 +103,18 @@ const deployedContracts = {
                 {
                   name: "description",
                   type: "core::byte_array::ByteArray",
+                },
+                {
+                  name: "category_ID",
+                  type: "core::integer::u16",
+                },
+                {
+                  name: "image_URI",
+                  type: "core::byte_array::ByteArray",
+                },
+                {
+                  name: "is_public",
+                  type: "core::bool",
                 },
               ],
               outputs: [],
@@ -81,6 +149,17 @@ const deployedContracts = {
               outputs: [
                 {
                   type: "core::array::Array::<core::byte_array::ByteArray>",
+                },
+              ],
+              state_mutability: "view",
+            },
+            {
+              type: "function",
+              name: "public_daos",
+              inputs: [],
+              outputs: [
+                {
+                  type: "core::array::Array::<contracts::agora_dao_fabric::structs::Dao>",
                 },
               ],
               state_mutability: "view",
@@ -157,11 +236,11 @@ const deployedContracts = {
         },
       ],
       classHash:
-        "0x7361e2fa7277a14c0e7f08e1c825629c67287b679239abf91fe2e43df770bae",
+        "0x3f01f757450d0aadf202b2513020318678095d37c30f0bd277c0b95fde4a0b9",
     },
     AgoraDao: {
       address:
-        "0x7e5e3cf78adb50d03fd68f7888ca4aceb5ec53ebc00ac8a568f7967b7f015c6",
+        "0x54695b9f2edd0b2658707336902b5b74ecdda2ef0d3f3d71b82f974ee1bf806",
       abi: [
         {
           type: "impl",
