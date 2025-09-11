@@ -15,17 +15,14 @@ import CountUp from '~~/components/ui/CountUp';
 import { useScaffoldReadContract } from '~~/hooks/scaffold-stark/useScaffoldReadContract';
 // import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
 
-const daoCounterLoading = false;
-const daoCounter = 4n;
-
 export const ImpactSection: React.FC = () => {
   //Smart contract
+  const { data: daoCounter, isLoading: daoCounterLoading } =
+    useScaffoldReadContract({
+      contractName: 'AgoraDaoFabric',
+      functionName: 'dao_counter',
+    });
 
-  // const { data: daoCounter, isLoading: daoCounterLoading } =
-  //   useScaffoldReadContract({
-  //     contractName: 'AgoraDaoFabric',
-  //     functionName: 'getTotalDaoCount',
-  //   });
   const { data: userCounter, isLoading: userCounterLoading } =
     useScaffoldReadContract({
       contractName: 'AgoraDaoFabric',

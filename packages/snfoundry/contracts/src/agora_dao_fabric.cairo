@@ -10,7 +10,6 @@ trait IAgoraDaoFabric<TContractState> {
     // --- read functions ---
     fn user_counter(self: @TContractState) -> u16;
     fn dao_counter(self: @TContractState) -> u16;
-
     fn get_all_categories(self: @TContractState) -> Array<ByteArray>;
 }
 
@@ -21,11 +20,17 @@ mod AgoraDaoFabric {
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
         StoragePointerWriteAccess,
     };
-    use starknet::{ContractAddress, get_caller_address};
+    use starknet::syscalls::deploy_syscall;
+    use starknet::{
+        ClassHash, ContractAddress, get_block_timestamp, get_caller_address, get_contract_address,
+    };
 
     //imports
     use super::functions::add_user_counter;
     use super::structs::Dao;
+
+    //constants
+    const CLASS_HASH: felt252 = 0x58398a6e5d0e495f7f15becadd6dfdc1ed5b6705af6f4dce97f8d0a7fc180b6;
 
     component!(path: OwnableComponent, storage: ownable, event: OwnableEvent);
 
@@ -80,7 +85,37 @@ mod AgoraDaoFabric {
             assert!(name.len() > 0, "Dao name must not be empty");
             assert!(description.len() > 0, "Dao description must not be empty");
 
+            //create dao
+            let salt: felt252 = get_block_timestamp().into();
+            let mut calldata: Array<felt252> = ArrayTrait::new();
+            let fabric_felt: felt252 = get_contract_address().into();
+            let creator_felt: felt252 = caller.into();
+
+            calldata.append(fabric_felt);
+            calldata.append(creator_felt);
+
+            let class_hash: ClassHash = TryInto::try_into(CLASS_HASH).unwrap();
+
+            let (dao_address, _) = deploy_syscall(class_hash, salt, calldata.span(), false)
+                .unwrap();
+
+            //store dao
+            let newDao: Dao = Dao {
+                dao_ID: self.dao_counter.read(),
+                creator: caller,
+                name: name,
+                description: description,
+                category: "kadkdakadkadkdakad",
+                dao_address: dao_address,
+                image_URI: "djdjd",
+                is_public: true,
+                creation_timestamp: get_block_timestamp(),
+            };
+
             add_user_counter(ref self, caller);
+
+            self.daos.write(self.dao_counter.read(), newDao);
+            self.dao_counter.write(self.dao_counter.read() + 1);
         }
 
         // --- read functions ---

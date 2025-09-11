@@ -51,6 +51,14 @@ const deployScript = async (): Promise<void> => {
       // owner: deployer.address,
     },
   });
+
+  await deployContract({
+    contract: 'AgoraDao',
+    constructorArgs: {
+      fabric: deployer.address,
+      creator: deployer.address,
+    },
+  });
 };
 
 const main = async (): Promise<void> => {
