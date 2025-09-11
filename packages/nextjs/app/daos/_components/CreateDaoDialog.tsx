@@ -52,10 +52,8 @@ import { useScaffoldReadContract } from '~~/hooks/scaffold-stark/useScaffoldRead
 // import { DaoFormSchema } from "~~/lib/schemes/dao.scheme";
 
 export const CreateDaoDialog: React.FC = () => {
-  const { isMd } = useBreakpoint();
 
   //states
-  const [imageCid, setImageCid] = useState<string | undefined>(undefined);
   const [loadImage, setLoadImage] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
@@ -86,13 +84,7 @@ export const CreateDaoDialog: React.FC = () => {
   const { sendAsync } = useScaffoldWriteContract({
     contractName: 'AgoraDaoFabric',
     functionName: 'create_dao',
-    args: [
-      nameWatch,
-      descriptionWatch,
-      BigInt(categoriesWatch ?? 0),
-      imageCid ?? '',
-      isPublicWatch,
-    ],
+    args: ['', '', 0n, '', false],
   });
 
   const { data: daoCategories, isLoading: daoCategoriesLoading } =
@@ -156,10 +148,15 @@ export const CreateDaoDialog: React.FC = () => {
         if (!req.ok) return toast.error(res!.response);
       }
 
-      //TODO: revisar que es lo que pasa AQUI
-
-    await  setImageCid(res?.cid);
-      await sendAsync();
+      await sendAsync({
+        args: [
+          data.name,
+          data.description,
+          BigInt(data.categories ?? 0),
+          res?.cid ?? '',
+          data.isPublic,
+        ],
+      });
     } catch (err) {
       console.log(err);
     } finally {
@@ -227,7 +224,7 @@ export const CreateDaoDialog: React.FC = () => {
             onSubmit={daoForm.handleSubmit(onSubmit)}
             autoComplete='off'
             autoCapitalize='sentences'
-            className='space-y-4 px-1'
+            className='-space-y-1 px-1'
           >
             {/* name */}
             <fieldset className='fieldset'>
@@ -261,7 +258,7 @@ export const CreateDaoDialog: React.FC = () => {
               </legend>
               <textarea
                 {...daoForm.register('description')}
-                className='textarea resize-none h-28 bg-base-200 w-full'
+                className='textarea resize-none h-28 w-full'
                 placeholder='e.g. A decentralized organization that enables transparent decision-making, in which users actively participate in the financing and management of community-driven projects.'
               />
               <div className='flex justify-between'>
@@ -291,7 +288,6 @@ export const CreateDaoDialog: React.FC = () => {
                   </span>
                 </legend>
                 <select
-                  defaultValue=''
                   value={categoriesWatch ?? ''}
                   {...daoForm.register('categories')}
                   className='select w-full'
@@ -364,7 +360,7 @@ export const CreateDaoDialog: React.FC = () => {
                   </div>
                 ) : !loadImage ? (
                   <div
-                    className={`absolute inset-0 flex flex-col justify-center items-center pointer-events-none z-10 ${daoForm.formState.errors.logo ? 'text-error' : ''}`}
+                    className={`absolute inset-0 flex flex-col justify-center items-center pointer-events-none z-10 p-0.5 ${daoForm.formState.errors.logo ? 'text-error' : ''}`}
                   >
                     <Upload className='w-10 h-10' />
                     <p className='my-0 font-semibold'>
@@ -373,7 +369,7 @@ export const CreateDaoDialog: React.FC = () => {
                     <span className='font-semibold'>
                       The image must be less than 1 MB
                     </span>
-                    <span className='text-center text-sm'>
+                    <span className='text-center text-[13px]'>
                       It is recommended that the appearance of the image be
                       100x100
                     </span>
@@ -420,7 +416,6 @@ export const CreateDaoDialog: React.FC = () => {
                 </p>
                 <input
                   type='checkbox'
-                  defaultChecked={true}
                   checked={isPublicWatch}
                   onChange={(e) =>
                     daoForm.setValue('isPublic', e.currentTarget.checked)
@@ -428,7 +423,7 @@ export const CreateDaoDialog: React.FC = () => {
                   className='toggle'
                 />
               </div>
-              <span className='label text-error my-0'>Optional</span>
+              {/* <span className='label text-error my-0'>Optional</span> */}
             </fieldset>
 
             {/* Action Buttons */}
@@ -447,12 +442,22 @@ export const CreateDaoDialog: React.FC = () => {
                 <button
                   type='submit'
                   disabled={
-                    // daoCategoriesLoading ||
-                    submitLoading || !daoForm.formState.isValid
+                    daoCategoriesLoading ||
+                    submitLoading ||
+                    !daoForm.formState.isValid
                   }
                   className='btn btn-accent'
                 >
-                  <Rocket className='w-4 h-4' /> Launch DAO
+                  {daoCategoriesLoading || submitLoading ? (
+                    <>
+                      <Loader className='w-4 h-4 animate-spin' />
+                      Creating DAO
+                    </>
+                  ) : (
+                    <>
+                      <Rocket className='w-4 h-4' /> Launch DAO
+                    </>
+                  )}
                 </button>
               </div>
             </div>
