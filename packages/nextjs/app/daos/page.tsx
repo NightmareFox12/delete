@@ -5,6 +5,7 @@ import { HeaderDaoList } from './_components/HeaderDaoList';
 import { CustomConnectButton } from '~~/components/scaffold-stark/CustomConnectButton';
 import { FaucetButton } from '~~/components/scaffold-stark/FaucetButton';
 import { CreateDaoDialog } from './_components/CreateDaoDialog';
+import { DaoGrid } from './_components/DaoGrid';
 
 // const daos = [
 //   {
@@ -72,7 +73,7 @@ const DaosPage: NextPage = async () => {
       </div>
       <CreateDaoDialog />
       {/* Dao grid */}
-      {/* <DaoGrid /> */}
+      <DaoGrid />
     </section>
   );
 };

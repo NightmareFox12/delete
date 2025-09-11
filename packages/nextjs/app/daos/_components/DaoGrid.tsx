@@ -1,0 +1,67 @@
+'use client';
+
+import { useScaffoldReadContract } from '~~/hooks/scaffold-stark/useScaffoldReadContract';
+// import { DaoCard } from './DaoCard';
+import { Frown } from 'lucide-react';
+
+export const DaoGrid: React.FC = () => {
+  //smart contract
+  const { data: publicDaos, isLoading: daoLoading } = useScaffoldReadContract({
+    contractName: 'AgoraDaoFabric',
+    functionName: 'get_public_daos',
+  });
+
+  //components
+  const LoadingCards = () => {
+    return (
+      <article className='w-full grid gap-6 sm:grid-cols-2 md:grid-cols-3 px-4 sm:mt-4 mb-2 sm:mb-4'>
+        {Array(9)
+          .fill(0)
+          .map((_x, y) => (
+            <div key={y} className='skeleton bg-primary h-56 w-full' />
+            // <Skeleton key={y} className='h-56 w-full bg-primary/50' />
+          ))}
+      </article>
+    );
+  };
+
+  console.log(publicDaos?.length) //TOOD: verificar como es que lo lee el debug contract
+  return (
+    <section>
+      {publicDaos === undefined || daoLoading ? (
+        <LoadingCards />
+      ) : publicDaos.length < 0 ? (
+        <article className='h-96 mt-5 flex justify-center flex-col text-center py-12'>
+          <Frown className='h-20 w-20 text-muted-foreground mx-auto mb-4' />
+          <h3 className='text-2xl font-semibold mb-2'>No DAOs are available</h3>
+          <p className='text-muted-foreground'>
+            Please check back later to see new organizations available.
+          </p>
+        </article>
+      ) : (
+        <article className='container mx-auto px-4 py-8'>
+          Main Content
+          {/* <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
+            {publicDaos.map((x) => {
+              return (
+                <div key={x}>
+
+                </div>
+                // <DaoCard
+                //   key={x.daoID}
+                //   daoID={x.daoID}
+                //   daoAddress={x.daoAddress}
+                //   name={x.name}
+                //   description={x.description}
+                //   category={x.category}
+                //   imageUri={x.imageURI}
+                //   creationDate={x.creationTimestamp}
+                // />
+              );
+            })}
+          </div> */}
+        </article>
+      )}
+    </section>
+  );
+};

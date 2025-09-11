@@ -17,11 +17,13 @@ trait IAgoraDaoFabric<TContractState> {
         is_public: bool,
     );
 
-    // --- read functions ---
+    // --- read states ---
     fn user_counter(self: @TContractState) -> u16;
     fn dao_counter(self: @TContractState) -> u16;
+
+    // --- read functions ---
     fn get_all_categories(self: @TContractState) -> Array<ByteArray>;
-    fn public_daos(self: @TContractState) -> Array<Dao>;
+    fn get_public_daos(self: @TContractState) -> Array<Dao>;
 }
 
 #[starknet::contract]
@@ -163,7 +165,7 @@ mod AgoraDaoFabric {
             res
         }
 
-        fn public_daos(self: @ContractState) -> Array<Dao> {
+        fn get_public_daos(self: @ContractState) -> Array<Dao> {
             let mut res: Array<Dao> = ArrayTrait::new();
             let mut i: u16 = 0;
 
