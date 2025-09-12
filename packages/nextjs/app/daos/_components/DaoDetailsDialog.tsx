@@ -54,7 +54,6 @@ export const DaoDetailsDialog: React.FC<DaoDetailsDialogProps> = ({
     return data;
   }, [isLoadingEvents, userJoined]);
 
-  console.log(userJoined);
   return (
     <>
       <button
@@ -100,7 +99,10 @@ export const DaoDetailsDialog: React.FC<DaoDetailsDialogProps> = ({
 
           {isLoadingEvents ? (
             <div className='skeleton w-full h-20 bg-primary my-2' />
-          ) : (
+          ) : userJoinedArr.length === 0 ? <div className=''>
+            <p className='text-center font-semibold'>No users yet to display</p>
+            </div>
+          : (
             <div className='overflow-x-auto'>
               <table className='table'>
                 <thead>

@@ -82,11 +82,14 @@ export const DaoGrid: React.FC = () => {
             {filterDaos.map((dao) => {
               const x = dao as unknown as IDao;
 
+              if (address === undefined) return;
               return (
                 <DaoCard
                   key={x.dao_ID}
                   daoID={x.dao_ID}
                   daoAddress={num.toHex(x.dao_address)}
+                  creatorAddress={num.toHex(x.creator)}
+                  userAddress={num.cleanHex(address.toString())}
                   name={x.name}
                   description={x.description}
                   category={x.category}

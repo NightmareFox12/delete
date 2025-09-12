@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Image, Users } from 'lucide-react';
+import { Image, LogIn, Users } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useScaffoldWriteContract } from '~~/hooks/scaffold-stark/useScaffoldWriteContract';
 import { useScaffoldReadContract } from '~~/hooks/scaffold-stark/useScaffoldReadContract';
@@ -29,6 +29,8 @@ const lightCategoryColors = {
 type DaoCardProps = {
   daoID: bigint;
   daoAddress: string;
+  creatorAddress: string;
+  userAddress: string;
   name: string;
   description: string;
   category: string;
@@ -39,6 +41,8 @@ type DaoCardProps = {
 export const DaoCard: React.FC<DaoCardProps> = ({
   daoID,
   daoAddress,
+  creatorAddress,
+  userAddress,
   name,
   description,
   category,
@@ -142,9 +146,20 @@ export const DaoCard: React.FC<DaoCardProps> = ({
             : description}
         </p>
         <div className='card-actions'>
-          <button onClick={handleJoinDao} className='btn flex-1 btn-accent'>
-            Join DAO
-          </button>
+          {creatorAddress === userAddress ? (
+            <button className='btn btn-accent flex-1'>
+              <LogIn className='h-4 w-4' />
+              Log In
+            </button>
+          ) : (
+            <button
+              onClick={handleJoinDao}
+              disabled={creatorAddress === userAddress}
+              className='btn flex-1 btn-accent'
+            >
+              Join DAO
+            </button>
+          )}
           <DaoDetailsDialog
             daoID={daoID}
             daoAddress={daoAddress}

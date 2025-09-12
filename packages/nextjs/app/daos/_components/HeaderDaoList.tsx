@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Funnel, Search } from 'lucide-react';
 import { useAccount } from '~~/hooks/useAccount';
