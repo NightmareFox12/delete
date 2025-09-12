@@ -123,78 +123,19 @@ export const TaskGrid: React.FC = () => {
   return (
     <section className='sm:px-2 lg:px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
       {mockTasks.map((task) => (
-        <div key={task.id} className='card bg-base-100 w-96 shadow-sm'>
-          {/* <figure>
-            <img
-              src='https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp'
-              alt='Shoes'
-            />
-          </figure> */}
+        <div
+          key={task.id}
+          className='card bg-base-200 shadow-sm border border-gradient'
+        >
           <div className='card-body'>
             <h2 className='card-title'>{task.title}</h2>
+            <div className='badge badge-warning'>{task.status}</div>
             <p>{task.description}</p>
             <div className='card-actions justify-end'>
               <button className='btn btn-primary'>Buy Now</button>
             </div>
           </div>
         </div>
-        // <Card key={task.id} className="hover:shadow-lg transition-shadow duration-200 border-border/50">
-        //   <CardHeader className="pb-3">
-        //     <div className="flex items-start justify-between gap-2">
-        //       <CardTitle className="text-lg font-semibold text-balance leading-tight">{task.title}</CardTitle>
-        //       <Badge variant="outline" className={`${priorityColors[task.priority]} text-xs font-medium shrink-0`}>
-        //         {task.priority}
-        //       </Badge>
-        //     </div>
-        //     <Badge variant="outline" className={`${statusColors[task.status]} text-xs font-medium w-fit`}>
-        //       {task.status}
-        //     </Badge>
-        //   </CardHeader>
-
-        //   <CardContent className="space-y-4">
-        //     <p className="text-sm text-muted-foreground text-pretty line-clamp-2">{task.description}</p>
-
-        //     <div className="space-y-3">
-        //       <div className="flex items-center gap-2">
-        //         <User className="h-4 w-4 text-muted-foreground" />
-        //         <div className="flex items-center gap-2">
-        //           <Avatar className="h-6 w-6">
-        //             <AvatarImage src={task.assignee.avatar || "/placeholder.svg"} alt={task.assignee.name} />
-        //             <AvatarFallback className="text-xs">
-        //               {task.assignee.name
-        //                 .split(" ")
-        //                 .map((n) => n[0])
-        //                 .join("")}
-        //             </AvatarFallback>
-        //           </Avatar>
-        //           <span className="text-sm font-medium">{task.assignee.name}</span>
-        //         </div>
-        //       </div>
-
-        //       <div className="flex items-center gap-2">
-        //         <CalendarDays className="h-4 w-4 text-muted-foreground" />
-        //         <span className="text-sm text-muted-foreground">
-        //           {new Date(task.dueDate).toLocaleDateString("es-ES", {
-        //             day: "numeric",
-        //             month: "short",
-        //             year: "numeric",
-        //           })}
-        //         </span>
-        //       </div>
-
-        //       <div className="flex items-center gap-2">
-        //         <Coins className="h-4 w-4 text-muted-foreground" />
-        //         <span className="text-sm font-semibold text-primary">{task.reward} tokens</span>
-        //       </div>
-        //     </div>
-
-        //     <div className="pt-2 border-t border-border/50">
-        //       <Badge variant="secondary" className="text-xs">
-        //         {task.category}
-        //       </Badge>
-        //     </div>
-        //   </CardContent>
-        // </Card>
       ))}
     </section>
   );

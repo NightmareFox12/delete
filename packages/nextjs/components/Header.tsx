@@ -12,7 +12,7 @@ import { useTargetNetwork } from '~~/hooks/scaffold-stark/useTargetNetwork';
 import { devnet } from '@starknet-react/chains';
 import { SwitchTheme } from './SwitchTheme';
 import { useAccount, useNetwork, useProvider } from '@starknet-react/core';
-import { Files } from 'lucide-react';
+import { Bolt, Files } from 'lucide-react';
 
 type HeaderMenuLink = {
   label: string;
@@ -25,6 +25,12 @@ export const menuLinks: HeaderMenuLink[] = [
     label: 'Tasks',
     href: '/dao',
     icon: <Files className='h-4 w-4' />,
+  },
+
+  {
+    label: 'Configuration',
+    href: '/dao/configuration',
+    icon: <Bolt className='h-4 w-4' />,
   },
   {
     label: 'Debug Contracts',
@@ -41,6 +47,7 @@ export const HeaderMenuLinks = () => {
   useEffect(() => {
     setIsDark(theme === 'dark');
   }, [theme]);
+  
   return (
     <>
       {menuLinks.map(({ label, href, icon }) => {
