@@ -130,53 +130,6 @@ export const DaoCard: React.FC<DaoCardProps> = ({
         </span>
       </article>
     );
-
-    // <div className='flex items-start justify-between'>
-    //   <div className='flex items-center gap-3'>
-    //     <div className='rounded-lg bg-primary/10 p-2'>
-    //       {imageUri.length > 4 ? (
-    //         // eslint-disable-next-line @next/next/no-img-element
-    //         <img
-    //           src={`https://ipfs.io/ipfs/${imageUri}`}
-    //           alt={name}
-    //           className='object-cover'
-    //         />
-    //       ) : (
-    //         // eslint-disable-next-line jsx-a11y/alt-text
-    //         <Image className='w-6 h-6' />
-    //       )}
-    //     </div>
-    //     <div>
-    //       <CardTitle className='text-lg'>{name}</CardTitle>
-    //       <div className='flex items-center gap-1'>
-    //         <Users className='h-4 w-4 text-muted-foreground' />
-    //         {userCounter === undefined || userCounterLoading ? (
-    //           <Skeleton className='h-5 w-5 bg-primary/50' />
-    //         ) : (
-    //           <span className='text-sm text-muted-foreground'>
-    //             {userCounter}{' '}
-    //             {parseInt(`${userCounter}`) > 1 ? 'users' : 'user'}
-    //           </span>
-    //         )}
-    //       </div>
-    //     </div>
-    //   </div>
-    //   <NoSSRBadge>#{daoID}</NoSSRBadge>
-    // </div>
-    // <NoSSRBadge
-    //   variant='secondary'
-    //   className={`w-fit ${
-    //     isDarkMode
-    //       ? darkCategoryColors[
-    //           category.toLowerCase() as keyof typeof darkCategoryColors
-    //         ]
-    //       : lightCategoryColors[
-    //           category.toLowerCase() as keyof typeof lightCategoryColors
-    //         ]
-    //   }`}
-    // >
-    //   {category.toLowerCase()}
-    // </NoSSRBadge>
   };
 
   return (
