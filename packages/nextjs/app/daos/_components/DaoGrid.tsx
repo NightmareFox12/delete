@@ -1,16 +1,16 @@
 'use client';
 
 import { useScaffoldReadContract } from '~~/hooks/scaffold-stark/useScaffoldReadContract';
-import { Frown, X } from 'lucide-react';
+import { Frown } from 'lucide-react';
 import { IDao } from '~~/types/dao';
 import React, { JSX, useMemo } from 'react';
 import { DaoCard } from './DaoCard';
 import { num } from 'starknet';
-import { useCategorySelected } from '~~/services/store/categorySelected';
+import { useFilterDao } from '~~/services/store/filterDao';
 import { useAccount } from '~~/hooks/useAccount';
 
 export const DaoGrid: React.FC = () => {
-  const { category } = useCategorySelected();
+  const { category, name } = useFilterDao();
   const { address } = useAccount();
 
   //smart contract
@@ -23,23 +23,33 @@ export const DaoGrid: React.FC = () => {
   const filterDaos = useMemo(() => {
     if (address === undefined) return [];
 
+    let filterForCategory;
+
     switch (category) {
       case '':
-        return publicDaos;
+        filterForCategory = publicDaos ?? [];
+        break;
       case 'my-dao':
-        return (
+        filterForCategory =
           publicDaos?.filter(
             (x: any) =>
               num.toHex(x.creator) === num.cleanHex(address.toString())
-          ) ?? []
-        );
+          ) ?? [];
+        break;
       default:
-        return (
+        filterForCategory =
           publicDaos?.filter((x: any) => x.category.toString() === category) ??
-          []
-        );
+          [];
+        break;
     }
-  }, [address, category, publicDaos]);
+
+    if (name !== '')
+      return filterForCategory.filter((x: any) =>
+        x.name.toString().toLowerCase().includes(name.toLowerCase())
+      );
+
+    return filterForCategory;
+  }, [address, category, name, publicDaos]);
 
   //components
   const LoadingCards = (): JSX.Element => {
@@ -56,7 +66,7 @@ export const DaoGrid: React.FC = () => {
 
   return (
     <section>
-      {filterDaos === undefined || daoLoading ? (
+      {daoLoading ? (
         <LoadingCards />
       ) : filterDaos.length === 0 ? (
         <article className='h-96 mt-5 flex justify-center flex-col text-center py-12'>
