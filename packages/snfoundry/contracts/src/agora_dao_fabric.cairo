@@ -44,7 +44,7 @@ mod AgoraDaoFabric {
     use super::validations::create_dao_validation;
 
     //constants
-    const CLASS_HASH: felt252 = 0x4510dcdd01ccad861fb3ca71dd9f7e4efac445bef33d40405b5004c712ee0bb;
+    const CLASS_HASH: felt252 = 0x385a248c4b7082a991f9c92e1cda178691344270271ea263ff3d007112b3f0e;
 
     component!(path: OwnableComponent, storage: ownable, event: OwnableEvent);
 

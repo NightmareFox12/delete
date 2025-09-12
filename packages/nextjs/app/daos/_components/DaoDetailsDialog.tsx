@@ -1,5 +1,6 @@
-import { Image, Info } from 'lucide-react';
+import { Image, Info, X } from 'lucide-react';
 import { useMemo, useRef } from 'react';
+import { Address } from '~~/components/scaffold-stark';
 import { useScaffoldEventHistory } from '~~/hooks/scaffold-stark/useScaffoldEventHistory';
 import { UserJoinedEvent } from '~~/types/events.types';
 
@@ -29,19 +30,17 @@ export const DaoDetailsDialog: React.FC<DaoDetailsDialogProps> = ({
     .split('T')[0];
 
   //Smart contract
-  const {
-    data: userJoined,
-    isLoading: isLoadingEvents,
-  } = useScaffoldEventHistory({
-    contractName: 'AgoraDao',
-    eventName: 'UserJoined',
-    contractAddress: daoAddress,
-    fromBlock: 0n,
-    watch: true,
-    blockData: true,
-    transactionData: true,
-    receiptData: true,
-  });
+  const { data: userJoined, isLoading: isLoadingEvents } =
+    useScaffoldEventHistory({
+      contractName: 'AgoraDao',
+      eventName: 'UserJoined',
+      contractAddress: daoAddress,
+      fromBlock: 0n,
+      watch: true,
+      blockData: true,
+      transactionData: true,
+      receiptData: true,
+    });
 
   //TODO: agregar tabla de eventos con un tab para (unidos,votaciones o mas cosas)
 
@@ -55,7 +54,7 @@ export const DaoDetailsDialog: React.FC<DaoDetailsDialogProps> = ({
     return data;
   }, [isLoadingEvents, userJoined]);
 
-  console.log(userJoined)
+  console.log(userJoined);
   return (
     <>
       <button
@@ -65,9 +64,17 @@ export const DaoDetailsDialog: React.FC<DaoDetailsDialogProps> = ({
         <Info className='w-4 h-4' />
       </button>
       <dialog ref={dialogRef} className='modal'>
-        <div className='modal-box'>
+        <div className='modal-box sm:!max-w-2xl'>
+          <div className='flex justify-end'>
+            <button
+              onClick={() => dialogRef.current?.close()}
+              className='btn btn-ghost btn-sm btn-circle'
+            >
+              <X className='w-4 h-4' />
+            </button>
+          </div>
           <h3 className='font-bold text-lg'>{name} Details</h3>
-          <p className=''>{description}</p>
+          <p>{description}</p>
           <div className='flex justify-between'>
             <span className='text-sm text-base-content/70'>
               Created on: <span className='font-semibold'>{parsedDate}</span>
@@ -91,29 +98,52 @@ export const DaoDetailsDialog: React.FC<DaoDetailsDialogProps> = ({
             <span className='text-sm text-muted-foreground'>Logo</span>
           </div>
 
-          <div className='overflow-x-auto'>
-            <table className='table'>
-              {/* head */}
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>User</th>
-                  <th>Job</th>
-                  <th>Favorite Color</th>
-                </tr>
-              </thead>
-              <tbody>
-                {userJoinedArr.map((x, y) => (
-                  <tr key={y} className='bg-base-200'>
-                    <th></th>
-                    <td>{x.args.user.toString()}</td>
-                    <td>Quality Control Specialist</td>
-                    <td>Blue</td>
+          {isLoadingEvents ? (
+            <div className='skeleton w-full h-20 bg-primary my-2' />
+          ) : (
+            <div className='overflow-x-auto'>
+              <table className='table'>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>BlockHash</th>
+                    <th>User</th>
+                    <th>Date</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {userJoinedArr.map((x, y) => {
+                    const parsedDate = new Date(
+                      parseInt((x.block.timestamp * 1000).toString())
+                    )
+                      .toISOString()
+                      .split('T')[0]
+                      .replace(/-/g, '/');
+
+                    return (
+                      <tr key={y} className='bg-base-200'>
+                        <th>{y + 1}</th>
+                        <td>
+                          <a
+                            href={`https://starkscan.co/block/${x.block.block_hash}`}
+                            target='_blank'
+                            rel='noreferrer'
+                            className='link whitespace-nowrap'
+                          >
+                            View on Block Explorer
+                          </a>
+                        </td>
+                        <td>
+                          <Address address={x.parsedArgs.user} />
+                        </td>
+                        <td>{parsedDate}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </dialog>
     </>

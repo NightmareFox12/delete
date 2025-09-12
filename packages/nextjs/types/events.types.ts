@@ -1,8 +1,8 @@
 export type UserJoinedEvent = {
-  address: string;
-  args: { user: string; userID: bigint };
-  blockData: { timestamp: bigint };
-  blockHash: string;
-  eventName: 'UserJoined';
-  transactionHash: string;
+  block: {
+    block_hash: string;
+    timestamp: number;
+  }
+  parsedArgs: { user: `0x${string}`; user_ID: bigint };
+
 };

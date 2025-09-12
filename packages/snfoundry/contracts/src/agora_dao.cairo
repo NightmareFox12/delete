@@ -49,6 +49,7 @@ pub mod AgoraDao {
         fn join_dao(ref self: ContractState) {
             let caller = get_caller_address();
             assert!(!self.is_user.read(caller), "User already joined");
+            assert!(self.creator.read() == caller, "Creator cannot join");
 
             self.is_user.write(caller, true);
 
