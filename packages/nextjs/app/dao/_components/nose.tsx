@@ -10,3 +10,7 @@ export const Nose: React.FC = () => {
   }, [setShowHeader]);
   return <div></div>;
 };
+
+//TODO: pedirle a V0 el apartado de tasks
+//TODO: verificar en cada funcion que se llame que sea un usuario
+//TODO: meterle el access de oppenzepelli para verificar si es auditor
