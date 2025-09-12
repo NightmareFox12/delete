@@ -6,8 +6,13 @@ import { IDao } from '~~/types/dao';
 import React, { JSX, useMemo } from 'react';
 import { DaoCard } from './DaoCard';
 import { num } from 'starknet';
+import { useCategorySelected } from '~~/services/store/categorySelected';
+import { useAccount } from '~~/hooks/useAccount';
 
 export const DaoGrid: React.FC = () => {
+  const { category } = useCategorySelected();
+  const { address } = useAccount();
+
   //smart contract
   const { data: publicDaos, isLoading: daoLoading } = useScaffoldReadContract({
     contractName: 'AgoraDaoFabric',
@@ -16,8 +21,25 @@ export const DaoGrid: React.FC = () => {
 
   //memos
   const filterDaos = useMemo(() => {
-    return publicDaos;
-  }, [publicDaos]);
+    if (address === undefined) return [];
+
+    switch (category) {
+      case '':
+        return publicDaos;
+      case 'my-dao':
+        return (
+          publicDaos?.filter(
+            (x: any) =>
+              num.toHex(x.creator) === num.cleanHex(address.toString())
+          ) ?? []
+        );
+      default:
+        return (
+          publicDaos?.filter((x: any) => x.category.toString() === category) ??
+          []
+        );
+    }
+  }, [address, category, publicDaos]);
 
   //components
   const LoadingCards = (): JSX.Element => {
@@ -36,7 +58,7 @@ export const DaoGrid: React.FC = () => {
     <section>
       {filterDaos === undefined || daoLoading ? (
         <LoadingCards />
-      ) : filterDaos.length < 0 ? (
+      ) : filterDaos.length === 0 ? (
         <article className='h-96 mt-5 flex justify-center flex-col text-center py-12'>
           <Frown className='h-20 w-20 text-muted-foreground mx-auto mb-4' />
           <h3 className='text-2xl font-semibold mb-2'>No DAOs are available</h3>
