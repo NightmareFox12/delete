@@ -6,6 +6,8 @@ import { useTheme } from 'next-themes';
 import { useScaffoldWriteContract } from '~~/hooks/scaffold-stark/useScaffoldWriteContract';
 import { useScaffoldReadContract } from '~~/hooks/scaffold-stark/useScaffoldReadContract';
 import { DaoDetailsDialog } from './DaoDetailsDialog';
+import { useRouter } from 'next/navigation';
+import { LOCAL_STORAGE_KEYS } from '~~/utils/storage_keys';
 
 //constans
 const darkCategoryColors = {
@@ -50,6 +52,7 @@ export const DaoCard: React.FC<DaoCardProps> = ({
   creationDate,
 }) => {
   const { resolvedTheme } = useTheme();
+  const router = useRouter();
 
   //consts
   const isDarkMode = (resolvedTheme ?? 'light') === 'dark';
@@ -71,7 +74,11 @@ export const DaoCard: React.FC<DaoCardProps> = ({
   //functions
   const handleJoinDao = async () => {
     try {
-      await sendAsync();
+      if (creatorAddress !== userAddress) {
+        await sendAsync();
+      }
+      localStorage.setItem(LOCAL_STORAGE_KEYS.DAO_ADDRESS, daoAddress);
+      router.push('/dao');
     } catch (err) {
       console.log(err);
     }
@@ -137,7 +144,9 @@ export const DaoCard: React.FC<DaoCardProps> = ({
   };
 
   return (
-    <div className={`${creatorAddress === userAddress ? "bg-accent/50 border border-gradient" : "bg-base-100"} card w-full shadow-sm`}>
+    <div
+      className={`${creatorAddress === userAddress ? 'bg-accent/50 border border-gradient' : 'bg-base-100'} card w-full shadow-sm`}
+    >
       <CardHeader />
       <div className='card-body pt-3'>
         <p className='mt-0 break-all text-sm leading-relaxed'>
@@ -147,7 +156,10 @@ export const DaoCard: React.FC<DaoCardProps> = ({
         </p>
         <div className='card-actions'>
           {creatorAddress === userAddress ? (
-            <button className='btn btn-soft btn-neutral flex-1'>
+            <button
+              onClick={handleJoinDao}
+              className='btn btn-soft btn-neutral flex-1'
+            >
               <LogIn className='h-4 w-4' />
               Log In
             </button>
