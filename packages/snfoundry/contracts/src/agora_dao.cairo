@@ -12,6 +12,7 @@ pub trait IAgoraDao<TContractState> {
 
 #[starknet::contract]
 pub mod AgoraDao {
+    use starknet::event::EventEmitter;
     use starknet::storage::{
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
         StoragePointerWriteAccess,
@@ -50,6 +51,9 @@ pub mod AgoraDao {
             assert!(!self.is_user.read(caller), "User already joined");
 
             self.is_user.write(caller, true);
+
+            self.emit(UserJoined { user: caller, user_ID: self.user_counter.read() });
+
             self.user_counter.write(self.user_counter.read() + 1);
         }
 

@@ -1,4 +1,4 @@
-import { Info } from 'lucide-react';
+import { Image, Info } from 'lucide-react';
 import { useMemo, useRef } from 'react';
 import { useScaffoldEventHistory } from '~~/hooks/scaffold-stark/useScaffoldEventHistory';
 import { UserJoinedEvent } from '~~/types/events.types';
@@ -32,14 +32,12 @@ export const DaoDetailsDialog: React.FC<DaoDetailsDialogProps> = ({
   const {
     data: userJoined,
     isLoading: isLoadingEvents,
-    // error: errorReadingEvents,
   } = useScaffoldEventHistory({
     contractName: 'AgoraDao',
     eventName: 'UserJoined',
     contractAddress: daoAddress,
     fromBlock: 0n,
     watch: true,
-    // filters: { greetingSetter: "0x9eB2C4866aAe575bC88d00DE5061d5063a1bb3aF" },
     blockData: true,
     transactionData: true,
     receiptData: true,
@@ -57,7 +55,7 @@ export const DaoDetailsDialog: React.FC<DaoDetailsDialogProps> = ({
     return data;
   }, [isLoadingEvents, userJoined]);
 
-  //mejorar tabla
+  console.log(userJoined)
   return (
     <>
       <button
@@ -68,46 +66,62 @@ export const DaoDetailsDialog: React.FC<DaoDetailsDialogProps> = ({
       </button>
       <dialog ref={dialogRef} className='modal'>
         <div className='modal-box'>
-          <h3 className='font-bold text-lg'>Hello!</h3>
-          <p className='py-4'>Press ESC key or click outside to close</p>
+          <h3 className='font-bold text-lg'>{name} Details</h3>
+          <p className=''>{description}</p>
+          <div className='flex justify-between'>
+            <span className='text-sm text-base-content/70'>
+              Created on: <span className='font-semibold'>{parsedDate}</span>
+            </span>
+            <div className='badge badge-neutral font-semibold text-[12px]'>
+              ID #{daoID}
+            </div>
+          </div>
+          <div className='flex flex-col items-center justify-center mt-2'>
+            {imageUri.length > 4 ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={`https://ipfs.io/ipfs/${imageUri}`}
+                alt={name}
+                className='object-cover w-32 h-32'
+              />
+            ) : (
+              // eslint-disable-next-line jsx-a11y/alt-text
+              <Image className='w-12 h-12' />
+            )}
+            <span className='text-sm text-muted-foreground'>Logo</span>
+          </div>
+
+          <div className='overflow-x-auto'>
+            <table className='table'>
+              {/* head */}
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>User</th>
+                  <th>Job</th>
+                  <th>Favorite Color</th>
+                </tr>
+              </thead>
+              <tbody>
+                {userJoinedArr.map((x, y) => (
+                  <tr key={y} className='bg-base-200'>
+                    <th></th>
+                    <td>{x.args.user.toString()}</td>
+                    <td>Quality Control Specialist</td>
+                    <td>Blue</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-        <form method='dialog' className='modal-backdrop'>
-          <button>close</button>
-        </form>
       </dialog>
     </>
-    // <div className='overflow-x-auto'>
-    //   <table className='table'>
-    //     {/* head */}
-    //     <thead>
-    //       <tr>
-    //         <th></th>
-    //         <th>Name</th>
-    //         <th>Job</th>
-    //         <th>Favorite Color</th>
-    //       </tr>
-    //     </thead>
-    //     <tbody>
-    //       {userJoinedArr.map((x, y) => (
-    //         <tr key={y} className='bg-base-200'>
-    //           <th>1</th>
-    //           <td>Cy Ganderton</td>
-    //           <td>Quality Control Specialist</td>
-    //           <td>Blue</td>
-    //         </tr>
-    //       ))}
-    //     </tbody>
-    //   </table>
-    // </div>
   );
 
   // return (
   //   <Dialog>
-  //     <DialogTrigger asChild>
-  //       <Button size="sm">
-  //         <Info className="h-4 w-4" />
-  //       </Button>
-  //     </DialogTrigger>
+
   //     <DialogContent>
   //       <DialogHeader className="sm:max-w-md">
   //         <DialogTitle>{name} Details</DialogTitle>

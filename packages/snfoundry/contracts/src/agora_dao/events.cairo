@@ -3,6 +3,6 @@ use starknet::ContractAddress;
 #[derive(Drop, starknet::Event)]
 pub struct UserJoined {
     #[key]
-    user: ContractAddress,
-    user_ID: u16,
+    pub user: ContractAddress,
+    pub user_ID: u16,
 }
