@@ -10,7 +10,7 @@ import { Header } from '~~/components/Header';
 import { appChains, connectors } from '~~/services/web3/connectors';
 import provider from '~~/services/web3/provider';
 import { useNativeCurrencyPrice } from '~~/hooks/scaffold-stark/useNativeCurrencyPrice';
-import { useHeaderStore } from '~~/services/store/header.store.';
+import { useHeaderStore } from '~~/services/store/header';
 
 const Footer = dynamic(
   () => import('~~/components/Footer').then((mod) => mod.Footer),

@@ -1,14 +1,25 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Funnel, Search } from 'lucide-react';
 import { useAccount } from '~~/hooks/useAccount';
+import { useScaffoldReadContract } from '~~/hooks/scaffold-stark/useScaffoldReadContract';
+import { useCategorySelected } from '~~/services/store/categorySelected';
 
 export const HeaderDaoList: React.FC = () => {
   const { isConnected } = useAccount();
   const router = useRouter();
+  const { category, setCategory } = useCategorySelected();
 
+  //smart contract
+  const { data: allCategories, isLoading: daoCategoriesLoading } =
+    useScaffoldReadContract({
+      contractName: 'AgoraDaoFabric',
+      functionName: 'get_all_categories',
+    });
+
+  //effects
   useEffect(() => {
     if (isConnected) return;
 
@@ -40,9 +51,36 @@ export const HeaderDaoList: React.FC = () => {
               </div>
             </div>
 
-            <button className='btn btn-accent'>
-              <Funnel className='h-4 w-4' />
-            </button>
+            {/* Filter  */}
+            {daoCategoriesLoading || allCategories === undefined ? (
+              <div className='h-10 w-12 skeleton bg-base-200' />
+            ) : (
+              <div className='dropdown dropdown-end'>
+                <div tabIndex={0} role='button' className='btn btn-accent'>
+                  <Funnel className='h-4 w-4 text-accent-content' />
+                </div>
+                <ul
+                  tabIndex={0}
+                  className='dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm'
+                >
+                  <li
+                    onClick={() => setCategory('my-dao')}
+                    className={`${category === 'my-dao' ? 'bg-accent' : ''}`}
+                  >
+                    <p className='m-0.5'>My DAOs</p>
+                  </li>
+                  {allCategories.map((x, y) => (
+                    <li
+                      key={y}
+                      onClick={() => setCategory(x.toString())}
+                      className={`${category === x.toString() ? 'bg-accent' : ''}`}
+                    >
+                      <p className='m-0.5'>{x.toString()}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>

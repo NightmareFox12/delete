@@ -14,7 +14,7 @@ const ContractUI = dynamic(
 
 import { ContractName } from '~~/utils/scaffold-stark/contract';
 import { getAllContracts } from '~~/utils/scaffold-stark/contractsData';
-import { useHeaderStore } from '~~/services/store/header.store.';
+import { useHeaderStore } from '~~/services/store/header';
 
 const selectedContractStorageKey = 'scaffoldStark2.selectedContract';
 const contractsData = getAllContracts();

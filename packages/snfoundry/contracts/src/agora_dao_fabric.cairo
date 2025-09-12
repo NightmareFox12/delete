@@ -44,7 +44,7 @@ mod AgoraDaoFabric {
     use super::validations::create_dao_validation;
 
     //constants
-    const CLASS_HASH: felt252 = 0x48b1e00c7c410714d53abaa307b73f60441751e557e4770473ce4cba50b4afd;
+    const CLASS_HASH: felt252 = 0x16d6f4925e869059b3e756ba7f1e81b286d18f94b4b9e9a93d3d54bf7f5da65;
 
     component!(path: OwnableComponent, storage: ownable, event: OwnableEvent);
 
@@ -71,6 +71,7 @@ mod AgoraDaoFabric {
         add_category(ref self, "SOCIAL IMPACT");
         add_category(ref self, "SERVICE");
         add_category(ref self, "ENERGY");
+        add_category(ref self, "GOVERNANCE");
     }
 
     #[event]

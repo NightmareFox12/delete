@@ -3,7 +3,7 @@
 import { useScaffoldReadContract } from '~~/hooks/scaffold-stark/useScaffoldReadContract';
 import { Frown, X } from 'lucide-react';
 import { IDao } from '~~/types/dao';
-import React, { JSX } from 'react';
+import React, { JSX, useMemo } from 'react';
 import { DaoCard } from './DaoCard';
 import { num } from 'starknet';
 
@@ -13,6 +13,11 @@ export const DaoGrid: React.FC = () => {
     contractName: 'AgoraDaoFabric',
     functionName: 'get_public_daos',
   });
+
+  //memos
+  const filterDaos = useMemo(() => {
+    return publicDaos;
+  }, [publicDaos]);
 
   //components
   const LoadingCards = (): JSX.Element => {
@@ -29,9 +34,9 @@ export const DaoGrid: React.FC = () => {
 
   return (
     <section>
-      {publicDaos === undefined || daoLoading ? (
+      {filterDaos === undefined || daoLoading ? (
         <LoadingCards />
-      ) : publicDaos.length < 0 ? (
+      ) : filterDaos.length < 0 ? (
         <article className='h-96 mt-5 flex justify-center flex-col text-center py-12'>
           <Frown className='h-20 w-20 text-muted-foreground mx-auto mb-4' />
           <h3 className='text-2xl font-semibold mb-2'>No DAOs are available</h3>
@@ -42,7 +47,7 @@ export const DaoGrid: React.FC = () => {
       ) : (
         <article className='container px-2 sm:px-2 md:max-w-6xl mx-auto py-8'>
           <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
-            {publicDaos.map((dao) => {
+            {filterDaos.map((dao) => {
               const x = dao as unknown as IDao;
 
               return (
