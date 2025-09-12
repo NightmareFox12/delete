@@ -384,6 +384,7 @@ export type UseScaffoldEventHistoryConfig<
   watch?: boolean;
   format?: boolean;
   enabled?: boolean;
+  contractAddress?: string;
 };
 
 export type UseScaffoldWatchContractEventConfig<

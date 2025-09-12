@@ -1,3 +1,5 @@
+mod events;
+
 #[starknet::interface]
 pub trait IAgoraDao<TContractState> {
     // --- write functions ---
@@ -5,7 +7,6 @@ pub trait IAgoraDao<TContractState> {
 
     // --- read states ---
     fn user_counter(self: @TContractState) -> u16;
-
     // --- read functions ---
 }
 
@@ -17,22 +18,9 @@ pub mod AgoraDao {
     };
     use starknet::{ContractAddress, get_caller_address};
 
+    //imports
+    use super::events::UserJoined;
 
-    #[event]
-    #[derive(Drop, starknet::Event)]
-    enum Event {
-        GreetingChanged: GreetingChanged,
-    }
-
-    #[derive(Drop, starknet::Event)]
-    struct GreetingChanged {
-        #[key]
-        greeting_setter: ContractAddress,
-        #[key]
-        new_greeting: ByteArray,
-        premium: bool,
-        value: Option<u256>,
-    }
 
     #[storage]
     struct Storage {
@@ -40,6 +28,12 @@ pub mod AgoraDao {
         creator: ContractAddress,
         user_counter: u16,
         is_user: Map<ContractAddress, bool>,
+    }
+
+    #[event]
+    #[derive(Drop, starknet::Event)]
+    enum Event {
+        UserJoined: UserJoined,
     }
 
     #[constructor]

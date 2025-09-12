@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
-// import { DaoDetailsDialog } from "./DaoDetailsDialog";
-import { Image, Info, Users } from 'lucide-react';
+import { Image, Users } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useScaffoldWriteContract } from '~~/hooks/scaffold-stark/useScaffoldWriteContract';
 import { useScaffoldReadContract } from '~~/hooks/scaffold-stark/useScaffoldReadContract';
+import { DaoDetailsDialog } from './DaoDetailsDialog';
 
 //constans
 const darkCategoryColors = {
@@ -183,93 +183,25 @@ export const DaoCard: React.FC<DaoCardProps> = ({
     <div className='card bg-base-100 w-full shadow-sm'>
       <CardHeader />
       <div className='card-body pt-3'>
-        <p className='mt-0'>{description}</p>
+        <p className='mt-0 break-all text-sm leading-relaxed'>
+          {description.length > 200
+            ? description.slice(0, 200) + '...'
+            : description}
+        </p>
         <div className='card-actions'>
           <button onClick={handleJoinDao} className='btn flex-1 btn-accent'>
             Join DAO
           </button>
-          <button onClick={handleJoinDao} className='btn btn-accent p-3'>
-            <Info className='w-4 h-4' />
-          </button>
+          <DaoDetailsDialog
+            daoID={daoID}
+            daoAddress={daoAddress}
+            name={name}
+            description={description}
+            imageUri={imageUri}
+            creationDate={creationDate}
+          />
         </div>
       </div>
     </div>
   );
-
-  // return (
-  //   <Card className='flex flex-col transition-all hover:shadow-lg'>
-  // <CardHeader>
-  //   <div className='flex items-start justify-between'>
-  //     <div className='flex items-center gap-3'>
-  //       <div className='rounded-lg bg-primary/10 p-2'>
-  //         {imageUri.length > 4 ? (
-  //           // eslint-disable-next-line @next/next/no-img-element
-  //           <img
-  //             src={`https://ipfs.io/ipfs/${imageUri}`}
-  //             alt={name}
-  //             className='object-cover'
-  //           />
-  //         ) : (
-  //           // eslint-disable-next-line jsx-a11y/alt-text
-  //           <Image className='w-6 h-6' />
-  //         )}
-  //       </div>
-  //       <div>
-  //         <CardTitle className='text-lg'>{name}</CardTitle>
-  //         <div className='flex items-center gap-1'>
-  //           <Users className='h-4 w-4 text-muted-foreground' />
-  //           {userCounter === undefined || userCounterLoading ? (
-  //             <Skeleton className='h-5 w-5 bg-primary/50' />
-  //           ) : (
-  //             <span className='text-sm text-muted-foreground'>
-  //               {userCounter}{' '}
-  //               {parseInt(`${userCounter}`) > 1 ? 'users' : 'user'}
-  //             </span>
-  //           )}
-  //         </div>
-  //       </div>
-  //     </div>
-  //     <NoSSRBadge>#{daoID}</NoSSRBadge>
-  //   </div>
-  //   <NoSSRBadge
-  //     variant='secondary'
-  //     className={`w-fit ${
-  //       isDarkMode
-  //         ? darkCategoryColors[
-  //             category.toLowerCase() as keyof typeof darkCategoryColors
-  //           ]
-  //         : lightCategoryColors[
-  //             category.toLowerCase() as keyof typeof lightCategoryColors
-  //           ]
-  //     }`}
-  //   >
-  //     {category.toLowerCase()}
-  //   </NoSSRBadge>
-  // </CardHeader>;
-
-  //     <CardContent className='flex-1'>
-  //       <CardDescription className='text-sm leading-relaxed break-all'>
-  //         {description.length > 100
-  //           ? description.slice(0, 100) + '...'
-  //           : description}
-  //       </CardDescription>
-  //     </CardContent>
-
-  //     <CardFooter>
-  //       <div className='w-full flex items-center justify-between gap-1 md:gap-1.5'>
-  //         <Button onClick={handleJoinDao} className='flex-1 ' size='sm'>
-  //           Unirse a la DAO
-  //         </Button>
-  //         <DaoDetailsDialog
-  //           daoID={daoID}
-  //           daoAddress={daoAddress}
-  //           name={name}
-  //           description={description}
-  //           imageUri={imageUri}
-  //           creationDate={creationDate}
-  //         />
-  //       </div>
-  //     </CardFooter>
-  //   </Card>
-  // );
 };

@@ -7,7 +7,7 @@ const deployedContracts = {
   devnet: {
     AgoraDaoFabric: {
       address:
-        "0x7821aef99d107a284ef92278af975b2c122dea1e4b25fbf3a7917faf3b61147",
+        "0x283deb31968ba57187eb9a7e5de348bb6b77f2eeca6f4840dd8416574bbb63",
       abi: [
         {
           type: "impl",
@@ -236,11 +236,11 @@ const deployedContracts = {
         },
       ],
       classHash:
-        "0x17185bb589041a60c79918697f43e6b95cb6f7331e4358f44e81f3cb06feceb",
+        "0x75d0ce6f454787165c255b58c58cd48a22275639998f82b4c0ff201083b282",
     },
     AgoraDao: {
       address:
-        "0x2464ed1fd1c8010de56862eb67a2d0a2f1690529b8e675afd4779d938c0e657",
+        "0x67510aa793e3de0403712e691ff06450c5b63a8f0f10733e44835bc13082a72",
       abi: [
         {
           type: "impl",
@@ -286,88 +286,18 @@ const deployedContracts = {
           ],
         },
         {
-          type: "struct",
-          name: "core::byte_array::ByteArray",
-          members: [
-            {
-              name: "data",
-              type: "core::array::Array::<core::bytes_31::bytes31>",
-            },
-            {
-              name: "pending_word",
-              type: "core::felt252",
-            },
-            {
-              name: "pending_word_len",
-              type: "core::integer::u32",
-            },
-          ],
-        },
-        {
-          type: "enum",
-          name: "core::bool",
-          variants: [
-            {
-              name: "False",
-              type: "()",
-            },
-            {
-              name: "True",
-              type: "()",
-            },
-          ],
-        },
-        {
-          type: "struct",
-          name: "core::integer::u256",
-          members: [
-            {
-              name: "low",
-              type: "core::integer::u128",
-            },
-            {
-              name: "high",
-              type: "core::integer::u128",
-            },
-          ],
-        },
-        {
-          type: "enum",
-          name: "core::option::Option::<core::integer::u256>",
-          variants: [
-            {
-              name: "Some",
-              type: "core::integer::u256",
-            },
-            {
-              name: "None",
-              type: "()",
-            },
-          ],
-        },
-        {
           type: "event",
-          name: "contracts::agora_dao::AgoraDao::GreetingChanged",
+          name: "contracts::agora_dao::events::UserJoined",
           kind: "struct",
           members: [
             {
-              name: "greeting_setter",
+              name: "user",
               type: "core::starknet::contract_address::ContractAddress",
               kind: "key",
             },
             {
-              name: "new_greeting",
-              type: "core::byte_array::ByteArray",
-              kind: "key",
-            },
-            {
-              name: "premium",
-              type: "core::bool",
-              kind: "data",
-            },
-            {
-              name: "value",
-              type: "core::option::Option::<core::integer::u256>",
+              name: "user_ID",
+              type: "core::integer::u16",
               kind: "data",
             },
           ],
@@ -378,15 +308,15 @@ const deployedContracts = {
           kind: "enum",
           variants: [
             {
-              name: "GreetingChanged",
-              type: "contracts::agora_dao::AgoraDao::GreetingChanged",
+              name: "UserJoined",
+              type: "contracts::agora_dao::events::UserJoined",
               kind: "nested",
             },
           ],
         },
       ],
       classHash:
-        "0xafdfbcbabcc4748bb223d99dba8c6e56c79c3b8d3bc5b7b7d1450f230e4998",
+        "0x4510dcdd01ccad861fb3ca71dd9f7e4efac445bef33d40405b5004c712ee0bb",
     },
   },
 } as const;
