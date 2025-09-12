@@ -226,8 +226,8 @@ export const CreateDaoDialog: React.FC = () => {
               </legend>
               <textarea
                 {...daoForm.register('description')}
-                className='textarea resize-none h-28 w-full'
                 placeholder='e.g. A decentralized organization that enables transparent decision-making, in which users actively participate in the financing and management of community-driven projects.'
+                className='textarea resize-none h-28 w-full bg-base-300'
               />
               <div className='flex justify-between'>
                 {daoForm.formState.errors.description ? (
@@ -258,7 +258,7 @@ export const CreateDaoDialog: React.FC = () => {
                 <select
                   value={categoriesWatch ?? ''}
                   {...daoForm.register('categories')}
-                  className='select w-full'
+                  className='select w-full bg-base-300'
                 >
                   <option disabled={true}>Pick a category</option>
                   {daoCategories.map((x, y) => (

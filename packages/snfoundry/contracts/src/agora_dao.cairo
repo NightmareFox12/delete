@@ -41,7 +41,6 @@ pub mod AgoraDao {
     fn constructor(ref self: ContractState, fabric: ContractAddress, creator: ContractAddress) {
         self.fabric.write(fabric);
         self.creator.write(creator);
-        self.user_counter.write(self.user_counter.read() + 1);
     }
 
     #[abi(embed_v0)]
@@ -49,7 +48,7 @@ pub mod AgoraDao {
         fn join_dao(ref self: ContractState) {
             let caller = get_caller_address();
             assert!(!self.is_user.read(caller), "User already joined");
-            assert!(self.creator.read() == caller, "Creator cannot join");
+            assert!(self.creator.read() != caller, "Creator cannot join");
 
             self.is_user.write(caller, true);
 
