@@ -137,7 +137,7 @@ export const DaoCard: React.FC<DaoCardProps> = ({
   };
 
   return (
-    <div className='card bg-base-100 w-full shadow-sm'>
+    <div className={`${creatorAddress === userAddress ? "bg-accent/50 border border-gradient" : "bg-base-100"} card w-full shadow-sm`}>
       <CardHeader />
       <div className='card-body pt-3'>
         <p className='mt-0 break-all text-sm leading-relaxed'>
@@ -147,7 +147,7 @@ export const DaoCard: React.FC<DaoCardProps> = ({
         </p>
         <div className='card-actions'>
           {creatorAddress === userAddress ? (
-            <button className='btn btn-accent flex-1'>
+            <button className='btn btn-soft btn-neutral flex-1'>
               <LogIn className='h-4 w-4' />
               Log In
             </button>

@@ -27,7 +27,8 @@ export const DaoDetailsDialog: React.FC<DaoDetailsDialogProps> = ({
   //const
   const parsedDate = new Date(parseInt((creationDate * 1000n).toString()))
     .toISOString()
-    .split('T')[0];
+    .split('T')[0]
+    .replace(/-/g, '/');
 
   //Smart contract
   const { data: userJoined, isLoading: isLoadingEvents } =
@@ -82,30 +83,37 @@ export const DaoDetailsDialog: React.FC<DaoDetailsDialogProps> = ({
               ID #{daoID}
             </div>
           </div>
+
+          {/* image */}
           <div className='flex flex-col items-center justify-center mt-2'>
             {imageUri.length > 4 ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={`https://ipfs.io/ipfs/${imageUri}`}
                 alt={name}
-                className='object-cover w-32 h-32'
+                className='object-cover w-32 h-32 rounded-2xl'
               />
             ) : (
               // eslint-disable-next-line jsx-a11y/alt-text
               <Image className='w-12 h-12' />
             )}
-            <span className='text-sm text-muted-foreground'>Logo</span>
+            <span className='text-sm font-semibold text-primary-content/80'>
+              Logo
+            </span>
           </div>
 
           {isLoadingEvents ? (
             <div className='skeleton w-full h-20 bg-primary my-2' />
-          ) : userJoinedArr.length === 0 ? <div className=''>
-            <p className='text-center font-semibold'>No users yet to display</p>
+          ) : userJoinedArr.length === 0 ? (
+            <div className=''>
+              <p className='text-center font-semibold'>
+                No users yet to display
+              </p>
             </div>
-          : (
-            <div className='overflow-x-auto'>
+          ) : (
+            <div className='overflow-x-auto mt-3 rounded-lg'>
               <table className='table'>
-                <thead>
+                <thead className='bg-accent text-accent-content'>
                   <tr>
                     <th>ID</th>
                     <th>BlockHash</th>
@@ -114,7 +122,7 @@ export const DaoDetailsDialog: React.FC<DaoDetailsDialogProps> = ({
                   </tr>
                 </thead>
                 <tbody>
-                  {userJoinedArr.map((x, y) => {
+                  {userJoinedArr.slice(0, 4).map((x, y) => {
                     const parsedDate = new Date(
                       parseInt((x.block.timestamp * 1000).toString())
                     )

@@ -7,7 +7,7 @@ const deployedContracts = {
   devnet: {
     AgoraDaoFabric: {
       address:
-        "0x62f691a2d89b7d5f4bdd954a39ae29f15637c0a1364e64676d1d0f48619b2e2",
+        "0x43f1072789b793ae52a81e2243bc44d7b372ff60d6834b6443fa0f2196ae24c",
       abi: [
         {
           type: "impl",
@@ -236,16 +236,30 @@ const deployedContracts = {
         },
       ],
       classHash:
-        "0x330d77a2f7644b52a0d556d6bd9869d9debc083dee0ba1d679ec822fb048069",
+        "0x7ea5fba927005e1568d6e15f61accc429582883347bedfddba82c9bb8071f43",
     },
     AgoraDao: {
       address:
-        "0x2620466966edd432b7e71c313c033762fed6597dda640288d1d15868665b3e5",
+        "0x46840d99cae86ada6d3296d8dec9c64fbe2f3b1799820908832e3e95871d22c",
       abi: [
         {
           type: "impl",
           name: "AgoraDaoImpl",
           interface_name: "contracts::agora_dao::IAgoraDao",
+        },
+        {
+          type: "enum",
+          name: "core::bool",
+          variants: [
+            {
+              name: "False",
+              type: "()",
+            },
+            {
+              name: "True",
+              type: "()",
+            },
+          ],
         },
         {
           type: "interface",
@@ -265,6 +279,17 @@ const deployedContracts = {
               outputs: [
                 {
                   type: "core::integer::u16",
+                },
+              ],
+              state_mutability: "view",
+            },
+            {
+              type: "function",
+              name: "is_user",
+              inputs: [],
+              outputs: [
+                {
+                  type: "core::bool",
                 },
               ],
               state_mutability: "view",
@@ -316,7 +341,7 @@ const deployedContracts = {
         },
       ],
       classHash:
-        "0x16d6f4925e869059b3e756ba7f1e81b286d18f94b4b9e9a93d3d54bf7f5da65",
+        "0x5be5005e78a6aa7c23239af486b08f79c9ee947bce7d07e6849c2327705e0d1",
     },
   },
 } as const;

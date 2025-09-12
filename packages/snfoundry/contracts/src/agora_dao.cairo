@@ -7,7 +7,9 @@ pub trait IAgoraDao<TContractState> {
 
     // --- read states ---
     fn user_counter(self: @TContractState) -> u16;
+
     // --- read functions ---
+    fn is_user(self: @TContractState) -> bool;
 }
 
 #[starknet::contract]
@@ -59,6 +61,10 @@ pub mod AgoraDao {
 
         fn user_counter(self: @ContractState) -> u16 {
             self.user_counter.read()
+        }
+
+        fn is_user(self: @ContractState) -> bool {
+            self.is_user.read(get_caller_address())
         }
     }
 }
