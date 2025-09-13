@@ -6,10 +6,10 @@ import { TaskGrid } from './_components/TaskGrid';
 
 const TaskPage: NextPage = async () => {
   return (
-    <div>
+    <section>
       <Nose />
       <TaskGrid />
-    </div>
+    </section>
   );
 };
 

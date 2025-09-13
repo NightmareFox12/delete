@@ -1,6 +1,3 @@
-// import { Badge } from "@/components/ui/badge"
-// import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 'use client';
 
 import { CalendarDays, Coins, User } from 'lucide-react';
