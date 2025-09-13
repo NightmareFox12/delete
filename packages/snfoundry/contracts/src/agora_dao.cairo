@@ -14,6 +14,8 @@ pub trait IAgoraDao<TContractState> {
 
 #[starknet::contract]
 pub mod AgoraDao {
+    use openzeppelin_access::accesscontrol::AccessControlComponent;
+    use openzeppelin_introspection::src5::SRC5Component;
     use starknet::event::EventEmitter;
     use starknet::storage::{
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
@@ -24,6 +26,22 @@ pub mod AgoraDao {
     //imports
     use super::events::UserJoined;
 
+    //constans
+    const TASK_MANAGER_ROLE: felt252 = selector!("TASK_MANAGER_ROLE"); //   
+
+    //components
+    component!(path: AccessControlComponent, storage: accesscontrol, event: AccessControlEvent);
+    component!(path: SRC5Component, storage: src5, event: SRC5Event);
+
+    // AccessControl
+    #[abi(embed_v0)]
+    impl AccessControlImpl =
+        AccessControlComponent::AccessControlImpl<ContractState>;
+    impl AccessControlInternalImpl = AccessControlComponent::InternalImpl<ContractState>;
+
+    // SRC5
+    #[abi(embed_v0)]
+    impl SRC5Impl = SRC5Component::SRC5Impl<ContractState>;
 
     #[storage]
     struct Storage {
@@ -31,12 +49,20 @@ pub mod AgoraDao {
         creator: ContractAddress,
         user_counter: u16,
         is_user: Map<ContractAddress, bool>,
+        #[substorage(v0)]
+        accesscontrol: AccessControlComponent::Storage,
+        #[substorage(v0)]
+        src5: SRC5Component::Storage,
     }
 
     #[event]
     #[derive(Drop, starknet::Event)]
     enum Event {
         UserJoined: UserJoined,
+        #[flat]
+        AccessControlEvent: AccessControlComponent::Event,
+        #[flat]
+        SRC5Event: SRC5Component::Event,
     }
 
     #[constructor]

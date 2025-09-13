@@ -1,9 +1,14 @@
 'use server';
 
 import { NextPage } from 'next';
+import { ModalAdmin } from './_components/AdminModal';
 
 const ConfigurationPage: NextPage = async () => {
-  return <section></section>;
+  return (
+    <section>
+      <ModalAdmin />
+    </section>
+  );
 };
 
 export default ConfigurationPage;

@@ -1,7 +1,8 @@
 'use client';
 
-import { CalendarDays, Coins, User } from 'lucide-react';
+import { CalendarDays, Coins, Info, User } from 'lucide-react';
 import React from 'react';
+import { Address } from '~~/components/scaffold-stark';
 
 interface Task {
   id: string;
@@ -127,9 +128,14 @@ export const TaskGrid: React.FC = () => {
           <div className='card-body'>
             <h2 className='card-title'>{task.title}</h2>
             <div className='badge badge-warning'>{task.status}</div>
-            <p>{task.description}</p>
-            <div className='card-actions justify-end'>
-              <button className='btn btn-primary'>Buy Now</button>
+            <p className='my-1'>{task.description}</p>
+            <Address address='0x123456789'/>
+            <p className='my-0'>{task.dueDate}</p>
+            <p className='my-0 font-bold'>{task.reward}</p>
+            <div className='card-actions justify-center'>
+              <button className='btn btn-info'>
+                <Info className='w-4 h-4'/>
+                Info</button>
             </div>
           </div>
         </div>
