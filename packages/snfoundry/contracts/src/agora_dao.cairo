@@ -1,4 +1,5 @@
 mod events;
+mod roles;
 
 #[starknet::interface]
 pub trait IAgoraDao<TContractState> {
@@ -26,10 +27,7 @@ pub mod AgoraDao {
 
     //imports
     use super::events::UserJoined;
-
-    //constans
-    const ADMIN_ROLE: felt252 = selector!("ADMIN_ROLE");
-    const TASK_MANAGER_ROLE: felt252 = selector!("TASK_MANAGER_ROLE"); //   
+    use super::roles::{ADMIN_ROLE, USER_ROLE};
 
     //components
     component!(path: AccessControlComponent, storage: accesscontrol, event: AccessControlEvent);
@@ -49,7 +47,9 @@ pub mod AgoraDao {
     struct Storage {
         fabric: ContractAddress,
         user_counter: u16,
-        is_user: Map<ContractAddress, bool>,
+        
+        //Mappings
+        users: Map<u16, ContractAddress>,
         #[substorage(v0)]
         accesscontrol: AccessControlComponent::Storage,
         #[substorage(v0)]
@@ -81,17 +81,22 @@ pub mod AgoraDao {
     impl AgoraDaoImpl of super::IAgoraDao<ContractState> {
         fn join_dao(ref self: ContractState) {
             let caller = get_caller_address();
-            assert!(!self.is_user.read(caller), "User already joined");
+
+            assert!(
+                !self.accesscontrol.has_role(USER_ROLE, get_caller_address()),
+                "User already joined",
+            );
             assert!(
                 !self.accesscontrol.has_role(ADMIN_ROLE, get_caller_address()),
                 "Creator cannot join",
             );
 
-            self.is_user.write(caller, true);
+            let user_id = self.user_counter.read();
 
-            self.emit(UserJoined { user: caller, user_ID: self.user_counter.read() });
-
-            self.user_counter.write(self.user_counter.read() + 1);
+            self.users.write(user_id, caller);
+            self.emit(UserJoined { user: caller, user_ID: user_id });
+            self.accesscontrol.grant_role(USER_ROLE, caller);
+            self.user_counter.write(user_id + 1);
         }
 
         fn user_counter(self: @ContractState) -> u16 {
@@ -99,7 +104,7 @@ pub mod AgoraDao {
         }
 
         fn is_user(self: @ContractState) -> bool {
-            self.is_user.read(get_caller_address())
+            self.has_role(USER_ROLE, get_caller_address())
         }
     }
 }

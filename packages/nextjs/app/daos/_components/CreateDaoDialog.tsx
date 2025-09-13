@@ -1,8 +1,6 @@
 'use client';
 
 //TODO: pinnata eliminacion tambien,si el usuario rechaza la metamask
-//TODO: luego de la imagen conectar la creacion con el smart contract
-//TODO: Poner filtros al buscador como por ejemplo daos creadas por ti
 //TODO: inventarme la de la vaina de acceso para daos privadas
 //TODO: en el header poner el nombre de mi dao actual. Tambien que puedas customizar el color del header de mi dao... o mejor dicho, el color primario (o agregar a premium)
 
