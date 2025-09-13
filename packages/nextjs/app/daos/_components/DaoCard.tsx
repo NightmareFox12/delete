@@ -78,7 +78,7 @@ export const DaoCard: React.FC<DaoCardProps> = ({
         await sendAsync();
       }
       localStorage.setItem(LOCAL_STORAGE_KEYS.DAO_ADDRESS, daoAddress);
-      router.push('/dao');
+      router.replace('/dao');
     } catch (err) {
       console.log(err);
     }

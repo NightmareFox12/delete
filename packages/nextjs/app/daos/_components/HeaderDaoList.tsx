@@ -6,10 +6,14 @@ import { Funnel, Search } from 'lucide-react';
 import { useAccount } from '~~/hooks/useAccount';
 import { useScaffoldReadContract } from '~~/hooks/scaffold-stark/useScaffoldReadContract';
 import { useFilterDao } from '~~/services/store/filterDao';
+import { useHeaderStore } from '~~/services/store/header';
 
 export const HeaderDaoList: React.FC = () => {
   const { isConnected } = useAccount();
   const router = useRouter();
+
+  //Global states
+  const { setShowHeader } = useHeaderStore();
   const { category, setCategory, name, setName } = useFilterDao();
 
   //smart contract
@@ -21,10 +25,9 @@ export const HeaderDaoList: React.FC = () => {
 
   //effects
   useEffect(() => {
-    if (isConnected) return;
-
-    router.push('/');
-  }, [isConnected, router]);
+    if (isConnected) setShowHeader(false);
+    else router.replace('/');
+  }, [isConnected, router, setShowHeader]);
 
   return (
     <header className='border-b bg-base-100 border-secondary'>

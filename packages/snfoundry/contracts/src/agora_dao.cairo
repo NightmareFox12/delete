@@ -14,6 +14,7 @@ pub trait IAgoraDao<TContractState> {
 
 #[starknet::contract]
 pub mod AgoraDao {
+    //OpenZeppelin imports
     use openzeppelin_access::accesscontrol::AccessControlComponent;
     use openzeppelin_introspection::src5::SRC5Component;
     use starknet::event::EventEmitter;
@@ -27,6 +28,7 @@ pub mod AgoraDao {
     use super::events::UserJoined;
 
     //constans
+    const ADMIN_ROLE: felt252 = selector!("ADMIN_ROLE");
     const TASK_MANAGER_ROLE: felt252 = selector!("TASK_MANAGER_ROLE"); //   
 
     //components
@@ -46,7 +48,6 @@ pub mod AgoraDao {
     #[storage]
     struct Storage {
         fabric: ContractAddress,
-        creator: ContractAddress,
         user_counter: u16,
         is_user: Map<ContractAddress, bool>,
         #[substorage(v0)]
@@ -68,15 +69,23 @@ pub mod AgoraDao {
     #[constructor]
     fn constructor(ref self: ContractState, fabric: ContractAddress, creator: ContractAddress) {
         self.fabric.write(fabric);
-        self.creator.write(creator);
+
+        // AccessControl-related initialization
+        self.accesscontrol.initializer();
+        self.accesscontrol._grant_role(ADMIN_ROLE, creator);
     }
+
+    // #[external(v0)]
 
     #[abi(embed_v0)]
     impl AgoraDaoImpl of super::IAgoraDao<ContractState> {
         fn join_dao(ref self: ContractState) {
             let caller = get_caller_address();
             assert!(!self.is_user.read(caller), "User already joined");
-            assert!(self.creator.read() != caller, "Creator cannot join");
+            assert!(
+                !self.accesscontrol.has_role(ADMIN_ROLE, get_caller_address()),
+                "Creator cannot join",
+            );
 
             self.is_user.write(caller, true);
 

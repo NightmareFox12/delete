@@ -7,7 +7,7 @@ const deployedContracts = {
   devnet: {
     AgoraDaoFabric: {
       address:
-        "0x284873baacd72df1380c2057cd288a323f7799f618dd8c8d8fb5bf107a66be0",
+        "0x7ce99863e220c75ff7973d358ec59376484f196b24af5878742d367071bd8bd",
       abi: [
         {
           type: "impl",
@@ -236,11 +236,11 @@ const deployedContracts = {
         },
       ],
       classHash:
-        "0x7ea5fba927005e1568d6e15f61accc429582883347bedfddba82c9bb8071f43",
+        "0x30f87c124a404e87ba6114e7ced644ecd66e27f5fce868c109cf3d7ecc39769",
     },
     AgoraDao: {
       address:
-        "0x6f87782b8699dedd08848693e327b69d2428b890e3ba3dbe2aff19dd70771f7",
+        "0x38c0c92879aab192ec7985c391c9dc71e296935af7de813d2a67884d895d363",
       abi: [
         {
           type: "impl",
@@ -297,6 +297,129 @@ const deployedContracts = {
           ],
         },
         {
+          type: "impl",
+          name: "AccessControlImpl",
+          interface_name:
+            "openzeppelin_access::accesscontrol::interface::IAccessControl",
+        },
+        {
+          type: "interface",
+          name: "openzeppelin_access::accesscontrol::interface::IAccessControl",
+          items: [
+            {
+              type: "function",
+              name: "has_role",
+              inputs: [
+                {
+                  name: "role",
+                  type: "core::felt252",
+                },
+                {
+                  name: "account",
+                  type: "core::starknet::contract_address::ContractAddress",
+                },
+              ],
+              outputs: [
+                {
+                  type: "core::bool",
+                },
+              ],
+              state_mutability: "view",
+            },
+            {
+              type: "function",
+              name: "get_role_admin",
+              inputs: [
+                {
+                  name: "role",
+                  type: "core::felt252",
+                },
+              ],
+              outputs: [
+                {
+                  type: "core::felt252",
+                },
+              ],
+              state_mutability: "view",
+            },
+            {
+              type: "function",
+              name: "grant_role",
+              inputs: [
+                {
+                  name: "role",
+                  type: "core::felt252",
+                },
+                {
+                  name: "account",
+                  type: "core::starknet::contract_address::ContractAddress",
+                },
+              ],
+              outputs: [],
+              state_mutability: "external",
+            },
+            {
+              type: "function",
+              name: "revoke_role",
+              inputs: [
+                {
+                  name: "role",
+                  type: "core::felt252",
+                },
+                {
+                  name: "account",
+                  type: "core::starknet::contract_address::ContractAddress",
+                },
+              ],
+              outputs: [],
+              state_mutability: "external",
+            },
+            {
+              type: "function",
+              name: "renounce_role",
+              inputs: [
+                {
+                  name: "role",
+                  type: "core::felt252",
+                },
+                {
+                  name: "account",
+                  type: "core::starknet::contract_address::ContractAddress",
+                },
+              ],
+              outputs: [],
+              state_mutability: "external",
+            },
+          ],
+        },
+        {
+          type: "impl",
+          name: "SRC5Impl",
+          interface_name: "openzeppelin_introspection::interface::ISRC5",
+        },
+        {
+          type: "interface",
+          name: "openzeppelin_introspection::interface::ISRC5",
+          items: [
+            {
+              type: "function",
+              name: "supports_interface",
+              inputs: [
+                {
+                  name: "interface_id",
+                  type: "core::felt252",
+                },
+              ],
+              outputs: [
+                {
+                  type: "core::bool",
+                },
+              ],
+              state_mutability: "view",
+            },
+          ],
+        },
+        {
           type: "constructor",
           name: "constructor",
           inputs: [
@@ -329,6 +452,132 @@ const deployedContracts = {
         },
         {
           type: "event",
+          name: "openzeppelin_access::accesscontrol::accesscontrol::AccessControlComponent::RoleGranted",
+          kind: "struct",
+          members: [
+            {
+              name: "role",
+              type: "core::felt252",
+              kind: "data",
+            },
+            {
+              name: "account",
+              type: "core::starknet::contract_address::ContractAddress",
+              kind: "data",
+            },
+            {
+              name: "sender",
+              type: "core::starknet::contract_address::ContractAddress",
+              kind: "data",
+            },
+          ],
+        },
+        {
+          type: "event",
+          name: "openzeppelin_access::accesscontrol::accesscontrol::AccessControlComponent::RoleGrantedWithDelay",
+          kind: "struct",
+          members: [
+            {
+              name: "role",
+              type: "core::felt252",
+              kind: "data",
+            },
+            {
+              name: "account",
+              type: "core::starknet::contract_address::ContractAddress",
+              kind: "data",
+            },
+            {
+              name: "sender",
+              type: "core::starknet::contract_address::ContractAddress",
+              kind: "data",
+            },
+            {
+              name: "delay",
+              type: "core::integer::u64",
+              kind: "data",
+            },
+          ],
+        },
+        {
+          type: "event",
+          name: "openzeppelin_access::accesscontrol::accesscontrol::AccessControlComponent::RoleRevoked",
+          kind: "struct",
+          members: [
+            {
+              name: "role",
+              type: "core::felt252",
+              kind: "data",
+            },
+            {
+              name: "account",
+              type: "core::starknet::contract_address::ContractAddress",
+              kind: "data",
+            },
+            {
+              name: "sender",
+              type: "core::starknet::contract_address::ContractAddress",
+              kind: "data",
+            },
+          ],
+        },
+        {
+          type: "event",
+          name: "openzeppelin_access::accesscontrol::accesscontrol::AccessControlComponent::RoleAdminChanged",
+          kind: "struct",
+          members: [
+            {
+              name: "role",
+              type: "core::felt252",
+              kind: "data",
+            },
+            {
+              name: "previous_admin_role",
+              type: "core::felt252",
+              kind: "data",
+            },
+            {
+              name: "new_admin_role",
+              type: "core::felt252",
+              kind: "data",
+            },
+          ],
+        },
+        {
+          type: "event",
+          name: "openzeppelin_access::accesscontrol::accesscontrol::AccessControlComponent::Event",
+          kind: "enum",
+          variants: [
+            {
+              name: "RoleGranted",
+              type: "openzeppelin_access::accesscontrol::accesscontrol::AccessControlComponent::RoleGranted",
+              kind: "nested",
+            },
+            {
+              name: "RoleGrantedWithDelay",
+              type: "openzeppelin_access::accesscontrol::accesscontrol::AccessControlComponent::RoleGrantedWithDelay",
+              kind: "nested",
+            },
+            {
+              name: "RoleRevoked",
+              type: "openzeppelin_access::accesscontrol::accesscontrol::AccessControlComponent::RoleRevoked",
+              kind: "nested",
+            },
+            {
+              name: "RoleAdminChanged",
+              type: "openzeppelin_access::accesscontrol::accesscontrol::AccessControlComponent::RoleAdminChanged",
+              kind: "nested",
+            },
+          ],
+        },
+        {
+          type: "event",
+          name: "openzeppelin_introspection::src5::SRC5Component::Event",
+          kind: "enum",
+          variants: [],
+        },
+        {
+          type: "event",
           name: "contracts::agora_dao::AgoraDao::Event",
           kind: "enum",
           variants: [
@@ -337,11 +586,21 @@ const deployedContracts = {
               type: "contracts::agora_dao::events::UserJoined",
               kind: "nested",
             },
+            {
+              name: "AccessControlEvent",
+              type: "openzeppelin_access::accesscontrol::accesscontrol::AccessControlComponent::Event",
+              kind: "flat",
+            },
+            {
+              name: "SRC5Event",
+              type: "openzeppelin_introspection::src5::SRC5Component::Event",
+              kind: "flat",
+            },
           ],
         },
       ],
       classHash:
-        "0x5be5005e78a6aa7c23239af486b08f79c9ee947bce7d07e6849c2327705e0d1",
+        "0x1f25622e3bd2f09369ad1f20106ed3cd75c27b305ba393695326210b09b826f",
     },
   },
 } as const;
